@@ -12,36 +12,27 @@ int parse_arguments(int argc, char ** argv, std::string &data_s,
 
   int i = 1;
   while(i<argc){
-    if(!strcmp(argv[i],"-d")){
+    if(!strcmp(argv[i],"-d"))
       data_s = argv[++i];
-    }
-    else if(!strcmp(argv[i],"-q")){
+    else if(!strcmp(argv[i],"-q"))
       query_s = argv[++i];
-    }
-    else if(!strcmp(argv[i],"-k")){
+    else if(!strcmp(argv[i],"-k"))
       k = atoi(argv[++i]);
-    }
-    else if(!strcmp(argv[i],"-L")){
+    else if(!strcmp(argv[i],"-L"))
       L = atoi(argv[++i]);
-    }
-    else if(!strcmp(argv[i],"-o")){
+    else if(!strcmp(argv[i],"-o"))
       out_s = argv[++i];
-    }
-    else if(!strcmp(argv[i],"-stats")){
+    else if(!strcmp(argv[i],"-stats"))
       stats = true;
-    }
-    else if(!strcmp(argv[i],"-function")){
+    else if(!strcmp(argv[i],"-function"))
       func = atoi(argv[++i]);
-    }
-    else if(!strcmp(argv[i],"-hash")){
+    else if(!strcmp(argv[i],"-hash"))
       hash = atoi(argv[++i]);
-    }
-    else{
-      cerr << "Wrong parameter given, it will be ignored" << endl;
-    }
+    else
+      cerr << "Wrong paramater given, it will be ignored" << endl;
     //advance to the next parameter
     //if parameter required 2 arguments, one incremention is already done
-    i++;
-  }
+      i++;
+    }
   return 1;
 }
