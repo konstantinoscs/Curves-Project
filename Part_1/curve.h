@@ -9,7 +9,7 @@ class curve{
   int dimension;
   std::vector<std::vector<float>> points;
 public:
-  curve(int dim = 0);
+  curve(std::string c_id, int dim = 0);
   ~curve();
 };
 

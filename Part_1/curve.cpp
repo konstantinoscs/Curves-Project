@@ -3,10 +3,10 @@
 
 using namespace std;
 
-curve(int dim): dimension(dim){
+curve::curve(string c_id, int dim):id(c_id), dimension(dim){
 
 }
 
-~cure(){
+curve::~curve(){
 
 }
