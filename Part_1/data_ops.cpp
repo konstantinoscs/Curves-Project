@@ -6,10 +6,15 @@
 
 using namespace std;
 
+//data_ops contains all the functions for the intialization of the problem
+//e.g. parsing command line arguments, getting input from the user,
+//getting input from the files etc.
+
 int parse_arguments(int argc, char ** argv, std::string &data_s,
   std::string &query_s, int &k, int &L, std::string &out_s, bool &stats,
   std::string &func, std::string &hash){
 
+  //we start from 1 to skip the name of the program
   int i = 1;
   while(i<argc){
     if(!strcmp(argv[i],"-d"))
