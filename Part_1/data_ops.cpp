@@ -49,6 +49,7 @@ void input_parameters(std::string &data_s, std::string &func, std::string &hash)
     cout << "Specify the distance function: " << endl;
     cout << "1. DFT - Discrete Frechet Traversal." << endl;
     cout << "2. DTW - Dynamic Time Warping." << endl;
+    //user gives a number and then we use the conditional operator
     cin >> choice;
     func = choice-1 ? "DTW" : "DFT";
   }

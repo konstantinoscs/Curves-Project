@@ -22,8 +22,13 @@ int main(int argc, char **argv){
   ifstream data("data_s");
   ifstream query("query_s");
 
-  cout << data_s << endl << query_s << endl << out_s << endl;
-  cout << func << endl << hash << endl;
+  // cout << data_s << endl << query_s << endl << out_s << endl;
+  // cout << func << endl << hash << endl;
+
+  //test if there is a file to get the data from
+  if (!data.is_open())
+    cout << "couldn't find data file!" << endl;
+    
   data.close();
   query.close();
   ofstream output("out_s");
