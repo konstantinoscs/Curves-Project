@@ -28,7 +28,7 @@ int main(int argc, char **argv){
   //test if there is a file to get the data from
   if (!data.is_open())
     cout << "couldn't find data file!" << endl;
-    
+
   data.close();
   query.close();
   ofstream output("out_s");
