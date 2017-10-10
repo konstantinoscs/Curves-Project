@@ -25,9 +25,9 @@ int parse_arguments(int argc, char ** argv, std::string &data_s,
     else if(!strcmp(argv[i],"-stats"))
       stats = true;
     else if(!strcmp(argv[i],"-function"))
-      func = atoi(argv[++i]);
+      func = argv[++i];
     else if(!strcmp(argv[i],"-hash"))
-      hash = atoi(argv[++i]);
+      hash = argv[++i];
     else
       cerr << "Wrong paramater given, it will be ignored" << endl;
     //advance to the next parameter
