@@ -1,10 +1,12 @@
 #include "curve.h"
 #include <vector>
 
-curve(){
+using namespace std;
+
+curve(int dim): dimension(dim){
 
 }
 
 ~cure(){
-  
+
 }

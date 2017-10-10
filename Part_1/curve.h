@@ -2,12 +2,14 @@
 #define CURVE_H
 
 #include <vector>
+#include <string>
 
 class curve{
+  std::string id;
   int dimension;
   std::vector<std::vector<float>> points;
 public:
-  curve();
+  curve(int dim = 0);
   ~curve();
 };
 
