@@ -1,6 +1,6 @@
 #ifndef CURVE_OPS_H
 #define CURVE_OPS_H
 
-int curve_reduction(int c,float delta);
+curve curve_reduction(curve c,float delta);
 
 #endif
