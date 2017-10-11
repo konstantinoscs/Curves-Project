@@ -11,6 +11,8 @@ class curve{
 public:
   curve(std::string c_id, int dim = 0);
   ~curve();
+  std::string get_id();
+  int get_dimension();
 };
 
 #endif
