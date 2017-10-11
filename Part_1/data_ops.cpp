@@ -3,6 +3,7 @@
 #include <cstring>
 #include <fstream>
 #include <cstdlib>
+#include <utility>
 
 #include "curve.h"
 
@@ -73,27 +74,78 @@ void input_parameters(std::string &data_s, std::string &func, std::string &hash)
   }
 }
 
-int read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
+bool read_curve(curve & ocurve, ifstream & data, int dimension){
+  string id;
+  int points_no{};
+  //c is to get all the useless chars in the input e.g (),
+  char c{};
+  //in coords we store all the coordinates of a single point
+  vector<double> coords;
+  //in points we store all the points' coordinates
+
+  //temp coordinate
+  double t_coord;
+
+  data >> id;
+  if (data.eof()){
+    cout << "Eof found!" << endl;
+    return false;
+  }
+  data >> points_no;
+  //main loop to read all the points
+  for (int i = 0; i<points_no; i++){
+    data >> c;              //get the first '('
+
+    //loop to read the coordinates of all points
+    for (int j = 0; j<dimension; j++){
+      data >> t_coord;
+      coords.push_back(t_coord);
+      data >> c;      //get the comma after coordinate
+    }
+
+    //get the comma between points - not applicable to last point
+    if(i!=points_no-1)
+    data >> c;
+
+  }
+
+  //TODO call vector move and then clear() it
+
+}
+
+bool read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
   int & dimension){
 
   string id;
+  char c;
+  curve ocurve{};
   ifstream data("data_s");
 
+  //test if there is a file to get the data from
   if (!data.is_open()){
-    //test if there is a file to get the data from
     cout << "couldn't find data file!" << endl;
-    return 0;
+    return false;
   }
 
   //the first time id gets the "@dimension"
-  data >> id;
-  cout << id <<endl;
-  data >> dimension;
+  data >> c;
+  if (c=='@'){
+    data >> id;
+    cout << id <<endl;
+    data >> dimension;
+  }
+  else{
+    //if c!=@ then put it back because it's a curve_id
+    data.putback(c);
+    dimension = 2;
+  }
+  cout << "Dimension = " << dimension << endl;
 
   while(true){
-
+    if(!read_curve(ocurve, data, dimension))
+      break;
   }
 
   data.close();
-  return 1;
+  return true;
 }
