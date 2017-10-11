@@ -18,8 +18,8 @@ int main(int argc, char **argv){
   float delta{};
   int dimension{};
   bool stats{false};
-  string data_s{}, query_s{}, out_s{};
-  string func{}, hash{};
+  string data_s, query_s, out_s;
+  string func, hash;
   //our curves aka the dataset
   vector<curve> curves;
   vector<float> t{};
@@ -28,23 +28,26 @@ int main(int argc, char **argv){
   parse_arguments(argc, argv, data_s,query_s, k, L, out_s, stats, func, hash);
   input_parameters(data_s, func, hash);
 
-  if(!read_dataset_curves(data_s, curves)){
+  if(!read_dataset_curves(data_s, curves, dimension)){
     cerr << "Something went wrong while reading the dataset!"<< endl;
   }
 
   // cout << data_s << endl << query_s << endl << out_s << endl;
   // cout << func << endl << hash << endl;
 
-  int minm{2};//minimum of curve points
+  //minimum of curve points
+  int minm{2};
   float r{0.2};
   delta = 4*dimension*minm*r;
-  vector<curve> normalized_curves{};//int-->curve
-  for(int i=0;i<curves.size();i++)
-    normalized_curves.push_back(curve_reduction(curves.at(i),delta));
+  //int-->curve (what does that mean?)
+  vector<curve> normalized_curves{};
 
-  for(int rep=0;rep<L;rep++){//for L repetitions
+  for(int i=0; i<curves.size(); i++)
+    normalized_curves.push_back(curve_reduction(curves[i],delta));
+
+  for(int rep=0; rep<L; rep++){//for L repetitions
     //let's choose a t...
-    
+
   }
 
   //here shift the normalized curve k times
