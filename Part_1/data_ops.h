@@ -9,6 +9,7 @@ int parse_arguments(int argc, char ** argv, std::string &data_s,
 
 void input_parameters(std::string &data_s, std::string &func, std::string &hash);
 
-int read_dataset_curves(std::string const data_s, std::vector<curve> & curves);
+int read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
+  int & dimension);
 
 #endif

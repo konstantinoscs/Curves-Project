@@ -73,13 +73,25 @@ void input_parameters(std::string &data_s, std::string &func, std::string &hash)
   }
 }
 
-int read_dataset_curves(std::string const data_s, std::vector<curve> & curves){
+int read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
+  int & dimension){
+
+  string id;
   ifstream data("data_s");
 
   if (!data.is_open()){
     //test if there is a file to get the data from
     cout << "couldn't find data file!" << endl;
     return 0;
+  }
+
+  //the first time id gets the "@dimension"
+  data >> id;
+  cout << id <<endl;
+  data >> dimension;
+
+  while(true){
+
   }
 
   data.close();
