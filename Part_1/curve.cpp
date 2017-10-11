@@ -11,10 +11,14 @@ curve::~curve(){
 
 }
 
-curve curve::get_id(){
+void curve::set_id(string r_id){
+    id = r_id;
+}
+
+string curve::get_id(){
   return id;
 }
 
 int curve::get_dimension(){
-  return
+  return dimension;
 }

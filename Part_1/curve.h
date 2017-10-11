@@ -12,7 +12,7 @@ class curve{
 public:
   curve(int dim = 0);
   ~curve();
-  void set_id(std::string r_id)
+  void set_id(std::string r_id);
   std::string get_id();
   int get_dimension();
 
