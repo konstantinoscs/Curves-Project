@@ -5,10 +5,10 @@
 
 using namespace std;
 
-curve curve_reduction(curve c, float delta){
-  curve cur = new curve(c.get_id(),c.get_dimension());
-  vector<vector<float>> points = c.get_points();
-  vector<vector<float>> new_points{};
+curve curve_reduction(const curve & ur_curve, float delta){
+  curve cur = new curve(ur_curve.get_id(), ur_curve.get_dimension());
+  vector<vector<float>> points = ur_curve.get_points();
+  vector<vector<float>> new_points;
   float element{};
   float p{delta/2};
   int negative_bit{};
