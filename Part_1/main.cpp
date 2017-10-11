@@ -15,14 +15,14 @@ int main(int argc, char **argv){
   //k = locality sensitive functions
   //L  = number of hasthables
   int k{4}, L{5};
-  float delta{};
+  double delta{};
   int dimension{};
   bool stats{false};
   string data_s, query_s, out_s;
   string func, hash;
   //our curves aka the dataset
   vector<curve> curves;
-  vector<float> t{};
+  vector<double> t;
 
   //initialize all parameters
   parse_arguments(argc, argv, data_s,query_s, k, L, out_s, stats, func, hash);

@@ -7,12 +7,15 @@
 class curve{
   std::string id;
   int dimension;
-  std::vector<std::vector<float>> points;
+  //every point is a dimensiom-vector of coordinates
+  std::vector<std::vector<double>> points;
 public:
-  curve(std::string c_id, int dim = 0);
+  curve(int dim = 0);
   ~curve();
+  void set_id(std::string r_id)
   std::string get_id();
   int get_dimension();
+
 };
 
 #endif
