@@ -15,7 +15,7 @@ int parse_arguments(int argc, char ** argv, std::string &data_s,
   std::string &func, std::string &hash){
 
   //we start from 1 to skip the name of the program
-  int i = 1;
+  int i{1};
   while(i<argc){
     if(!strcmp(argv[i],"-d"))
       data_s = argv[++i];

@@ -19,9 +19,10 @@ int main(int argc, char **argv){
   //our curves aka the dataset
   vector<curve> curves;
 
-  // cout << "k = "<< k << endl;
+  //initialize all parameters
   parse_arguments(argc, argv, data_s,query_s, k, L, out_s, stats, func, hash);
   input_parameters(data_s, func, hash);
+
   if(!read_dataset_curves(data_s, curves)){
     cerr << "Something went wrong while reading the dataset!"<< endl;
   }
