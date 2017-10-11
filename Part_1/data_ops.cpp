@@ -67,3 +67,15 @@ void input_parameters(std::string &data_s, std::string &func, std::string &hash)
     hash = choice-1 ? "probabilistic" : "classic";
   }
 }
+
+int read_dataset_curves(std::string const data_s, std::vector<curve> & curves){
+  ifstream data("data_s");
+
+  if (!data.is_open()){
+    //test if there is a file to get the data from
+    cout << "couldn't find data file!" << endl;
+    return -1;
+  }
+
+  data.close();
+}
