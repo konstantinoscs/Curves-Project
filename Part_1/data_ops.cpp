@@ -4,6 +4,8 @@
 #include <fstream>
 #include <cstdlib>
 
+#include "curve.h"
+
 using namespace std;
 
 //data_ops contains all the functions for the intialization of the problem
@@ -81,4 +83,5 @@ int read_dataset_curves(std::string const data_s, std::vector<curve> & curves){
   }
 
   data.close();
+  return 1;
 }
