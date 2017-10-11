@@ -48,6 +48,7 @@ void input_parameters(std::string &data_s, std::string &func, std::string &hash)
   if(data_s.empty()){
     cout << "Give the path to the dataset file: " << endl;
     cin >> data_s;
+    cout << endl;
   }
 
   if(func.empty()){
@@ -56,6 +57,7 @@ void input_parameters(std::string &data_s, std::string &func, std::string &hash)
     cout << "2. DTW - Dynamic Time Warping." << endl;
     //user gives a number and then we use the conditional operator
     cin >> choice;
+    cout << endl;
     func = choice-1 ? "DTW" : "DFT";
   }
 
@@ -64,6 +66,7 @@ void input_parameters(std::string &data_s, std::string &func, std::string &hash)
     cout << "1. Classic." << endl;
     cout << "2. Probabilistic (LSH)." << endl;
     cin >> choice;
+    cout << endl;
     hash = choice-1 ? "probabilistic" : "classic";
   }
 }
@@ -74,7 +77,7 @@ int read_dataset_curves(std::string const data_s, std::vector<curve> & curves){
   if (!data.is_open()){
     //test if there is a file to get the data from
     cout << "couldn't find data file!" << endl;
-    return -1;
+    return -0;
   }
 
   data.close();

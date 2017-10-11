@@ -22,6 +22,9 @@ int main(int argc, char **argv){
   // cout << "k = "<< k << endl;
   parse_arguments(argc, argv, data_s,query_s, k, L, out_s, stats, func, hash);
   input_parameters(data_s, func, hash);
+  if(!read_dataset_curves(data_s, curves)){
+    cerr << "Something went wrong while reading the dataset!"<< endl;
+  }
 
   // cout << data_s << endl << query_s << endl << out_s << endl;
   // cout << func << endl << hash << endl;
