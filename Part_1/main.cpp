@@ -14,7 +14,7 @@ using namespace std;
 int main(int argc, char **argv){
   //k = locality sensitive functions
   //L  = number of hasthables
-  int k{4}, L{5}, dimension{};
+  int k{4}, L{5};
   float delta{};
   bool stats{false};
   string data_s{}, query_s{}, out_s{};
@@ -36,11 +36,11 @@ int main(int argc, char **argv){
 
   int minm{2};//minimum of curve points
   float r{0.2};
-  delta = 4*dimension*minm*r;
-  list<curve> normalized_curves{};//int-->curve
-  for(vectort<curve>::iterator it=curves.begin();it!=curves.end();it++){
-    normalized_curves.push_back(curve_reduction(*it,delta));
-  }
+  delta = 4*3*minm*r;//3-->dimension
+  vector<curve> normalized_curves{};//int-->curve
+  for(int i=0;i<curves.size();i++)
+    normalized_curves.push_back(curve_reduction(curves.at(i),delta));
+
   //here start the L loop algorithm
 
   //here shift the normalized curve k times
