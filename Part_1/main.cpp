@@ -16,6 +16,7 @@ int main(int argc, char **argv){
   //L  = number of hasthables
   int k{4}, L{5};
   float delta{};
+  int dimension{};
   bool stats{false};
   string data_s{}, query_s{}, out_s{};
   string func{}, hash{};
@@ -36,12 +37,15 @@ int main(int argc, char **argv){
 
   int minm{2};//minimum of curve points
   float r{0.2};
-  delta = 4*3*minm*r;//3-->dimension
+  delta = 4*dimension*minm*r;
   vector<curve> normalized_curves{};//int-->curve
   for(int i=0;i<curves.size();i++)
     normalized_curves.push_back(curve_reduction(curves.at(i),delta));
 
-  //here start the L loop algorithm
+  for(int rep=0;rep<L;rep++){//for L repetitions
+    //let's choose a t...
+    
+  }
 
   //here shift the normalized curve k times
   //choose t in [0,delta)
