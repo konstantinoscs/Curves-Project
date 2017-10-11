@@ -19,7 +19,7 @@ int main(int argc, char **argv){
   string data_s{}, query_s{}, out_s{};
   string func{}, hash{};
   //our curves aka the dataset
-  vector<curve> curves;
+  list<curve> curves;
   vector<float> t{};
 
   //initialize all parameters
