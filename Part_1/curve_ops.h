@@ -3,6 +3,6 @@
 
 #include "curve.h"
 
-curve curve_reduction(curve c,float delta);
+curve curve_reduction(curve c, float delta);
 
 #endif
