@@ -77,7 +77,7 @@ int read_dataset_curves(std::string const data_s, std::vector<curve> & curves){
   if (!data.is_open()){
     //test if there is a file to get the data from
     cout << "couldn't find data file!" << endl;
-    return -0;
+    return 0;
   }
 
   data.close();
