@@ -20,7 +20,7 @@ int main(int argc, char **argv){
   string data_s{}, query_s{}, out_s{};
   string func{}, hash{};
   //our curves aka the dataset
-  list<curve> curves;
+  vector<curve> curves;
   vector<float> t{};
 
   //initialize all parameters
@@ -38,7 +38,7 @@ int main(int argc, char **argv){
   float r{0.2};
   delta = 4*dimension*minm*r;
   list<curve> normalized_curves{};//int-->curve
-  for(list<curve>::iterator it=curves.begin();it!=curves.end();it++){
+  for(vectort<curve>::iterator it=curves.begin();it!=curves.end();it++){
     normalized_curves.push_back(curve_reduction(*it,delta));
   }
   //here start the L loop algorithm
