@@ -1,8 +1,9 @@
 #include <string>
 #include <cstdlib>
+#include "curve.h"
 
 using namespace std;
 
-int curve_reduction(int c,float delta){
-  return 2*c;
+curve curve_reduction(curve c,float delta){
+  return c;
 }
