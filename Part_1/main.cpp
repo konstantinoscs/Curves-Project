@@ -54,17 +54,22 @@ int main(int argc, char **argv){
 
   vector<norm_curve> normalized_curves{};
 
-  for(int i=0; i<curves.size(); i++)
-    normalized_curves.push_back(curve_reduction(curves[i],delta));
+  for(unsigned int i=0; i<curves.size(); i++)
+    normalized_curves.push_back(curve_reduction(curves.[i],delta));
 
-  for(int rep=0; rep<L; rep++){//for L repetitions
-    //let's choose a t...
+/*  for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
+    vector<curve> concat_curve_points{};
+    for(unsigned int i=0; i<normalized_curves.size(); i++){
 
-  }
+    }
+    for(int krep=0; krep<k; krep++){
+      //let's choose a t...
+      t = choosen_t(delta,dimension);
+      for(unsigned int i=0; i<normalized_curves.size(); i++)//for every norm curve...
+        vector<double> moved_points = curve_move(normalized_curves.at(i),t);
+        vector<int> int_curve = curve_d_to_i(moved_c,delta,t);
+        concat_curve(int_curve,concat_curve_points.at(i));
+    }
 
-  //here shift the normalized curve k times
-  //choose t in [0,delta)
-  //for all normalized_curves:curve_shift(v0,t,v1)
-  //concatenate the k curves
-  //done
+  }*/
 }
