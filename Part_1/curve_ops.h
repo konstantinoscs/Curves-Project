@@ -3,10 +3,10 @@
 
 #include "curve.h"
 
-curve curve_reduction(const curve & ur_curve, float delta);
+curve curve_reduction(const curve & ur_curve, double delta);
 
 void chosen_t(double delta, int dimension, std::vector<double> & t);
 
-void curve_move(std::vector<std::vector<double>> norm_points, std::vector<double> t, std::vector<std::vector<double>> & moved_points);
+void curve_move(const std::vector<std::vector<double>> & norm_points,const std::vector<double> & t, std::vector<std::vector<double>> & moved_points);
 
 #endif

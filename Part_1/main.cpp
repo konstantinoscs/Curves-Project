@@ -60,23 +60,24 @@ int main(int argc, char **argv){
   }
 
   for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
-    vector<real_curve> concat_curve_points{};
+    vector<curve> concat_curve_points{};
     for(unsigned int i=0; i<normalized_curves.size(); i++){//init concat_curve_points
-      real_curve *moved_curve = new real_curve(normalized_curves[i].curve::get_dimension());
-      moved_curve->curve::set_id(normalized_curves[i].curve::get_id());
-      concat_curve_points.push_back(*moved_curve);
+      curve moved_curve(normalized_curves[i].get_dimension());
+      moved_curve.set_id(normalized_curves[i].get_id());
+      concat_curve_points.push_back(moved_curve);
     }
     for(int krep=0; krep<k; krep++){
       //let's choose a t...
       chosen_t(delta,dimension,t);
       for(unsigned int i=0; i<normalized_curves.size(); i++){//for every norm curve...
         vector<vector<double>> moved_points{};
-        curve_move(normalized_curves[i].real_curve::get_points(), t, moved_points);
+        curve_move(normalized_curves[i].get_points(), t, moved_points);
         for(unsigned int j=0; j<moved_points.size(); j++){
-          concat_curve_points[i].real_curve::set_point(moved_points[j]);
+          concat_curve_points[i].set_point(moved_points[j]);
         }
       }
     }
 
   }
+  return 1;
 }

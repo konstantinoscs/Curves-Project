@@ -6,10 +6,10 @@
 
 using namespace std;
 
-curve curve_reduction(const curve & ur_curve, float delta){
+curve curve_reduction(const curve & ur_curve, double delta){
   //ur_curve --> unreducted curve
-  curve *cur = new curve(ur_curve.curve::get_dimension());
-  cur->curve::set_id(ur_curve.curve::get_id());
+  curve cur(ur_curve.get_dimension());
+  cur.set_id(ur_curve.get_id());
   vector<vector<double>> points = ur_curve.get_points();
   double element{};
   double p{delta/2};
@@ -27,9 +27,9 @@ curve curve_reduction(const curve & ur_curve, float delta){
       element = floor((negative_bit*cur_c_p + p)/delta);//n_b*curcp==abs(curcp)
       point_coordinates.push_back(element*delta*negative_bit);
     }
-    cur->curve::set_point(point_coordinates);
+    cur.set_point(point_coordinates);
   }
-  return *cur;
+  return cur;
 }
 
 void chosen_t(double delta, int dimension, vector<double> & t){
@@ -44,7 +44,7 @@ void chosen_t(double delta, int dimension, vector<double> & t){
   return ;
 }
 
-void curve_move(vector<vector<double>> norm_points, vector<double> t, vector<vector<double>> & moved_points){
+void curve_move(const vector<vector<double>> & norm_points, const vector<double> & t, vector<vector<double>> & moved_points){
   vector<double> point;
   for(unsigned int i=0; i<norm_points.size(); i++){
     for(unsigned int j=0; j<norm_points[i].size(); j++)
