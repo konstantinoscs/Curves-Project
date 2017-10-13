@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <list>
+#include <iomanip>
 
 #include "data_ops.h"
 #include "curve.h"
@@ -23,6 +23,8 @@ int main(int argc, char **argv){
   //our curves aka the dataset
   vector<real_curve> curves;
   vector<double> t;
+  std::cout << std::fixed;
+  cout << std::setprecision(15);
 
   //initialize all parameters
   parse_arguments(argc, argv, data_s,query_s, k, L, out_s, stats, func, hash);
@@ -35,6 +37,10 @@ int main(int argc, char **argv){
 
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
+  for(int i=0; i<2; i++){
+    cout << "Printing some curves!" << endl;
+    curves[i].print();
+  }
 
   return 1;
 
@@ -45,7 +51,7 @@ int main(int argc, char **argv){
   int minm{2};
   float r{0.2};
   delta = 4*dimension*minm*r;
-  
+
   vector<norm_curve> normalized_curves{};
 
   for(int i=0; i<curves.size(); i++)
