@@ -7,27 +7,28 @@ using namespace std;
 
 norm_curve curve_reduction(const real_curve & ur_curve, float delta){
   //ur_curve --> unreducted curve
-  //curve cur = new curve(ur_curve.get_id(), ur_curve.get_dimension());
-  //vector<vector<float>> points = ur_curve.get_points();
+  //curve cur = new curve(ur_curve.get_dimension());
+  //cur.set_id(ur_curve.get_id());
+  //vector<vector<double>> points = ur_curve.get_points();
   vector<vector<double>> new_points;
   float element{};
   float p{delta/2};
   int negative_bit{};
   float current_p{};
 
-  // for(int i=0; i<points.size(); i++){
-  //   vector<float> point{};
-  //   for(int j=0; j<points[i].size(); j++){
-  //     negative_bit = 0;
-  //     current_p = points[i][j];
-  //     if(current_p != abs(points[i][j]))
-  //       negative_bit = 1;
+  // for(unsigned int i=0; i<points.size(); i++){
+  //   vector<double> point_coordinates{};
+  //   for(unsigned int j=0; j<(points.at(i)).size(); j++){
+  //     negative_bit = 1;
+  //     cur_c_p = (points.at(i)).at(j);//current coordinate of point
+  //     if(cur_c_p != abs(cur_c_p))
+  //       negative_bit = -1;
   //     //element = (x + d/2)/d
-  //     element = (points[i][j] + p)/delta;
-  //     point.push_back(element*delta*negative_bit);
+  //     element = floor((negative_bit*cur_c_p + p)/delta);//n_b*curcp==abs(curcp)
+  //     point_coordinates.push_back(element*delta*negative_bit);
   //   }
-  //   new_points.push_back(point);
+  //   new_points.push_back(point_coordinates);
   // }
-  // ur_curve.set_points(new_points);
+  // cur.set_points(new_points);
   // return cur;
 }

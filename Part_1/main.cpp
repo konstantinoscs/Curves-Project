@@ -45,7 +45,7 @@ int main(int argc, char **argv){
   int minm{2};
   float r{0.2};
   delta = 4*dimension*minm*r;
-  //int-->curve (what does that mean?)
+  
   vector<norm_curve> normalized_curves{};
 
   for(int i=0; i<curves.size(); i++)
