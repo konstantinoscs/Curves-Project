@@ -74,7 +74,7 @@ void input_parameters(std::string &data_s, std::string &func, std::string &hash)
   }
 }
 
-bool read_curve(curve & ocurve, ifstream & data, int dimension){
+bool read_curve(real_curve & ocurve, ifstream & data, int dimension){
   string id;
   int points_no{};
   //c is to get all the useless chars in the input e.g (),
@@ -103,22 +103,26 @@ bool read_curve(curve & ocurve, ifstream & data, int dimension){
       data >> c;      //get the comma after coordinate
     }
 
+    ocurve.set_point(std::move(coords));
+    //we moved the vector so now we have to clear it
+    coords.clear();
+
     //get the comma between points - not applicable to last point
-    if(i!=points_no-1)
+    if(i==points_no-1)
+      break;
     data >> c;
 
   }
-
   //TODO call vector move and then clear() it
-
+  return true;
 }
 
-bool read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
+bool read_dataset_curves(std::string const data_s, std::vector<real_curve> & curves,
   int & dimension){
 
   string id;
   char c;
-  curve ocurve{};
+  real_curve ocurve{};
   ifstream data("data_s");
 
   //test if there is a file to get the data from
@@ -144,6 +148,7 @@ bool read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
   while(true){
     if(!read_curve(ocurve, data, dimension))
       break;
+    curves.push_back(ocurve);
   }
 
   data.close();
