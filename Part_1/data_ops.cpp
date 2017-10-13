@@ -123,7 +123,8 @@ bool read_dataset_curves(std::string const data_s, std::vector<real_curve> & cur
   string id;
   char c;
   real_curve ocurve{};
-  ifstream data("data_s");
+  //ifstream data("data_s", ifstream::in);
+  ifstream data("./test_dataset");
 
   //test if there is a file to get the data from
   if (!data.is_open()){

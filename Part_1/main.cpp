@@ -28,10 +28,15 @@ int main(int argc, char **argv){
   parse_arguments(argc, argv, data_s,query_s, k, L, out_s, stats, func, hash);
   input_parameters(data_s, func, hash);
 
-  data_s = "trajectories_dataset_";        //for testing purposes
+  //data_s = "./trajectories_dataset";        //for testing purposes
   if(!read_dataset_curves(data_s, curves, dimension)){
     cerr << "Something went wrong while reading the dataset!"<< endl;
   }
+
+  cout << "Dataset read successfully!" << endl;
+  cout << "Read " << curves.size() << " curves" << endl;
+
+  return 1;
 
   // cout << data_s << endl << query_s << endl << out_s << endl;
   // cout << func << endl << hash << endl;
