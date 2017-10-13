@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include "curve.h"
 #include <cmath>
+#include <ctime>
 
 using namespace std;
 
@@ -29,4 +30,26 @@ real_curve curve_reduction(const real_curve & ur_curve, float delta){
     cur->real_curve::set_point(point_coordinates);
   }
   return *cur;
+}
+
+void chosen_t(double delta, int dimension, vector<double> & t){
+  srand(time(NULL));
+  int randomn{};
+  double coordinate{};
+  for(int i=0; i<dimension; i++){
+    randomn = rand()%1000;
+    coordinate = (randomn/1000.0)*delta;
+    t.push_back(coordinate);
+  }
+  return ;
+}
+
+void curve_move(vector<vector<double>> norm_points, vector<double> t, vector<vector<double>> & moved_points){
+  vector<double> point;
+  for(unsigned int i=0; i<norm_points.size(); i++){
+    for(unsigned int j=0; j<norm_points[i].size(); j++)
+      point.push_back(norm_points[i][j] + t[j]);
+    moved_points.push_back(point);
+  }
+  return ;
 }

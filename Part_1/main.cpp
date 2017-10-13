@@ -54,22 +54,29 @@ int main(int argc, char **argv){
 
   vector<real_curve> normalized_curves{};
 
-  for(unsigned int i=0; i<curves.size(); i++)
+  for(unsigned int i=0; i<curves.size(); i++){
     normalized_curves.push_back(curve_reduction(curves[i],delta));
+    //missing:check for duplicates here
+  }
 
-/*  for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
-    vector<curve> concat_curve_points{};
-    for(unsigned int i=0; i<normalized_curves.size(); i++){
-
+  for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
+    vector<real_curve> concat_curve_points{};
+    for(unsigned int i=0; i<normalized_curves.size(); i++){//init concat_curve_points
+      real_curve *moved_curve = new real_curve(normalized_curves[i].curve::get_dimension());
+      moved_curve->curve::set_id(normalized_curves[i].curve::get_id());
+      concat_curve_points.push_back(*moved_curve);
     }
     for(int krep=0; krep<k; krep++){
       //let's choose a t...
-      t = choosen_t(delta,dimension);
-      for(unsigned int i=0; i<normalized_curves.size(); i++)//for every norm curve...
-        vector<double> moved_points = curve_move(normalized_curves[i],t);
-        vector<int> int_curve = curve_d_to_i(moved_c,delta,t);
-        concat_curve(int_curve,concat_curve_points[i]);
+      chosen_t(delta,dimension,t);
+      for(unsigned int i=0; i<normalized_curves.size(); i++){//for every norm curve...
+        vector<vector<double>> moved_points{};
+        curve_move(normalized_curves[i].real_curve::get_points(), t, moved_points);
+        for(unsigned int j=0; j<moved_points.size(); j++){
+          concat_curve_points[i].real_curve::set_point(moved_points[j]);
+        }
+      }
     }
 
-  }*/
+  }
 }
