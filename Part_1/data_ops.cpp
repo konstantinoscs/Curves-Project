@@ -87,10 +87,12 @@ bool read_curve(real_curve & ocurve, ifstream & data, int dimension){
   double t_coord;
 
   data >> id;
+  //check if we are in the end of the file
   if (data.eof()){
     cout << "Eof found!" << endl;
     return false;
   }
+  ocurve.set_id(id);
   data >> points_no;
   //main loop to read all the points
   for (int i = 0; i<points_no; i++){
