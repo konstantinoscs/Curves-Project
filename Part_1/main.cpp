@@ -21,7 +21,7 @@ int main(int argc, char **argv){
   string data_s, query_s, out_s;
   string func, hash;
   //our curves aka the dataset
-  vector<curve> curves;
+  vector<real_curve> curves;
   vector<double> t;
 
   //initialize all parameters
@@ -41,7 +41,7 @@ int main(int argc, char **argv){
   float r{0.2};
   delta = 4*dimension*minm*r;
   //int-->curve (what does that mean?)
-  vector<curve> normalized_curves{};
+  vector<norm_curve> normalized_curves{};
 
   for(int i=0; i<curves.size(); i++)
     normalized_curves.push_back(curve_reduction(curves[i],delta));

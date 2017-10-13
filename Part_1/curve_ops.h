@@ -3,6 +3,6 @@
 
 #include "curve.h"
 
-curve curve_reduction(const curve & ur_curve, float delta);
+norm_curve curve_reduction(const real_curve & ur_curve, float delta);
 
 #endif
