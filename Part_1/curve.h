@@ -18,7 +18,7 @@ public:
 
 };
 
-//real_curve and can_curve are symmetrical with double and int coordinates
+//real_curve and norm_curve are symmetrical with double and int coordinates
 class real_curve : public curve {
   std::vector<std::vector<double>> points;
 
@@ -31,12 +31,12 @@ public:
   const std::vector<std::vector<double>> & get_points();
 };
 
-class can_curve : public curve {
+class norm_curve : public curve {
   std::vector<std::vector<int>> points;
 
 public:
-  can_curve();
-  ~can_curve();
+  norm_curve();
+  ~norm_curve();
   void set_point(std::vector<int> & point);
   //we introduce a move push back
   void set_point(std::vector<int> && point);

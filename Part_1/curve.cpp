@@ -44,22 +44,22 @@ const std::vector<std::vector<double>> & real_curve::get_points(){
   return points;
 }
 
-can_curve::can_curve(){
+norm_curve::norm_curve(){
 
 }
 
-can_curve::~can_curve(){
+norm_curve::~norm_curve(){
 
 }
 
-void can_curve::set_point(std::vector<int> & point){
+void norm_curve::set_point(std::vector<int> & point){
   points.push_back(point);
 }
 
-void can_curve::set_point(std::vector<int> && point){
+void norm_curve::set_point(std::vector<int> && point){
   points.push_back(point);
 }
 
-const std::vector<std::vector<int>> & can_curve::get_points(){
+const std::vector<std::vector<int>> & norm_curve::get_points(){
   return points;
 }
