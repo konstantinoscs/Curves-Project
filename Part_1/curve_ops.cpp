@@ -5,11 +5,11 @@
 
 using namespace std;
 
-real_curve curve_reduction(const real_curve & ur_curve, float delta){
+curve curve_reduction(const curve & ur_curve, float delta){
   //ur_curve --> unreducted curve
-  real_curve *cur = new real_curve(ur_curve.curve::get_dimension());
+  curve *cur = new curve(ur_curve.curve::get_dimension());
   cur->curve::set_id(ur_curve.curve::get_id());
-  vector<vector<double>> points = ur_curve.real_curve::get_points();
+  vector<vector<double>> points = ur_curve.get_points();
   double element{};
   double p{delta/2};
   int negative_bit{};
@@ -26,7 +26,7 @@ real_curve curve_reduction(const real_curve & ur_curve, float delta){
       element = floor((negative_bit*cur_c_p + p)/delta);//n_b*curcp==abs(curcp)
       point_coordinates.push_back(element*delta*negative_bit);
     }
-    cur->real_curve::set_point(point_coordinates);
+    cur->curve::set_point(point_coordinates);
   }
   return *cur;
 }
