@@ -52,10 +52,10 @@ int main(int argc, char **argv){
   float r{0.2};
   delta = 4*dimension*minm*r;
 
-  vector<norm_curve> normalized_curves{};
+  vector<real_curve> normalized_curves{};
 
   for(unsigned int i=0; i<curves.size(); i++)
-    normalized_curves.push_back(curve_reduction(curves.[i],delta));
+    normalized_curves.push_back(curve_reduction(curves[i],delta));
 
 /*  for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
     vector<curve> concat_curve_points{};
@@ -66,9 +66,9 @@ int main(int argc, char **argv){
       //let's choose a t...
       t = choosen_t(delta,dimension);
       for(unsigned int i=0; i<normalized_curves.size(); i++)//for every norm curve...
-        vector<double> moved_points = curve_move(normalized_curves.at(i),t);
+        vector<double> moved_points = curve_move(normalized_curves[i],t);
         vector<int> int_curve = curve_d_to_i(moved_c,delta,t);
-        concat_curve(int_curve,concat_curve_points.at(i));
+        concat_curve(int_curve,concat_curve_points[i]);
     }
 
   }*/

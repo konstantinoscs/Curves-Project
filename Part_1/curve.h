@@ -13,8 +13,8 @@ public:
   curve(int dim = 0);
   virtual ~curve();
   void set_id(std::string r_id);
-  std::string get_id();
-  int get_dimension();
+  std::string get_id() const;
+  int get_dimension() const;
   virtual void print() = 0;
 
 };
@@ -24,12 +24,12 @@ class real_curve : public curve {
   std::vector<std::vector<double>> points;
 
 public:
-  real_curve();
+  real_curve(int dim = 0);
   ~real_curve();
   void set_point(std::vector<double> & point);
   //we introduce a move push back
   void set_point(std::vector<double> && point);
-  const std::vector<std::vector<double>> & get_points();
+  const std::vector<std::vector<double>> & get_points() const;
   void print();
 };
 
@@ -37,12 +37,12 @@ class norm_curve : public curve {
   std::vector<std::vector<int>> points;
 
 public:
-  norm_curve();
+  norm_curve(int dim = 0);
   ~norm_curve();
   void set_point(std::vector<int> & point);
   //we introduce a move push back
   void set_point(std::vector<int> && point);
-  const std::vector<std::vector<int>> & get_points();
+  const std::vector<std::vector<int>> & get_points() const;
   void print();
 };
 

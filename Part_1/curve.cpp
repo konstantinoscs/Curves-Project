@@ -16,15 +16,16 @@ void curve::set_id(string r_id){
     id = r_id;
 }
 
-string curve::get_id(){
+string curve::get_id() const{
   return id;
 }
 
-int curve::get_dimension(){
+int curve::get_dimension() const{
   return dimension;
 }
 
-real_curve::real_curve(){
+real_curve::real_curve(int dim)
+  :curve(dim){
 
 }
 
@@ -40,7 +41,7 @@ void real_curve::set_point(std::vector<double> && point){
   points.push_back(point);
 }
 
-const std::vector<std::vector<double>> & real_curve::get_points(){
+const std::vector<std::vector<double>> & real_curve::get_points() const{
   return points;
 }
 
@@ -53,9 +54,9 @@ void real_curve::print(){
   // }
   // cout << "), ";
 
-  for(int i=0; i<points.size(); i++){
+  for(unsigned int i=0; i<points.size(); i++){
     cout << "(";
-    for(int j=0; j<points[i].size(); j++){
+    for(unsigned int j=0; j<points[i].size(); j++){
       cout << points[i][j] << " ";
     }
     cout << "), ";
@@ -63,7 +64,8 @@ void real_curve::print(){
   cout << endl << endl;
 }
 
-norm_curve::norm_curve(){
+norm_curve::norm_curve(int dim)
+  :curve(dim){
 
 }
 
@@ -79,16 +81,16 @@ void norm_curve::set_point(std::vector<int> && point){
   points.push_back(point);
 }
 
-const std::vector<std::vector<int>> & norm_curve::get_points(){
+const std::vector<std::vector<int>> & norm_curve::get_points() const{
   return points;
 }
 
 void norm_curve::print(){
   cout << "Curve " << get_id() << endl;
   cout << "Points: " << endl;
-  for(int i=0; i<points.size(); i++){
+  for(unsigned int i=0; i<points.size(); i++){
     cout << "(";
-    for(int j=0; j<points[i].size(); j++){
+    for(unsigned int j=0; j<points[i].size(); j++){
       cout << points[i][j] << " ";
     }
     cout << "), ";
