@@ -15,6 +15,7 @@ public:
   void set_id(std::string r_id);
   std::string get_id();
   int get_dimension();
+  virtual void print() = 0;
 
 };
 
@@ -29,6 +30,7 @@ public:
   //we introduce a move push back
   void set_point(std::vector<double> && point);
   const std::vector<std::vector<double>> & get_points();
+  void print();
 };
 
 class norm_curve : public curve {
@@ -41,6 +43,7 @@ public:
   //we introduce a move push back
   void set_point(std::vector<int> && point);
   const std::vector<std::vector<int>> & get_points();
+  void print();
 };
 
 #endif
