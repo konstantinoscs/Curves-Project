@@ -22,7 +22,7 @@ int main(int argc, char **argv){
   string data_s, query_s, out_s;
   string func, hash;
   //our curves aka the dataset
-  vector<curve> curves;
+  vector<real_curve> curves;
   vector<double> t;
   std::cout << std::fixed;
   cout << std::setprecision(17);

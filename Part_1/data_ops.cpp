@@ -119,12 +119,12 @@ bool read_curve(curve & ocurve, ifstream & data, int dimension){
   return true;
 }
 
-bool read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
+bool read_dataset_curves(std::string const data_s, std::vector<real_curve> & curves,
   int & dimension){
 
   string id;
   char c;
-  curve ocurve{};
+  real_curve ocurve{};
   //ifstream data("./test_dataset");
   ifstream data("./trajectories_dataset");
 
