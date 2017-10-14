@@ -29,8 +29,8 @@ class real_curve : public curve {
 
 public:
   real_curve(int dim = 0);
-  curve(curve & c_curve);
-  curve(curve && m_curve);
+  real_curve(curve & c_curve);
+  real_curve(curve && m_curve);
   ~real_curve();
   void set_point(std::vector<double> & point);
   //we introduce a move push back
