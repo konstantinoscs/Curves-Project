@@ -5,9 +5,9 @@
 
 using namespace std;
 
-curve curve_reduction(const curve & ur_curve, double delta){
+real_curve curve_reduction(const real_curve & ur_curve, double delta){
   //ur_curve --> unreducted curve
-  curve cur(ur_curve.get_dimension());
+  real_curve cur(ur_curve.get_dimension());
   cur.set_id(ur_curve.get_id());
   vector<vector<double>> points = ur_curve.get_points();
   double element{};
