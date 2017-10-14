@@ -29,9 +29,9 @@ curve curve_reduction(const curve & ur_curve, double delta){
     }
     //check for consecutive duplicates
     if(point_coordinates!=point_duplicate){//push the new point only if
-      cur.set_point(point_coordinates);//its different from the last one
+      point_duplicate = point_coordinates;//if its different from
+      cur.set_point(std::move(point_coordinates));// the last one
     }
-    point_duplicate = point_coordinates;
   }
   return cur;
 }
@@ -58,7 +58,7 @@ void curve_move(const vector<vector<double>> & norm_points,const vector<double> 
   for(unsigned int i=0; i<norm_points.size(); i++){
     for(unsigned int j=0; j<norm_points[i].size(); j++)
       point.push_back(norm_points[i][j] + t[j]);
-    moved_points.push_back(move(point));
+    moved_points.push_back(std::move(point));
     point.clear();
   }
   for(int i=0;i<int((max-mysize)/2);i++){
