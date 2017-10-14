@@ -14,6 +14,7 @@ curve::curve(curve & c_curve) : id(c_curve.id), dimension(c_curve.dimension),
 
 curve::curve(curve && m_curve) : id(m_curve.id), dimension(m_curve.dimension),
   points(std::move(m_curve.points)){
+  //points of m_curve are moved so now we clear them
   m_curve.points.clear();
   //cout << "Move constructor of curve called!" <<endl;
 }

@@ -16,7 +16,7 @@ public:
   virtual ~curve();
   void set_id(std::string r_id);
   std::string get_id() const;
-  void set_dimension(int dim)
+  void set_dimension(int dim);
   int get_dimension() const;
   void set_point(std::vector<double> & point);
   void set_point(std::vector<double> && point);

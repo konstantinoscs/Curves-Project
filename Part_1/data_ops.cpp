@@ -116,7 +116,6 @@ bool read_curve(curve & ocurve, ifstream & data, int dimension){
     data >> c;
 
   }
-  //TODO call vector move and then clear() it
   return true;
 }
 
