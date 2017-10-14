@@ -9,11 +9,13 @@ curve::curve(int dim): dimension(dim){
 
 curve::curve(const curve & c_curve): id(c_curve.id),
   dimension(c_curve.dimension){
+  //cout << "Copy constructor of curve called!" <<endl;
 }
 
 curve::curve(curve && m_curve): id(std::move(m_curve.id)),
   dimension(m_curve.dimension){
   m_curve.id.clear();
+  //cout << "Move constructor of curve called!" <<endl;
   }
 
 curve::~curve(){
@@ -45,11 +47,11 @@ real_curve::real_curve(const real_curve & c_curve) : curve(c_curve),
   //cout << "Copy constructor of curve called!" <<endl;
 }
 
-real_curve::real_curve(real_curve && m_curve) : curve(m_curve),
+real_curve::real_curve(real_curve && m_curve) : curve(std::move(m_curve)),
   points(std::move(m_curve.points)){
   //points of m_curve are moved so now we clear them
   m_curve.points.clear();
-  //cout << "Move constructor of curve called!" <<endl;
+  //cout << "Move constructor of real_curve called!" <<endl;
 }
 
 real_curve::~real_curve(){}
@@ -94,7 +96,7 @@ norm_curve::norm_curve(norm_curve & c_curve) : curve(c_curve),
   //cout << "Copy constructor of curve called!" <<endl;
 }
 
-norm_curve::norm_curve(norm_curve && m_curve) : curve(m_curve),
+norm_curve::norm_curve(norm_curve && m_curve) : curve(std::move(m_curve)),
   points(std::move(m_curve.points)){
   //points of m_curve are moved so now we clear them
   m_curve.points.clear();
