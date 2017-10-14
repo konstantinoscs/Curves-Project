@@ -15,6 +15,7 @@ curve curve_reduction(const curve & ur_curve, double delta){
   double p{delta/2};
   int negative_bit{};
   double cur_c_p{};
+  vector<double> point_duplicate{};
 
   for(unsigned int i=0; i<points.size(); i++){
     vector<double> point_coordinates{};
@@ -27,7 +28,11 @@ curve curve_reduction(const curve & ur_curve, double delta){
       element = floor((negative_bit*cur_c_p + p)/delta);//n_b*curcp==abs(curcp)
       point_coordinates.push_back(element*delta*negative_bit);
     }
-    cur.set_point(point_coordinates);
+    //check for consecutive duplicates
+    if(point_coordinates!=point_duplicate){//push the new point only if
+      cur.set_point(point_coordinates);//its different from the last one
+    }
+    point_duplicate = point_coordinates;
   }
   return cur;
 }

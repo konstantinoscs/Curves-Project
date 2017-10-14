@@ -54,10 +54,8 @@ int main(int argc, char **argv){
 
   vector<curve> normalized_curves{};
 
-  for(unsigned int i=0; i<curves.size(); i++){
+  for(unsigned int i=0; i<curves.size(); i++)
     normalized_curves.push_back(curve_reduction(curves[i],delta));
-    //missing:check for duplicates here
-  }
 
   for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
     vector<curve> concat_curve_points{};
