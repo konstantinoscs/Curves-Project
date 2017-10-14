@@ -74,11 +74,11 @@ int main(int argc, char **argv){
   //cout <<"max="<<max<<"\nmin="<<min<<endl;
 
   for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
-    vector<real_curve> concat_curves{};
+    vector<norm_curve> concat_curves{};
     for(unsigned int i=0; i<normalized_curves.size(); i++){//init concat_curve_points
-      real_curve moved_curve(normalized_curves[i].get_dimension());
+      norm_curve moved_curve(normalized_curves[i].get_dimension());
       moved_curve.set_id(normalized_curves[i].get_id());
-      concat_curves.push_back(move(moved_curve));
+      concat_curves.push_back(std::move(moved_curve));
     }
     for(int krep=0; krep<k; krep++){
       t.clear();
@@ -90,10 +90,11 @@ int main(int argc, char **argv){
       //}
       //cout <<")"<<'\n';
       for(unsigned int i=0; i<normalized_curves.size(); i++){//for every norm curve...
-        vector<vector<double>> moved_points{};
-        curve_move(normalized_curves[i].get_points(), t, dimension, max, moved_points);
+        vector<vector<int>> moved_points{};
+        curve_move(normalized_curves[i].get_points(), t, max, delta,
+          dimension, moved_points);
         for(unsigned int j=0; j<moved_points.size(); j++){
-          concat_curves[i].set_point(move(moved_points[j]));
+          concat_curves[i].set_point(std::move(moved_points[j]));
           moved_points[j].clear();
         }
       }

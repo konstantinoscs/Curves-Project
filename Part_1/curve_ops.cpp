@@ -47,19 +47,26 @@ void chosen_t(double delta, int dimension, vector<double> & t){
   return ;
 }
 
-void curve_move(const vector<vector<double>> & norm_points,const vector<double> & t, const int & dimension, const int & max, vector<vector<double>> & moved_points){
-  vector<double> point;
-  vector<vector<double>>::iterator iter{};
+void curve_move(const vector<vector<double>> & norm_points,
+    const vector<double> & t, const int & max, const double & delta,
+    const int & dimension, vector<vector<int>> & moved_points){
+  vector<int> pointvec{};
+  int ipoint{};
+  double dpoint{};
+  vector<vector<int>>::iterator iter{};
   int mysize{};
   mysize = norm_points.size();
-  vector<double> zero{};
+  vector<int> zero{};
   for(int i=0;i<dimension;i++)
-    zero.push_back(0.0);
+    zero.push_back(0);
   for(unsigned int i=0; i<norm_points.size(); i++){
-    for(unsigned int j=0; j<norm_points[i].size(); j++)
-      point.push_back(norm_points[i][j] + t[j]);
-    moved_points.push_back(std::move(point));
-    point.clear();
+    for(unsigned int j=0; j<norm_points[i].size(); j++){
+      dpoint = norm_points[i][j] + t[j];
+      ipoint = int((dpoint +delta/2.0)/delta);
+      pointvec.push_back(ipoint);
+    }
+    moved_points.push_back(std::move(pointvec));
+    pointvec.clear();
   }
   for(int i=0;i<int((max-mysize)/2);i++){
     iter = moved_points.begin();
