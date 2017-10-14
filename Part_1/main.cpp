@@ -24,7 +24,7 @@ int main(int argc, char **argv){
   vector<curve> curves;
   vector<double> t;
   std::cout << std::fixed;
-  cout << std::setprecision(15);
+  cout << std::setprecision(17);
 
   //initialize all parameters
   parse_arguments(argc, argv, data_s,query_s, k, L, out_s, stats, func, hash);
@@ -37,10 +37,10 @@ int main(int argc, char **argv){
 
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
-  for(int i=0; i<2; i++){
-    cout << "Printing some curves!" << endl;
-    curves[i].print();
-  }
+  // for(int i=0; i<2; i++){
+  //   cout << "Printing some curves!" << endl;
+  //   curves[i].print();
+  // }
 
   return 1;
 

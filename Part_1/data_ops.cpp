@@ -124,9 +124,11 @@ bool read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
 
   string id;
   char c;
-  curve ocurve{};
+  curve ocurve{dimension};
   //ifstream data("data_s", ifstream::in);
-  ifstream data("./test_dataset");
+  //ifstream data("./test_dataset");
+  ifstream data("./trajectories_dataset");
+  int i{};
 
   //test if there is a file to get the data from
   if (!data.is_open()){
@@ -148,10 +150,10 @@ bool read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
   }
   cout << "Dimension = " << dimension << endl;
 
-  while(true){
+  while(i++<1200){
     if(!read_curve(ocurve, data, dimension))
       break;
-    curves.push_back(ocurve);
+    curves.push_back(std::move(ocurve));
   }
 
   data.close();
