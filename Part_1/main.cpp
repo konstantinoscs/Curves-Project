@@ -100,5 +100,6 @@ int main(int argc, char **argv){
     }
     //concat_curves[0].print();
   }
+  cout << "End" << endl;
   return 1;
 }

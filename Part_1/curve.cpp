@@ -14,6 +14,7 @@ curve::curve(const curve & c_curve): id(c_curve.id),
 
 curve::curve(curve && m_curve): id(std::move(m_curve.id)),
   dimension(m_curve.dimension){
+  //we moved the string so now we have to clear it
   m_curve.id.clear();
   //cout << "Move constructor of curve called!" <<endl;
   }
@@ -71,11 +72,6 @@ const std::vector<std::vector<double>> & real_curve::get_points() const{
 void real_curve::print(){
   cout << "Curve " << get_id() << endl;
   cout << "Points: " << endl;
-  // cout << "(";
-  // for(int j=0; j<points[0].size(); j++){
-  //   cout << points[0][j] << " ";
-  // }
-  // cout << "), ";
 
   for(unsigned int i=0; i<points.size(); i++){
     cout << "(";
