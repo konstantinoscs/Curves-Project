@@ -69,6 +69,7 @@ int main(int argc, char **argv){
       concat_curve_points.push_back(move(moved_curve));
     }
     for(int krep=0; krep<k; krep++){
+      t.clear();
       //let's choose a t...
       chosen_t(delta,dimension,t);
       //cout << "t= (";
