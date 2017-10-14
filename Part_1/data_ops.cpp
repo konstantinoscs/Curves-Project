@@ -92,6 +92,7 @@ bool read_curve(curve & ocurve, ifstream & data, int dimension){
     cout << "Eof found!" << endl;
     return false;
   }
+  ocurve.set_dimension(dimension);
   ocurve.set_id(id);
   data >> points_no;
   //main loop to read all the points
@@ -124,7 +125,7 @@ bool read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
 
   string id;
   char c;
-  curve ocurve{dimension};
+  curve ocurve{};
   //ifstream data("./test_dataset");
   ifstream data("./trajectories_dataset");
 

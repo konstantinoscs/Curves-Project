@@ -9,7 +9,7 @@ curve::curve(int dim): dimension(dim){
 
 curve::curve(curve & c_curve) : id(c_curve.id), dimension(c_curve.dimension),
   points(c_curve.points) {
-  cout << "Copy constructor of curve called!" <<endl;
+  //cout << "Copy constructor of curve called!" <<endl;
 }
 
 curve::curve(curve && m_curve) : id(m_curve.id), dimension(m_curve.dimension),
@@ -27,6 +27,10 @@ void curve::set_id(string r_id){
 
 string curve::get_id() const{
   return id;
+}
+
+void curve::set_dimension(int dim){
+  dimension = dim;
 }
 
 int curve::get_dimension() const{
