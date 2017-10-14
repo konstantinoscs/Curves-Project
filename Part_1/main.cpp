@@ -56,7 +56,7 @@ int main(int argc, char **argv){
   delta = 0.05;
   //cout <<"For delta= "<<delta <<'\n';
 
-  vector<curve> normalized_curves{};
+  vector<real_curve> normalized_curves{};
 
   for(unsigned int i=0; i<curves.size(); i++)
     normalized_curves.push_back(curve_reduction(curves[i],delta));
@@ -74,9 +74,9 @@ int main(int argc, char **argv){
   //cout <<"max="<<max<<"\nmin="<<min<<endl;
 
   for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
-    vector<curve> concat_curves{};
+    vector<real_curve> concat_curves{};
     for(unsigned int i=0; i<normalized_curves.size(); i++){//init concat_curve_points
-      curve moved_curve(normalized_curves[i].get_dimension());
+      real_curve moved_curve(normalized_curves[i].get_dimension());
       moved_curve.set_id(normalized_curves[i].get_id());
       concat_curves.push_back(move(moved_curve));
     }

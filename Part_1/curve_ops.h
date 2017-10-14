@@ -3,7 +3,7 @@
 
 #include "curve.h"
 
-curve curve_reduction(const curve & ur_curve, double delta);
+real_curve curve_reduction(const real_curve & ur_curve, double delta);
 
 void chosen_t(double delta, int dimension, std::vector<double> & t);
 
