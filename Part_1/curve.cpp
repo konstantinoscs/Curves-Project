@@ -68,6 +68,14 @@ const std::vector<std::vector<double>> & real_curve::get_points() const{
   return points;
 }
 
+const std::vector<double> real_curve::as_vector() const{
+  std::vector<double> v{};
+  for(unsigned int i=0; i<points.size(); i++)
+    for(unsigned int j=0; j<points[i].size(); j++)
+      v.push_back(points[i][j]);
+  return v;
+}
+
 void real_curve::print(){
   cout << "Curve " << get_id() << endl;
   cout << "Points: " << endl;
@@ -116,6 +124,15 @@ void norm_curve::set_point(std::vector<int> && point){
 const std::vector<std::vector<int>> & norm_curve::get_points() const{
   return points;
 }
+
+const std::vector<int> norm_curve::as_vector() const{
+  std::vector<int> v{};
+  for(unsigned int i=0; i<points.size(); i++)
+    for(unsigned int j=0; j<points[i].size(); j++)
+      v.push_back(points[i][j]);
+  return v;
+}
+
 
 void norm_curve::print(){
   cout << "Curve " << get_id() << endl;
