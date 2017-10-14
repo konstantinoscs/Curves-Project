@@ -74,7 +74,7 @@ void input_parameters(std::string &data_s, std::string &func, std::string &hash)
   }
 }
 
-bool read_curve(curve & ocurve, ifstream & data, int dimension){
+bool read_curve(real_curve & ocurve, ifstream & data, int dimension){
   string id;
   int points_no{};
   //c is to get all the useless chars in the input e.g (),
@@ -119,12 +119,12 @@ bool read_curve(curve & ocurve, ifstream & data, int dimension){
   return true;
 }
 
-bool read_dataset_curves(std::string const data_s, std::vector<curve> & curves,
+bool read_dataset_curves(std::string const data_s, std::vector<real_curve> & curves,
   int & dimension){
 
   string id;
   char c;
-  curve ocurve{};
+  real_curve ocurve{};
   //ifstream data("./test_dataset");
   ifstream data("./trajectories_dataset");
 
