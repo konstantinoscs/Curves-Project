@@ -11,6 +11,8 @@ class curve{
   //std::vector<std::vector<double>> points;
 public:
   curve(int dim = 0);
+  curve(const curve & c_curve);
+  curve(curve && m_curve);
   virtual ~curve();
   void set_id(std::string r_id);
   std::string get_id() const;
@@ -29,8 +31,8 @@ class real_curve : public curve {
 
 public:
   real_curve(int dim = 0);
-  real_curve(curve & c_curve);
-  real_curve(curve && m_curve);
+  real_curve(const real_curve & c_curve);
+  real_curve(real_curve && m_curve);
   ~real_curve();
   void set_point(std::vector<double> & point);
   //we introduce a move push back
