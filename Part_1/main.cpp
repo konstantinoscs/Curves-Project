@@ -61,12 +61,24 @@ int main(int argc, char **argv){
   for(unsigned int i=0; i<curves.size(); i++)
     normalized_curves.push_back(curve_reduction(curves[i],delta));
 
+  //find min,max of curve points
+  int min{},max{};
+  min=max=normalized_curves[0].get_points().size();
+  for(int i=1;i<normalized_curves.size();i++){
+    if(normalized_curves[i].get_points().size()>max)
+      max=normalized_curves[i].get_points().size();
+    else if (normalized_curves[i].get_points().size()<min)
+      min=normalized_curves[i].get_points().size();
+  }
+
+  //cout <<"max="<<max<<"\nmin="<<min<<endl;
+
   for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
-    vector<curve> concat_curve_points{};
+    vector<curve> concat_curves{};
     for(unsigned int i=0; i<normalized_curves.size(); i++){//init concat_curve_points
       curve moved_curve(normalized_curves[i].get_dimension());
       moved_curve.set_id(normalized_curves[i].get_id());
-      concat_curve_points.push_back(move(moved_curve));
+      concat_curves.push_back(move(moved_curve));
     }
     for(int krep=0; krep<k; krep++){
       t.clear();
@@ -79,14 +91,14 @@ int main(int argc, char **argv){
       //cout <<")"<<'\n';
       for(unsigned int i=0; i<normalized_curves.size(); i++){//for every norm curve...
         vector<vector<double>> moved_points{};
-        curve_move(normalized_curves[i].get_points(), t, moved_points);
+        curve_move(normalized_curves[i].get_points(), t, dimension, max, moved_points);
         for(unsigned int j=0; j<moved_points.size(); j++){
-          concat_curve_points[i].set_point(move(moved_points[j]));
+          concat_curves[i].set_point(move(moved_points[j]));
           moved_points[j].clear();
         }
       }
     }
-    //concat_curve_points[0].print();
+    //concat_curves[0].print();
   }
   return 1;
 }

@@ -47,13 +47,25 @@ void chosen_t(double delta, int dimension, vector<double> & t){
   return ;
 }
 
-void curve_move(const vector<vector<double>> & norm_points,const vector<double> & t, vector<vector<double>> & moved_points){
+void curve_move(const vector<vector<double>> & norm_points,const vector<double> & t, const int & dimension, const int & max, vector<vector<double>> & moved_points){
   vector<double> point;
+  vector<vector<double>>::iterator iter{};
+  int mysize{};
+  mysize = norm_points.size();
+  vector<double> zero{};
+  for(int i=0;i<dimension;i++)
+    zero.push_back(0.0);
   for(unsigned int i=0; i<norm_points.size(); i++){
     for(unsigned int j=0; j<norm_points[i].size(); j++)
       point.push_back(norm_points[i][j] + t[j]);
     moved_points.push_back(move(point));
     point.clear();
   }
+  for(int i=0;i<int((max-mysize)/2);i++){
+    iter = moved_points.begin();
+    moved_points.insert(iter,zero);
+  }
+  for (int i=0;i<int((max-mysize+1)/2);i++)
+    moved_points.push_back(zero);
   return ;
 }
