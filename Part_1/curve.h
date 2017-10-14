@@ -38,6 +38,7 @@ public:
   //we introduce a move push back
   void set_point(std::vector<double> && point);
   const std::vector<std::vector<double>> & get_points() const;
+  const std::vector<double> as_vector() const;
   void print();
 };
 
@@ -53,6 +54,7 @@ public:
   //we introduce a move push back
   void set_point(std::vector<int> && point);
   const std::vector<std::vector<int>> & get_points() const;
+  const std::vector<int> as_vector() const;
   void print();
 };
 
