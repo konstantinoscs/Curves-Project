@@ -11,6 +11,8 @@ class curve{
   std::vector<std::vector<double>> points;
 public:
   curve(int dim = 0);
+  curve(curve & c_curve);
+  curve(curve && m_curve);
   virtual ~curve();
   void set_id(std::string r_id);
   std::string get_id() const;

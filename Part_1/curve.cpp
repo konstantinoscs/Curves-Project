@@ -5,11 +5,20 @@
 using namespace std;
 
 curve::curve(int dim): dimension(dim){
-  cout << "Default constructor for curve called" << endl;
+}
+
+curve::curve(curve & c_curve) : id(c_curve.id), dimension(c_curve.dimension),
+  points(c_curve.points) {
+  cout << "Copy constructor of curve called!" <<endl;
+}
+
+curve::curve(curve && m_curve) : id(m_curve.id), dimension(m_curve.dimension),
+  points(std::move(m_curve.points)){
+  m_curve.points.clear();
+  //cout << "Move constructor of curve called!" <<endl;
 }
 
 curve::~curve(){
-
 }
 
 void curve::set_id(string r_id){
