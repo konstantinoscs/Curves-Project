@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include "curve.h"
 #include <cmath>
-#include <ctime>
 
 using namespace std;
 
@@ -38,7 +37,6 @@ curve curve_reduction(const curve & ur_curve, double delta){
 }
 
 void chosen_t(double delta, int dimension, vector<double> & t){
-  srand(time(NULL));
   int randomn{};
   double coordinate{};
   for(int i=0; i<dimension; i++){
@@ -49,12 +47,13 @@ void chosen_t(double delta, int dimension, vector<double> & t){
   return ;
 }
 
-void curve_move(const vector<vector<double>> & norm_points, const vector<double> & t, vector<vector<double>> & moved_points){
+void curve_move(const vector<vector<double>> & norm_points,const vector<double> & t, vector<vector<double>> & moved_points){
   vector<double> point;
   for(unsigned int i=0; i<norm_points.size(); i++){
     for(unsigned int j=0; j<norm_points[i].size(); j++)
       point.push_back(norm_points[i][j] + t[j]);
-    moved_points.push_back(point);
+    moved_points.push_back(move(point));
+    point.clear();
   }
   return ;
 }
