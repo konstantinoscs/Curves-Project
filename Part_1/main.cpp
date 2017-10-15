@@ -23,7 +23,7 @@ int main(int argc, char **argv){
   string func, hash;
   //our curves aka the dataset
   vector<real_curve> curves;
-  vector<double> t;
+  vector<vector<norm_curve>> concat_normalized_curves{};
   std::cout << std::fixed;
   cout << std::setprecision(17);
   srand(time(0));
@@ -53,7 +53,6 @@ int main(int argc, char **argv){
   delta = 0.05;
   //cout <<"For delta = "<<delta <<endl;
 
-  vector<vector<norm_curve>> concat_normalized_curves{};
   Lconcatenate_kcurves(k,L,curves,dimension,delta,concat_normalized_curves);
 
   //concat_normalized_curves[0][0].print();
