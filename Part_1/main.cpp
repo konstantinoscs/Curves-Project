@@ -49,58 +49,15 @@ int main(int argc, char **argv){
   // cout << data_s << endl << query_s << endl << out_s << endl;
   // cout << func << endl << hash << endl;
 
-  //minimum of curve points
-  //int minm{2};
-  //float r{0.2};
-  //delta = 4*dimension*minm*r;
+  //delta = 4*dimension*minm*r; (should be like that)
   delta = 0.05;
-  //cout <<"For delta= "<<delta <<'\n';
+  //cout <<"For delta = "<<delta <<endl;
 
-  vector<real_curve> normalized_curves{};
+  vector<vector<norm_curve>> concat_normalized_curves{};
+  Lconcatenate_kcurves(k,L,curves,dimension,delta,concat_normalized_curves);
 
-  for(unsigned int i=0; i<curves.size(); i++)
-    normalized_curves.push_back(curve_reduction(curves[i],delta));
+  //concat_normalized_curves[0][0].print();
 
-  //find min,max of curve points
-  int min{},max{};
-  min=max=normalized_curves[0].get_points().size();
-  for(int i=1;i<normalized_curves.size();i++){
-    if(normalized_curves[i].get_points().size()>max)
-      max=normalized_curves[i].get_points().size();
-    else if (normalized_curves[i].get_points().size()<min)
-      min=normalized_curves[i].get_points().size();
-  }
-
-  //cout <<"max="<<max<<"\nmin="<<min<<endl;
-
-  for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
-    vector<norm_curve> concat_curves{};
-    for(unsigned int i=0; i<normalized_curves.size(); i++){//init concat_curve_points
-      norm_curve moved_curve(normalized_curves[i].get_dimension());
-      moved_curve.set_id(normalized_curves[i].get_id());
-      concat_curves.push_back(std::move(moved_curve));
-    }
-    for(int krep=0; krep<k; krep++){
-      t.clear();
-      //let's choose a t...
-      chosen_t(delta,dimension,t);
-      //cout << "t= (";
-      //for(int i=0;i<dimension;i++){
-      //  cout <<t[i] << " ";
-      //}
-      //cout <<")"<<'\n';
-      for(unsigned int i=0; i<normalized_curves.size(); i++){//for every norm curve...
-        vector<vector<int>> moved_points{};
-        curve_move(normalized_curves[i].get_points(), t, max, delta,
-          dimension, moved_points);
-        for(unsigned int j=0; j<moved_points.size(); j++){
-          concat_curves[i].set_point(std::move(moved_points[j]));
-          moved_points[j].clear();
-        }
-      }
-    }
-    //concat_curves[0].print();
-  }
   cout << "End" << endl;
   return 1;
 }

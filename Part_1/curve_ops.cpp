@@ -1,18 +1,20 @@
 #include <string>
 #include <cstdlib>
 #include "curve.h"
+#include <limits>
 #include <cmath>
+//#include <iostream>
 
 using namespace std;
 
-real_curve curve_reduction(const real_curve & ur_curve, double delta){
+void curve_reduction(const real_curve & ur_curve, double delta,
+    real_curve & cur, int & min, int & max){
   //ur_curve --> unreducted curve
-  real_curve cur(ur_curve.get_dimension());
-  cur.set_id(ur_curve.get_id());
   vector<vector<double>> points = ur_curve.get_points();
   double element{};
   double p{delta/2};
   int negative_bit{};
+  int point_counter{0};
   double cur_c_p{};
   vector<double> point_duplicate{};
 
@@ -31,9 +33,13 @@ real_curve curve_reduction(const real_curve & ur_curve, double delta){
     if(point_coordinates!=point_duplicate){//push the new point only if
       point_duplicate = point_coordinates;//if its different from
       cur.set_point(std::move(point_coordinates));// the last one
+      point_counter++;
     }
   }
-  return cur;
+  if(point_counter>max)
+    max = point_counter;
+  else if(point_counter<min)
+    min = point_counter;
 }
 
 void chosen_t(double delta, int dimension, vector<double> & t){
@@ -76,3 +82,51 @@ void curve_move(const vector<vector<double>> & norm_points,
     moved_points.push_back(zero);
   return ;
 }
+
+void Lconcatenate_kcurves(const int & k, const int & L,
+  const vector<real_curve> & curves, const int & dimension, const double & delta,
+  vector<vector< norm_curve >> & concat_normalized_curves){
+
+    vector<real_curve> normalized_curves{};
+    vector<double> t{};
+    int min{std::numeric_limits<int>::max()},max{0};
+
+    for(unsigned int i=0; i<curves.size(); i++){
+      real_curve grid_cur(curves[i].get_dimension());
+      grid_cur.set_id(curves[i].get_id());
+      curve_reduction(curves[i],delta,grid_cur,min,max);
+      normalized_curves.push_back(std::move(grid_cur));
+    }
+    //cout <<"max="<<max<<"\nmin="<<min<<endl;
+
+    for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
+      vector<norm_curve> concat_curves{};
+      for(unsigned int i=0; i<normalized_curves.size(); i++){//init concat_curve_points
+        norm_curve moved_curve(normalized_curves[i].get_dimension());
+        moved_curve.set_id(normalized_curves[i].get_id());
+        concat_curves.push_back(std::move(moved_curve));
+      }
+      for(int krep=0; krep<k; krep++){
+        t.clear();
+        //let's choose a t...
+        chosen_t(delta,dimension,t);
+        //cout << "t= (";
+        //for(int i=0;i<dimension;i++){
+        //  cout <<t[i] << " ";
+        //}
+        //cout <<")"<<'\n';
+        for(unsigned int i=0; i<normalized_curves.size(); i++){//for every norm curve...
+          vector<vector<int>> moved_points{};
+          curve_move(normalized_curves[i].get_points(), t, max, delta,
+            dimension, moved_points);
+          for(unsigned int j=0; j<moved_points.size(); j++){
+            concat_curves[i].set_point(std::move(moved_points[j]));
+            moved_points[j].clear();
+          }
+        }
+      }
+      concat_normalized_curves.push_back(std::move(concat_curves));
+      concat_curves.clear();
+    }
+
+  }
