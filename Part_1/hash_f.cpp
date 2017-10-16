@@ -9,8 +9,8 @@ hash_f::hash_f(int t_id, int t_w, int v_size) : id(t_id), w(t_w){
 }
 
 //give your own t
-hash_f::hash_f(int t_id, float t_t, int t_w, int v_size) : t(t_t), w(t_w),
-id(t_id){
+hash_f::hash_f(int t_id, float t_t, int t_w, int v_size) : id(t_id), t(t_t),
+w(t_w){
   //initialize the v
   populate_v(v_size);
 }

@@ -8,7 +8,7 @@ double get_uniform_rand(double A, double B){
 }
 
 double get_uniform_rand(double B){
-  return get_rand_uniform(0, B);
+  return get_uniform_rand(0, B);
 }
 
 //normal random in [A,B]
