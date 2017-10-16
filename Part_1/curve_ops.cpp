@@ -83,8 +83,8 @@ void curve_move(const vector<vector<double>> & norm_points,
   return ;
 }
 
-void Lconcatenate_kcurves(const int & k, const int & L,
-  const vector<real_curve> & curves, const int & dimension, const double & delta,
+void Lconcatenate_kcurves(int k, int L,
+  const vector<real_curve> & curves, int dimension, const double & delta,
   vector<vector< norm_curve >> & concat_normalized_curves){
 
     vector<real_curve> normalized_curves{};

@@ -24,8 +24,8 @@ void curve_move(const std::vector<std::vector<double>> & norm_points,
 
       use in curve_search:
           same but this time L=1*/
-void Lconcatenate_kcurves(const int & k, const int & L,
-  const std::vector<real_curve> & curves, const int & dimension, const double & delta,
+void Lconcatenate_kcurves(int k, int L,
+  const std::vector<real_curve> & curves, int dimension, double delta,
   std::vector< std::vector< norm_curve >> & concat_normalized_curves);
 
 #endif
