@@ -14,7 +14,7 @@ using namespace std;
 
 int main(int argc, char **argv){
   //k = locality sensitive functions
-  //L  = number of hasthables
+  //L  = number of hashtables
   int k{4}, L{5};
   double delta{};
   int dimension{};
@@ -24,7 +24,7 @@ int main(int argc, char **argv){
   //our curves aka the dataset
   vector<real_curve> curves;
   vector<vector<norm_curve>> concat_normalized_curves{};
-  std::cout << std::fixed;
+  cout << std::fixed;
   cout << std::setprecision(17);
   srand(time(0));
 
@@ -53,7 +53,9 @@ int main(int argc, char **argv){
   delta = 0.05;
   //cout <<"For delta = "<<delta <<endl;
 
-  Lconcatenate_kcurves(k,L,curves,dimension,delta,concat_normalized_curves);
+  /*Lconcatenate_kcurves will end with concat_normalized_curves having
+  L vectors of */
+  Lconcatenate_kcurves(k, L ,curves, dimension, delta, concat_normalized_curves);
 
   //concat_normalized_curves[0][0].print();
 
