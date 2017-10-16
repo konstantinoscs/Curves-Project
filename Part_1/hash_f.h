@@ -5,13 +5,16 @@
 
 class hash_f{
   int id;
-  int t;
+  float t;
+  int w;
   //v has coordinates according to normal distribution
-  std::vector<int> v;
-  
+  std::vector<float> v;
+
   void populate_v();
 public:
-  hash_f(int t_id, int t_t);
+  //you can give a t or t is chosen at construction
+  hash_f(int t_id);
+  hash_f(int t_id, float t_t);
   ~hash_f();
   int hash(const std::vector<int> & p, int w);
 
