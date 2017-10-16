@@ -4,7 +4,7 @@
 //uniform random in [A,B]
 double get_uniform_rand(double A, double B){
   //+1.0 implicitly converts to float division
-  return B + (rand() / (RAND_MAX + 1.0)) * (B - A + 1);
+  return A + (rand() / (RAND_MAX + 1.0)) * (B - A);
 }
 
 double get_uniform_rand(double B){
