@@ -14,6 +14,7 @@ int hash_f::hash(const std::vector<int> & p, int w){
   for(int i=0; i<v.size(); i++){
     sum += v[i]*p[i];
   }
+  //(float) is necessary here
   return floor((float)(sum+t) / w);
 }
 
