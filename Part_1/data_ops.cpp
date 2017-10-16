@@ -14,8 +14,8 @@ using namespace std;
 //getting input from the files etc.
 
 int parse_arguments(int argc, char ** argv, std::string &data_s,
-  std::string &query_s, int &k, int &L, std::string &out_s, bool &stats,
-  std::string &func, std::string &hash){
+std::string &query_s, int &k, int &L, std::string &out_s, bool &stats,
+std::string &func, std::string &hash){
 
   //we start from 1 to skip the name of the program
   int i{1};
