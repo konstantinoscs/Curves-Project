@@ -69,11 +69,11 @@ int main(int argc, char **argv){
 
   //concat_normalized_curves[0][0].print();
   int table_size = curves.size()/4;
-  //array of vectors of strings(ids)
-  vector<vector<vector<string>>> Lhashtable;
+  //L arrays of vectors of pointers(to real curves)
+  vector<vector<vector<real_curve*>>> Lhashtable;
   if(hash=="Classic")
       classic_hash_curves(concat_normalized_curves,
-        dimension*k*v_size,Lhashtable,table_size);
+        dimension*k*v_size,Lhashtable,table_size,curves);
   //L = concat_normalized_curves.size()
   //else
   //  lsh_hash_curves(concat_normalized_curves,w,v_size,k);
