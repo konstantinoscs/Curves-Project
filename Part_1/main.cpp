@@ -71,7 +71,7 @@ int main(int argc, char **argv){
   int table_size = curves.size()/4;
   //L arrays of vectors of pointers(to real curves)
   vector<vector<vector<real_curve*>>> Lhashtable;
-  if(hash=="Classic")
+  //if(hash=="Classic")
       classic_hash_curves(concat_normalized_curves,
         dimension*k*v_size,Lhashtable,table_size,curves);
   //L = concat_normalized_curves.size()
