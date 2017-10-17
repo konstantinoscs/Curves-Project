@@ -23,22 +23,21 @@ void linear_combination(const vector<int> & cur_points, const vector<int> & r,
   for(int i=0; i<r.size(); i++)
     factor += (cur_points[i]*r[i])%M;
   key = (factor % tablesize + tablesize) % tablesize;
-  //key = key >=0 ? key : key + tablesize;
   return ;
 }
 
 void curve_hashing(const vector<int> & concat_norm_points, vector<int> & r,
-    vector<real_curve*> *ht, int tablesize, const vector<real_curve> & curves,
+    vector<real_curve*> *ht, int tablesize, vector<real_curve> & curves,
     int curve_index){
       int key{};
       linear_combination(concat_norm_points,r,key,tablesize);
-      ht[key].push_back(&(curves[curve_index]));
+      ht[key].push_back(&curves[curve_index]);
       return ;
 }
 
 void classic_hash_curves(const vector<vector<norm_curve>> & Lcurves,
   int dimension, vector<vector<vector<real_curve*>>> & Lhashtable, int tablesize,
-  const vector<real_curve> & curves){
+  vector<real_curve> & curves){
     int L{Lcurves.size()};
     int curve_size{Lcurves[0].size()};
     vector<int> r{};
