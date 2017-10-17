@@ -4,6 +4,7 @@
 #include <limits>
 #include "curve.h"
 #include "rand_utils.h"
+#include <iostream>
 
 using namespace std;
 
@@ -27,7 +28,7 @@ void linear_combination(const vector<int> & cur_points, const vector<int> & r,
 
 void curve_hashing(const vector<int> & concat_norm_points,vector<int> & r,
     vector<real_curve*> *ht, int tablesize,
-    vector<real_curve> & curves,int curve_index){
+    vector<real_curve> curves,int curve_index){
       int key{};
       linear_combination(concat_norm_points,r,key,tablesize);
       ht[key].push_back(&curves[curve_index]);
@@ -35,15 +36,15 @@ void curve_hashing(const vector<int> & concat_norm_points,vector<int> & r,
 }
 
 void classic_hash_curves(const vector<vector<norm_curve>> & Lcurves,
-  int dimension, vector<vector<vector<real_curve*>>> Lhashtable,int tablesize,
-  vector<real_curve> & curves){
+  int dimension, vector<vector<vector<real_curve*>>> & Lhashtable,int tablesize,
+  vector<real_curve> curves){
     int L{};
     L = Lcurves.size();
     int curve_size{};
     curve_size = Lcurves[0].size();
     vector<int> r{};
-    vector<real_curve*> hashtable[tablesize];
     for(int i=0; i<L; i++){
+      vector<real_curve*> hashtable[tablesize];
       init_r(dimension,r);
       for(int j=0; j<curve_size; j++){
         curve_hashing(Lcurves[i][j].as_vector(),r,hashtable,tablesize,
