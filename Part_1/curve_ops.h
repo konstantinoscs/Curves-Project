@@ -15,7 +15,7 @@ void chosen_t(double delta, int dimension, std::vector<double> & t);
   integer and adds zero_points to moved_points vector until
   he has 'max' size*/
 void curve_move(const std::vector<std::vector<double>> & norm_points,
-  const std::vector<double> & t, const int & max, double delta,
+  const std::vector<double> & t, int max, double delta,
   int dimension,std::vector<std::vector<int>> & moved_points);
 
   /*  makes concat_normalized_curves an L dimension vector
@@ -26,6 +26,7 @@ void curve_move(const std::vector<std::vector<double>> & norm_points,
           same but this time L=1*/
 void Lconcatenate_kcurves(int k, int L,
   const std::vector<real_curve> & curves, int dimension, double delta,
-  std::vector< std::vector< norm_curve >> & concat_normalized_curves);
+  std::vector< std::vector< norm_curve >> & concat_normalized_curves,
+  int & max);
 
 #endif

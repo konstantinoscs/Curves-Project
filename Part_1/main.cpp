@@ -10,6 +10,7 @@
 #include "curve_ops.h"
 #include "hash_f.h"
 #include "classic_hash.h"
+#include "lsh.h"
 
 using namespace std;
 
@@ -59,12 +60,19 @@ int main(int argc, char **argv){
 
   /*Lconcatenate_kcurves will end with concat_normalized_curves having
   L vectors of */
-  Lconcatenate_kcurves(k, L ,curves, dimension, delta, concat_normalized_curves);
+  Lconcatenate_kcurves(k, L ,curves, dimension, delta, concat_normalized_curves, v_size);
 
-  //I expect the max here
-  make_hashes(hs, w, 10, k);
-  hs[1].print();
+  //u got it
+  //make_hashes(hs, w, v_size, k);
+  //hs[1].print();
+
   //concat_normalized_curves[0][0].print();
+
+  if(hash=="Classic")
+    classic_hash_curves(concat_normalized_curves,dimension*k*v_size);
+  //L = concat_normalized_curves.size()
+  //else
+  //  lsh_hash_curves(concat_normalized_curves,w,v_size,k);
 
   cout << "End" << endl;
   return 1;

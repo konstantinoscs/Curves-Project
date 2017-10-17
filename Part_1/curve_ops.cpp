@@ -1,9 +1,12 @@
 #include <string>
 #include <cstdlib>
-#include "curve.h"
 #include <limits>
 #include <cmath>
-//#include <iostream>
+#include <iostream>
+
+#include "curve.h"
+#include "rand_utils.h"
+
 
 using namespace std;
 
@@ -43,19 +46,14 @@ void curve_reduction(const real_curve & ur_curve, double delta,
 }
 
 void chosen_t(double delta, int dimension, vector<double> & t){
-  int randomn{};
-  double coordinate{};
-  for(int i=0; i<dimension; i++){
-    randomn = rand()%1000;
-    coordinate = (randomn/1000.0)*delta;
-    t.push_back(coordinate);
-  }
+  for(int i=0; i<dimension; i++)
+    t.push_back(double_uniform_rand(delta));
   return ;
 }
 
 void curve_move(const vector<vector<double>> & norm_points,
-    const vector<double> & t, const int & max, const double & delta,
-    const int & dimension, vector<vector<int>> & moved_points){
+    const vector<double> & t, int max, double delta,
+    int dimension, vector<vector<int>> & moved_points){
   vector<int> pointvec{};
   int ipoint{};
   double dpoint{};
@@ -85,11 +83,13 @@ void curve_move(const vector<vector<double>> & norm_points,
 
 void Lconcatenate_kcurves(int k, int L,
   const vector<real_curve> & curves, int dimension, double  delta,
-  vector<vector< norm_curve >> & concat_normalized_curves){
+  vector<vector< norm_curve >> & concat_normalized_curves,
+  int & max){
 
     vector<real_curve> normalized_curves{};
     vector<double> t{};
-    int min{std::numeric_limits<int>::max()},max{0};
+    int min{std::numeric_limits<int>::max()};
+    max = 0;
 
     for(unsigned int i=0; i<curves.size(); i++){
       real_curve grid_cur(curves[i].get_dimension());
