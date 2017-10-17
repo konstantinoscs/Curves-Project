@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <array>
 #include <iomanip>
 #include <ctime>
 
@@ -67,9 +68,12 @@ int main(int argc, char **argv){
   //hs[1].print();
 
   //concat_normalized_curves[0][0].print();
-
+  int table_size = curves.size()/4;
+  //array of vectors of strings(ids)
+  vector<vector<vector<string>>> Lhashtable;
   if(hash=="Classic")
-    classic_hash_curves(concat_normalized_curves,dimension*k*v_size);
+      classic_hash_curves(concat_normalized_curves,
+        dimension*k*v_size,Lhashtable,table_size);
   //L = concat_normalized_curves.size()
   //else
   //  lsh_hash_curves(concat_normalized_curves,w,v_size,k);
