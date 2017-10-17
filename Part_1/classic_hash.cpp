@@ -15,39 +15,38 @@ void init_r(int dimension,std::vector<int> & r){
 }
 
 void linear_combination(const vector<int> & cur_points, const vector<int> & r,
-   int & key,int tablesize){
-     //largest prime less than 2^{31}-->2^{31}-1
-     int M{std::numeric_limits<int>::max()};//M=2^(31)-1
-     int factor{0};
-     for(int i=0; i<r.size(); i++)
-       factor += (cur_points[i]*r[i])%M;
-     factor = factor%M;
-     key = factor % tablesize;
-     return ;
+  int & key,int tablesize){
+
+  //largest prime less than 2^{31}-->2^{31}-1
+  int M{std::numeric_limits<int>::max()};//M=2^(31)-1
+  int factor{0};
+  for(int i=0; i<r.size(); i++)
+    factor += (cur_points[i]*r[i])%M;
+  key = (factor % tablesize + tablesize) % tablesize;
+  //key = key >=0 ? key : key + tablesize;
+  return ;
 }
 
-void curve_hashing(const vector<int> & concat_norm_points,vector<int> & r,
-    vector<real_curve*> *ht, int tablesize,
-    vector<real_curve> curves,int curve_index){
+void curve_hashing(const vector<int> & concat_norm_points, vector<int> & r,
+    vector<real_curve*> *ht, int tablesize, const vector<real_curve> & curves,
+    int curve_index){
       int key{};
       linear_combination(concat_norm_points,r,key,tablesize);
-      ht[key].push_back(&curves[curve_index]);
+      ht[key].push_back(&(curves[curve_index]));
       return ;
 }
 
 void classic_hash_curves(const vector<vector<norm_curve>> & Lcurves,
-  int dimension, vector<vector<vector<real_curve*>>> & Lhashtable,int tablesize,
-  vector<real_curve> curves){
-    int L{};
-    L = Lcurves.size();
-    int curve_size{};
-    curve_size = Lcurves[0].size();
+  int dimension, vector<vector<vector<real_curve*>>> & Lhashtable, int tablesize,
+  const vector<real_curve> & curves){
+    int L{Lcurves.size()};
+    int curve_size{Lcurves[0].size()};
     vector<int> r{};
     for(int i=0; i<L; i++){
       vector<real_curve*> hashtable[tablesize];
       init_r(dimension,r);
       for(int j=0; j<curve_size; j++){
-        curve_hashing(Lcurves[i][j].as_vector(),r,hashtable,tablesize,
+        curve_hashing(Lcurves[i][j].as_vector(),r, hashtable, tablesize,
         curves,j);
         //linear_combination(,r,key); //used in curve hashing
       }
