@@ -94,10 +94,12 @@ int main(int argc, char **argv){
   vector<real_curve> s_curves{};
   s_curves.push_back(std::move(s0));
   s_curves.push_back(std::move(s1));
-  //next for lines must be in main..
-  vector<real_curve*> nn_curve{};//1
-  vector<double> nn_distance{};//2
-  vector<bool> grid_curve_found{};//3
+	int tsize{};
+	tsize = s_curves.size();
+  //next 4 lines must be in main..
+  real_curve* nn_curve[tsize];//1
+  double nn_distance[tsize];//2
+  bool grid_curve_found[tsize];//3
   search_curves(s_curves, Lhashtable, k, 0, dimension, delta, table_size,
   	hash, func, pcurves, nn_curve, nn_distance, grid_curve_found);//4
 

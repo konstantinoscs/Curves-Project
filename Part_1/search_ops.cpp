@@ -30,22 +30,22 @@ void search_curves(vector<real_curve> & s_curves,
   vector<vector<vector<vector<real_curve*>>>> & Lht,int k, int v_size,
   int dimension, int delta, int tablesize, string hash,
 	string dist, vector<real_curve*> & pcurves,
-	vector<real_curve*> & nn_curve,vector<double> & nn_distance,
-	vector<bool> & grid_curve_found){
+	real_curve** nn_curve,double* nn_distance,
+	bool* grid_curve_found){
 
   vector<vector<norm_curve>> concat_s_curves{};
 	vector<real_curve> n_curves{};//normalized_curves
-	vector<vector<real_curve*>> same_grid_curves{};
-	vector<vector<real_curve*>> bucket_curves{};
+	int tsize = s_curves.size();
+	vector<real_curve*> same_grid_curves[tsize];
+	vector<real_curve*> bucket_curves[tsize];
   vector<int> r{};
   int key{};
 	double distance{};
   vector<int> curve_keys{};
-	grid_curve_found.clear();
 	for(int i=0; i<s_curves.size(); i++){
-		grid_curve_found.push_back(false);
-		same_grid_curves.push_back({});//init with s_curves.size() empty vectors
-		bucket_curves.push_back({});
+		grid_curve_found[i]=false;
+		//same_grid_curves.push_back({});//init with s_curves.size() empty vectors
+		//bucket_curves.push_back({});
 	}
 
 //k-concatenate the search curves
@@ -83,8 +83,8 @@ void search_curves(vector<real_curve> & s_curves,
 			find_nn(s_curves[i],same_grid_curves[i],dimension,dist,nneigh,distance);
 		else//search in bucket curves
 			find_nn(s_curves[i],bucket_curves[i],dimension,dist,nneigh,distance);
-		nn_curve.push_back(nneigh);
-		nn_distance.push_back(distance);
+		nn_curve[i] = nneigh;
+		nn_distance[i] = distance;
 	}
 	return ;
 }
