@@ -68,7 +68,7 @@ int main(int argc, char **argv){
   //hs[1].print();
 
   //concat_normalized_curves[0][0].print();
-  int table_size = curves.size()/4;
+  int table_size = curves.size()/16;
   //L arrays of vectors of pointers(to real curves)
   vector<vector<vector<real_curve*>>> Lhashtable;
   //if(hash=="Classic")
@@ -77,6 +77,8 @@ int main(int argc, char **argv){
   //L = concat_normalized_curves.size()
   //else
   //  lsh_hash_curves(concat_normalized_curves,w,v_size,k);
+
+  //print_hashtable(Lhashtable[0],table_size);
 
   cout << "End" << endl;
   return 1;

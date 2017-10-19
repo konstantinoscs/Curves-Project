@@ -60,3 +60,14 @@ void classic_hash_curves(const vector<vector<norm_curve>> & Lcurves,
     }
     return ;
   }
+
+void print_hashtable(vector<vector<real_curve*>> & ht,
+  int tablesize){
+    for(int i=0; i<ht.size();i++){
+      cout <<"key = "<<i<<": ";
+      for(int j=0;j<ht[i].size();j++)
+        cout << "-->"<<ht[i][j]->get_id()<<" ";
+      cout << endl;
+    }
+    return ;
+}

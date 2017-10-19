@@ -22,4 +22,10 @@ void curve_hashing(const std::vector<int> & cnp,std::vector<int> & r,
   std::vector<real_curve*> *ht,int tablesize,
   std::vector<real_curve> & curves, int curve_index);
 
+//prints the given hash table
+//used in both classic and lsh
+//mostly used for test reasons
+void print_hashtable(std::vector<std::vector<real_curve*>> & ht,
+  int tablesize);
+
 #endif
