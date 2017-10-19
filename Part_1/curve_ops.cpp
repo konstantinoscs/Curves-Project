@@ -84,9 +84,8 @@ void curve_move(const vector<vector<double>> & norm_points,
 void Lconcatenate_kcurves(int k, int L,
   const vector<real_curve> & curves, int dimension, double  delta,
   vector<vector< norm_curve >> & concat_normalized_curves,
-  int & max){
+  int & max,vector<real_curve> & normalized_curves){
 
-    vector<real_curve> normalized_curves{};
     vector<double> t{};
     int min{std::numeric_limits<int>::max()};
     max = 0;
