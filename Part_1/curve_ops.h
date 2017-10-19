@@ -16,7 +16,7 @@ void chosen_t(double delta, int dimension, std::vector<double> & t);
   he has 'max' size*/
 void curve_move(const std::vector<std::vector<double>> & norm_points,
   const std::vector<double> & t, int max, double delta,
-  int dimension,std::vector<std::vector<int>> & moved_points);
+  int dimension,int k,std::vector<std::vector<int>> & moved_points);
 
   /*  makes concat_normalized_curves an L dimension vector
       with curves.size() curves and every curve

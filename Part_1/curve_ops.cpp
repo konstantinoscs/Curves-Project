@@ -15,7 +15,7 @@ void curve_reduction(const real_curve & ur_curve, double delta,
   //ur_curve --> unreducted curve
   vector<vector<double>> points = ur_curve.get_points();
   double element{};
-  double p{delta/2};
+  double p{delta/2.0};
   int negative_bit{};
   int point_counter{0};
   double cur_c_p{};
@@ -53,7 +53,7 @@ void chosen_t(double delta, int dimension, vector<double> & t){
 
 void curve_move(const vector<vector<double>> & norm_points,
     const vector<double> & t, int max, double delta,
-    int dimension, vector<vector<int>> & moved_points){
+    int dimension,int k,vector<vector<int>> &moved_points){
   vector<int> pointvec{};
   int ipoint{};
   double dpoint{};
@@ -66,7 +66,7 @@ void curve_move(const vector<vector<double>> & norm_points,
   for(unsigned int i=0; i<norm_points.size(); i++){
     for(unsigned int j=0; j<norm_points[i].size(); j++){
       dpoint = norm_points[i][j] + t[j];
-      ipoint = int((dpoint +delta/2.0)/delta);
+      ipoint = int((dpoint +(delta/k)/2.0)/(delta/k));
       pointvec.push_back(ipoint);
     }
     moved_points.push_back(std::move(pointvec));
@@ -118,7 +118,7 @@ void Lconcatenate_kcurves(int k, int L,
         for(unsigned int i=0; i<normalized_curves.size(); i++){//for every norm curve...
           vector<vector<int>> moved_points{};
           curve_move(normalized_curves[i].get_points(), t, max, delta,
-            dimension, moved_points);
+            dimension, k, moved_points);
           for(unsigned int j=0; j<moved_points.size(); j++){
             concat_curves[i].set_point(std::move(moved_points[j]));
             moved_points[j].clear();
