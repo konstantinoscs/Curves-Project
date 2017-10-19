@@ -74,7 +74,6 @@ void search_curves(vector<real_curve> & s_curves,
 			}
     }
   }
-	cout <<"4"<<endl;
 //let's find (probabilistic) nearest neighbor...
 	real_curve* nneigh{};
 	for(int i=0; i<s_curves.size(); i++){

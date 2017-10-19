@@ -88,16 +88,25 @@ int main(int argc, char **argv){
 
   //print_hashtable(Lhashtable[0],table_size);
 
-  real_curve s0{curves[10]};//only for testing
+/*  real_curve s0{curves[10]},s1{curves[432]};//only for testing
   s0.set_id("12345");
+  s1.set_id("98765");
   vector<real_curve> s_curves{};
   s_curves.push_back(std::move(s0));
-  
-  vector<real_curve*> nn_curve{};
-  vector<double> nn_distance{};
-  vector<bool> grid_curve_found{};
+  s_curves.push_back(std::move(s1));
+  //next for lines must be in main..
+  vector<real_curve*> nn_curve{};//1
+  vector<double> nn_distance{};//2
+  vector<bool> grid_curve_found{};//3
   search_curves(s_curves, Lhashtable, k, 0, dimension, delta, table_size,
-  	hash, func, pcurves, nn_curve, nn_distance, grid_curve_found);
+  	hash, func, pcurves, nn_curve, nn_distance, grid_curve_found);//4
+
+	for(int i=0; i<s_curves.size(); i++){
+		cout <<"id:"<<s_curves[i].get_id()<<endl;
+		cout <<"nn_id:"<<nn_curve[i]->get_id()<<endl;
+		cout <<"nn_dist:"<<nn_distance[i]<<endl;
+		cout <<"grid_curve_found:"<<grid_curve_found[i]<<endl;
+	}*/
 
   cout << "End" << endl;
   return 1;
