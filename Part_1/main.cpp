@@ -7,6 +7,7 @@
 #include <ctime>
 
 #include "data_ops.h"
+#include "search_ops.h"
 #include "curve.h"
 #include "curve_ops.h"
 #include "hash_f.h"
@@ -28,6 +29,7 @@ int main(int argc, char **argv){
   string func, hash;
   //our curves aka the dataset
   vector<real_curve> curves{},normalized_curves{};
+	vector<real_curve*> pcurves{};
   vector<vector<norm_curve>> concat_normalized_curves{};
   vector<hash_f> hs;
   cout << std::fixed;
@@ -59,6 +61,9 @@ int main(int argc, char **argv){
   delta = 0.05;
   //cout <<"For delta = "<<delta <<endl;
 
+	for(int i=0; i<curves.size(); i++)
+		pcurves.push_back(&curves[i]);
+
   /*Lconcatenate_kcurves will end with concat_normalized_curves having
   L vectors of */
   Lconcatenate_kcurves(k, L ,curves, dimension, delta,
@@ -75,7 +80,7 @@ int main(int argc, char **argv){
   vector<vector<vector<vector<real_curve*>>>> Lhashtable;
   //if(hash=="Classic")
   classic_hash_curves(concat_normalized_curves,
-    dimension*k*v_size, Lhashtable, table_size, curves,
+    dimension*k*v_size, Lhashtable, table_size, pcurves,
     normalized_curves);
   //L = concat_normalized_curves.size()
   //else
@@ -87,6 +92,12 @@ int main(int argc, char **argv){
   s0.set_id("12345");
   vector<real_curve> s_curves{};
   s_curves.push_back(std::move(s0));
+  
+  vector<real_curve*> nn_curve{};
+  vector<double> nn_distance{};
+  vector<bool> grid_curve_found{};
+  search_curves(s_curves, Lhashtable, k, 0, dimension, delta, table_size,
+  	hash, func, pcurves, nn_curve, nn_distance, grid_curve_found);
 
   cout << "End" << endl;
   return 1;

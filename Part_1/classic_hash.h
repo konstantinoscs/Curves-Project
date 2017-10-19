@@ -6,7 +6,7 @@
 void classic_hash_curves(const std::vector<std::vector<norm_curve>> & Lcurves,
  int dimension,
  std::vector<std::vector<std::vector<std::vector<real_curve*>>>> & Lhashtable,
- int tablesize, std::vector<real_curve> & curves,
+ int tablesize, std::vector<real_curve*> & curves,
  std::vector<real_curve> & normalized_curves);
 
 //returns a vector of factors r
@@ -22,7 +22,7 @@ void linear_combination(const std::vector<int> & cur_points,
 //maybe used in both classic and lsh
 void curve_hashing(const std::vector<int> & cnp,std::vector<int> & r,
   std::vector<std::vector<real_curve*>> *ht,int tablesize,
-  std::vector<real_curve> & curves, int curve_index,
+  std::vector<real_curve*> & curves, int curve_index,
   std::vector<real_curve> & normalized_curves);
 
 //prints the given hash table
