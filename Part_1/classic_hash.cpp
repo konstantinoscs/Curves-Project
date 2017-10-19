@@ -20,7 +20,7 @@ void linear_combination(const vector<int> & cur_points, const vector<int> & r,
   //largest prime less than 2^{31}-->2^{31}-1
   int M{std::numeric_limits<int>::max()};//M=2^(31)-1
   int factor{0};
-  for(int i=0; i<r.size(); i++)
+  for(int i=0; i<cur_points.size(); i++)
     factor += (cur_points[i]*r[i])%M;
   key = (factor % tablesize + tablesize) % tablesize;
   return ;
@@ -31,7 +31,7 @@ void curve_hashing(const vector<int> & concat_norm_points, vector<int> & r,
     int curve_index, vector<real_curve> & normalized_curves){
       int key{};
       linear_combination(concat_norm_points,r,key,tablesize);
-      vector<real_curves*> temp{};
+      vector<real_curve*> temp{};
       temp.push_back(&curves[curve_index]);
       temp.push_back(&normalized_curves[curve_index]);
       ht[key].push_back(std::move(temp));

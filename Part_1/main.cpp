@@ -83,6 +83,11 @@ int main(int argc, char **argv){
 
   //print_hashtable(Lhashtable[0],table_size);
 
+  real_curve s0{curves[10]};//only for testing
+  s0.set_id("12345");
+  vector<real_curve> s_curves{};
+  s_curves.push_back(std::move(s0));
+
   cout << "End" << endl;
   return 1;
 }
