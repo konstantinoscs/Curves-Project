@@ -27,6 +27,8 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 		if(!stats && temp_distance<=R)
 			curves_in_R_i.push_back(pcurves[i]->get_id());
 	}
+	if(!stats && R==0.0 && !(curves_in_R_i.size()))//maybe same curve(s) found
+				curves_in_R_i.push_back(nneigh->get_id());//else push the nneigh
 	return ;
 }
 
@@ -82,9 +84,11 @@ void search_curves(vector<real_curve> & s_curves,
 //let's find (probabilistic) nearest neighbor...
 	real_curve* nneigh{};
 	for(int i=0; i<s_curves.size(); i++){
-		if(bucket_curves[i].size()==0)//hash tables were empty for i's key
+		if(bucket_curves[i].size()==0){//hash tables were empty for i's key
 			find_nn(s_curves[i],pcurves,dimension,dist,nneigh,
-				distance,true,0,curves_in_R[i]);//search greedy
+				distance,stats,R,curves_in_R[i]);//search greedy+in radius R
+			stats = true;//use stats as flag to avoid calling second time this fnct
+		}
 		else if(grid_curve_found[i])//search only in same grid curves
 			find_nn(s_curves[i],same_grid_curves[i],dimension,dist,nneigh,
 				distance,true,0,curves_in_R[i]);
@@ -93,7 +97,7 @@ void search_curves(vector<real_curve> & s_curves,
 				distance,true,0,curves_in_R[i]);
 		nn_curve[i] = nneigh;
 		nn_distance[i] = distance;
-		if(!stats)
+		if(!stats)//search in radius R
 			find_nn(s_curves[i],pcurves,dimension,dist,nneigh,
 				distance,stats,R,curves_in_R[i]);
 	}
