@@ -11,9 +11,11 @@ void search_curves(std::vector<real_curve> & s_curves,
   std::vector<std::vector<std::vector<std::vector<real_curve*>>>> & Lht,
   int k, int v_size, int dimension, int delta, int tablesize,
   std::string hash,std::string dist, std::vector<real_curve*> & pcurves,
-  real_curve** nn_curve,double* nn_distance,bool* grid_curve_found);
+  bool stats, double R, real_curve** nn_curve,double* nn_distance,
+  bool* grid_curve_found,std::vector<std::string> * curves_in_R);
 
 //finds the (1)curve and (2)distance between the scurve and
 //the nearest curve in a vector of (pointers of) curves
 void find_nn(real_curve & scurve,std::vector<real_curve*> pcurves,
-	int dimension,std::string dist, real_curve* & nneigh,double & distance);
+	int dimension,std::string dist, real_curve* & nneigh,double & distance,
+	bool stats, double R, std::vector<std::string> & curves_in_R_i);
