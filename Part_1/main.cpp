@@ -94,18 +94,26 @@ int main(int argc, char **argv){
   vector<real_curve> s_curves{};
   s_curves.push_back(std::move(s0));
   s_curves.push_back(std::move(s1));
-  //next for lines must be in main..
-  vector<real_curve*> nn_curve{};//1
-  vector<double> nn_distance{};//2
-  vector<bool> grid_curve_found{};//3
+	int tsize{};
+	double R{0.0};
+	tsize = s_curves.size();
+  //next five lines must be in main..
+  real_curve* nn_curve[tsize];//1
+  double nn_distance[tsize];//2
+  bool grid_curve_found[tsize];//3
+	vector<string> curves_in_R[tsize];//4
   search_curves(s_curves, Lhashtable, k, 0, dimension, delta, table_size,
-  	hash, func, pcurves, nn_curve, nn_distance, grid_curve_found);//4
+  	hash, func, pcurves, stats, R, nn_curve, nn_distance,
+		grid_curve_found, curves_in_R);//5
 
 	for(int i=0; i<s_curves.size(); i++){
 		cout <<"id:"<<s_curves[i].get_id()<<endl;
 		cout <<"nn_id:"<<nn_curve[i]->get_id()<<endl;
 		cout <<"nn_dist:"<<nn_distance[i]<<endl;
 		cout <<"grid_curve_found:"<<grid_curve_found[i]<<endl;
+		cout <<"ids in R distance:" <<endl;
+		for(int j=0; j<curves_in_R[i].size(); j++)
+			cout <<curves_in_R[i][j]<<endl;
 	}*/
 
   cout << "End" << endl;
