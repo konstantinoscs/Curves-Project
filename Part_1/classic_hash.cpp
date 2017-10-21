@@ -37,7 +37,7 @@ void curve_hashing(const vector<int> & concat_norm_points, vector<int> & r,
   ht[key].push_back(std::move(temp));
 }
 
-void classic_hash_curves(const vector<vector<norm_curve>> & Lcurves,
+void hash_curves(const vector<vector<norm_curve>> & Lcurves,
   int dimension, vector<vector<vector<vector<real_curve*>>>> & Lhashtable,
   int tablesize, vector<real_curve*> & pcurves,
   vector<real_curve> & normalized_curves){
