@@ -47,10 +47,6 @@ int main(int argc, char **argv){
 
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
-  // for(int i=0; i<2; i++){
-  //   cout << "Printing some curves!" << endl;
-  //   curves[i].print();
-  // }
 
   //return 1;
 
@@ -67,24 +63,16 @@ int main(int argc, char **argv){
   /*Lconcatenate_kcurves will end with concat_normalized_curves having
   L vectors of */
   Lconcatenate_kcurves(k, L ,curves, dimension, delta,
-    concat_normalized_curves, v_size,normalized_curves);
-
-  //u got it
-  //make_hashes(hs, w, v_size, k);
-  //hs[1].print();
+    concat_normalized_curves, v_size, normalized_curves);
 
   //concat_normalized_curves[0][0].print();
   int table_size = curves.size()/16;
   //L arrays of vectors of pointers(to real curves)
   //we need pointers to (1)real curves and (2)normalized curves
   vector<vector<vector<vector<real_curve*>>>> Lhashtable;
-  //if(hash=="Classic")
-  classic_hash_curves(concat_normalized_curves,
-    dimension*k*v_size, Lhashtable, table_size, pcurves,
-    normalized_curves);
+  hash_curves(concat_normalized_curves, dimension*k*v_size, Lhashtable,
+    table_size, pcurves, normalized_curves);
   //L = concat_normalized_curves.size()
-  //else
-  //  lsh_hash_curves(concat_normalized_curves,w,v_size,k);
 
   //print_hashtable(Lhashtable[0],table_size);
 
