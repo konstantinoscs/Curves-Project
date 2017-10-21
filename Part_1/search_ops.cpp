@@ -27,7 +27,7 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 
 
 void search_curves(vector<real_curve> & s_curves,
-  vector<vector<vector<vector<real_curve*>>>> & Lht,int k, int v_size,
+  vector<vector<vector<vector<real_curve*>>>> & Lht, int k, int v_size,
   int dimension, int delta, int tablesize, string hash,
 	string dist, vector<real_curve*> & pcurves,
 	vector<real_curve*> & nn_curve,vector<double> & nn_distance,
@@ -88,4 +88,3 @@ void search_curves(vector<real_curve> & s_curves,
 	}
 	return ;
 }
-
