@@ -8,7 +8,7 @@ double double_uniform_rand(double A, double B){
 }
 
 int int_uniform_rand(int A, int B){
-  return A + (rand() / (RAND_MAX + 1.0)) * (B - A);
+  return A + (rand() / (RAND_MAX + 1.0)) * (B - A + 1);
 }
 
 double double_uniform_rand(double B){
