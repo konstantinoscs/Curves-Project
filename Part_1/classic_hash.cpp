@@ -2,13 +2,15 @@
 #include <string>
 #include <array>
 #include <limits>
+#include <iostream>
+
 #include "curve.h"
 #include "rand_utils.h"
-#include <iostream>
+#include "lsh.h"
 
 using namespace std;
 
-void init_r(int dimension,std::vector<int> & r){
+void init_r(int dimension, vector<int> & r){
     for(int i=0; i< dimension; i++)
       r.push_back(int_uniform_rand(0,1000000));//idk the [M,N]
     return ;
@@ -18,7 +20,7 @@ void linear_combination(const vector<int> & cur_points, const vector<int> & r,
   int & key,int tablesize){
 
   //largest prime less than 2^{31}-->2^{31}-1
-  int M{std::numeric_limits<int>::max()};//M=2^(31)-1
+  int M{std::numeric_limits<int>::max() - 5};//M=2^(31)-5
   int factor{0};
   for(int i=0; i<cur_points.size(); i++)
     factor += (cur_points[i]*r[i])%M;
@@ -30,14 +32,15 @@ void curve_hashing(const vector<int> & concat_norm_points, vector<int> & r,
   int curve_index, vector<real_curve> & normalized_curves){
 
   int key{};
-  linear_combination(concat_norm_points,r,key,tablesize);
   vector<real_curve*> temp{};
+
+  linear_combination(concat_norm_points,r,key,tablesize);
   temp.push_back(curves[curve_index]);
   temp.push_back(&normalized_curves[curve_index]);
   ht[key].push_back(std::move(temp));
 }
 
-void classic_hash_curves(const vector<vector<norm_curve>> & Lcurves,
+void hash_curves(const vector<vector<norm_curve>> & Lcurves,
   int dimension, vector<vector<vector<vector<real_curve*>>>> & Lhashtable,
   int tablesize, vector<real_curve*> & pcurves,
   vector<real_curve> & normalized_curves){
@@ -62,7 +65,7 @@ void classic_hash_curves(const vector<vector<norm_curve>> & Lcurves,
       temp.push_back(std::move(hashtable[j]));
       hashtable[j].clear();
     }
-
+    //L*L hashtables?
     Lhashtable.push_back(std::move(temp));
     temp.clear();
   }

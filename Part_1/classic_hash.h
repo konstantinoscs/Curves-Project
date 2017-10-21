@@ -3,7 +3,7 @@
 
 #include "curve.h"
 
-void classic_hash_curves(const std::vector<std::vector<norm_curve>> & Lcurves,
+void hash_curves(const std::vector<std::vector<norm_curve>> & Lcurves,
  int dimension,
  std::vector<std::vector<std::vector<std::vector<real_curve*>>>> & Lhashtable,
  int tablesize, std::vector<real_curve*> & curves,
