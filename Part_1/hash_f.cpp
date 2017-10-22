@@ -31,7 +31,7 @@ hash_f::hash_f(hash_f && m_hash): id(m_hash.id), t(m_hash.t), w(m_hash.w),
 hash_f::~hash_f(){
 }
 
-int hash_f::hash(const std::vector<int> & p){
+int hash_f::hash(const std::vector<double> & p){
   float sum{};
   for(int i=0; i<v.size(); i++){
     sum += v[i]*p[i];
