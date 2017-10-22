@@ -20,7 +20,7 @@ void linear_combination(const vector<int> & cur_points, const vector<int> & r,
   int & key,int tablesize){
 
   //largest prime less than 2^{31}-->2^{31}-1
-  int M{std::numeric_limits<int>::max() - 5};//M=2^(31)-5
+  int M{std::numeric_limits<int>::max() - 1};//M=2^(31)-1
   int factor{0};
   for(int i=0; i<cur_points.size(); i++)
     factor += (cur_points[i]*r[i])%M;
@@ -65,7 +65,6 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
       temp.push_back(std::move(hashtable[j]));
       hashtable[j].clear();
     }
-    //L*L hashtables?
     Lhashtable.push_back(std::move(temp));
     temp.clear();
   }

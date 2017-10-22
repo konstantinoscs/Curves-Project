@@ -60,13 +60,13 @@ void search_curves(vector<real_curve> & s_curves,
     v_size,n_curves);
   init_r(dimension*v_size*k,r);//if hash=="lsh" use first k elements of r
 //find the key for every search curve...
-//  if(hash=="classic"){
+//  if(hash=="1"){//classic
     for(int i=0; i<s_curves.size(); i++){
       linear_combination(concat_s_curves[0][i].as_vector(),r,key,tablesize);
       curve_keys.push_back(key);
     }
 //  }
-//  else if(hash=="lsh"){
+//  else if(hash=="2"){//lsh
 //  }
 //saves all curves in same bucket with s_curve[i]
   for(int i=0; i<s_curves.size(); i++){
@@ -89,9 +89,11 @@ void search_curves(vector<real_curve> & s_curves,
 				distance,stats,R,curves_in_R[i]);//search greedy+in radius R
 			stats = true;//use stats as flag to avoid calling second time this fnct
 		}
-		else if(grid_curve_found[i])//search only in same grid curves
+		else if(grid_curve_found[i]){//search only in same grid curves
 			find_nn(s_curves[i],same_grid_curves[i],dimension,dist,nneigh,
-				distance,true,0,curves_in_R[i]);
+				distance,stats,R,curves_in_R[i]);//also check if their distance<=R
+			stats = true;
+		}
 		else//search in bucket curves
 			find_nn(s_curves[i],bucket_curves[i],dimension,dist,nneigh,
 				distance,true,0,curves_in_R[i]);
