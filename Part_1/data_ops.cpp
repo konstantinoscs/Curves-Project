@@ -125,8 +125,7 @@ bool read_dataset_curves(string data_s, vector<real_curve> & curves,
   string s;
   char c;
   real_curve ocurve{};
-  //ifstream data(data_s);
-  ifstream data("./trajectories_dataset");
+  ifstream data(data_s);
 
   //test if there is a file to get the data from
   if (!data.is_open()){
