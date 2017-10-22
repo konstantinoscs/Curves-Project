@@ -119,13 +119,13 @@ bool read_curve(real_curve & ocurve, ifstream & data, int dimension){
   return true;
 }
 
-bool read_dataset_curves(std::string const data_s, std::vector<real_curve> & curves,
+bool read_dataset_curves(string data_s, vector<real_curve> & curves,
   int & dimension){
 
-  string id;
+  string s;
   char c;
   real_curve ocurve{};
-  //ifstream data("./test_dataset");
+  //ifstream data(data_s);
   ifstream data("./trajectories_dataset");
 
   //test if there is a file to get the data from
@@ -137,8 +137,8 @@ bool read_dataset_curves(std::string const data_s, std::vector<real_curve> & cur
   //the first time id gets the "@dimension"
   data >> c;
   if (c=='@'){
-    data >> id;
-    cout << id <<endl;
+    data >> s;
+    cout << s <<endl;
     data >> dimension;
   }
   else{
@@ -156,5 +156,33 @@ bool read_dataset_curves(std::string const data_s, std::vector<real_curve> & cur
   }
 
   data.close();
+  return true;
+}
+
+bool read_query_curves(string query_s, vector<real_curve> & curves,
+  int dimension, double & R){
+
+  //s is used only to eat useless data
+  string s;
+  real_curve ocurve{};
+  ifstream query(query_s);
+
+  if (!query.is_open()){
+    cout << "couldn't find data file!" << endl;
+    return false;
+  }
+
+  //get the "R:"
+  query >> s ;
+  query >> R;
+
+  while(true){
+    if(!read_curve(ocurve, query, dimension))
+      break;
+    //the speed up with move is amazing
+    curves.push_back(std::move(ocurve));
+  }
+
+  query.close();
   return true;
 }

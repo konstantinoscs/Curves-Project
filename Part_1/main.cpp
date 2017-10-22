@@ -43,6 +43,7 @@ int main(int argc, char **argv){
   //data_s = "./trajectories_dataset";        //for testing purposes
   if(!read_dataset_curves(data_s, curves, dimension)){
     cerr << "Something went wrong while reading the dataset!"<< endl;
+    return -1;
   }
 
   cout << "Dataset read successfully!" << endl;

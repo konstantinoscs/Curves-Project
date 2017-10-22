@@ -9,7 +9,10 @@ std::string &func, std::string &hash);
 
 void input_parameters(std::string &data_s, std::string &func, std::string &hash);
 
-bool read_dataset_curves(std::string const data_s, std::vector<real_curve> & curves,
+bool read_dataset_curves(std::string data_s, std::vector<real_curve> & curves,
   int & dimension);
+
+bool read_query_curves(std::string query_s, std::vector<real_curve> & curves,
+  int dimension, double & R);
 
 #endif
