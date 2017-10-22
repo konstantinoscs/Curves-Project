@@ -13,7 +13,7 @@ using namespace std;
 //e.g. parsing command line arguments, getting input from the user,
 //getting input from the files etc.
 
-int parse_arguments(int argc, char ** argv, std::string &data_s,
+bool parse_arguments(int argc, char ** argv, std::string &data_s,
 std::string &query_s, int &k, int &L, std::string &out_s, bool &stats,
 std::string &func, std::string &hash){
 
@@ -42,7 +42,7 @@ std::string &func, std::string &hash){
     //if parameter required 2 arguments, one incremention is already done
       i++;
     }
-  return 1;
+  return true;
 }
 
 void input_parameters(std::string &data_s, std::string &func, std::string &hash){
@@ -81,7 +81,6 @@ bool read_curve(real_curve & ocurve, ifstream & data, int dimension){
   char c{};
   //in coords we store all the coordinates of a single point
   vector<double> coords;
-  //in points we store all the points' coordinates
 
   //temp coordinate
   double t_coord;

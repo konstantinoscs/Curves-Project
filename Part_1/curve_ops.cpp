@@ -7,7 +7,6 @@
 #include "curve.h"
 #include "rand_utils.h"
 
-
 using namespace std;
 
 void curve_reduction(const real_curve & ur_curve, double delta,
