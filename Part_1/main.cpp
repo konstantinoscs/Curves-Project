@@ -25,7 +25,7 @@ int main(int argc, char **argv){
   double delta{};
   int dimension{}, v_size{};
   bool stats{false};
-  string data_s, query_s, out_s;
+  string data_s{"trajectories_dataset"}, query_s, out_s;
   string func, hash;
   //our curves aka the dataset
   vector<real_curve> curves{},normalized_curves{};
@@ -48,8 +48,6 @@ int main(int argc, char **argv){
 
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
-
-  //return 1;
 
   // cout << data_s << endl << query_s << endl << out_s << endl;
   // cout << func << endl << hash << endl;
@@ -79,12 +77,15 @@ int main(int argc, char **argv){
 
 /*  real_curve s0{curves[10]},s1{curves[432]};//only for testing
   s0.set_id("12345");
-  s1.set_id("98765");
+  s1.set_id("98765");*/
   vector<real_curve> s_curves{};
-  s_curves.push_back(std::move(s0));
+  double R{};
+  //now you get the search curves
+  read_query_curves(query_s, s_curves, dimension, R);
+
+  /*s_curves.push_back(std::move(s0));
   s_curves.push_back(std::move(s1));
 	int tsize{};
-	double R{0.0};
 	tsize = s_curves.size();
   //next five lines must be in main..
   real_curve* nn_curve[tsize];//1

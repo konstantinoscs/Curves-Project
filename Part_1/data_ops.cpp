@@ -167,7 +167,7 @@ bool read_query_curves(string query_s, vector<real_curve> & curves,
   ifstream query(query_s);
 
   if (!query.is_open()){
-    cout << "couldn't find data file!" << endl;
+    cout << "couldn't find query file!" << endl;
     return false;
   }
 
