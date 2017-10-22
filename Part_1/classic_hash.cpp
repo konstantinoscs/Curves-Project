@@ -20,7 +20,7 @@ void linear_combination(const vector<int> & cur_points, const vector<int> & r,
   int & key,int tablesize){
 
   //largest prime less than 2^{31}-->2^{31}-1
-  int M{std::numeric_limits<int>::max() - 1};//M=2^(31)-1
+  int M{std::numeric_limits<int>::max()};//M=2^(31)-1
   int factor{0};
   for(int i=0; i<cur_points.size(); i++)
     factor += (cur_points[i]*r[i])%M;
