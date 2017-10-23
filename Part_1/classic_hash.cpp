@@ -7,6 +7,7 @@
 #include "curve.h"
 #include "rand_utils.h"
 #include "lsh.h"
+#include "entry.h"
 
 using namespace std;
 
@@ -28,20 +29,20 @@ void linear_combination(const vector<int> & cur_points, const vector<int> & r,
 }
 
 void curve_hashing(const vector<int> & concat_norm_points, vector<int> & r,
-  vector<vector<real_curve*>> *ht, int tablesize, vector<real_curve*> & curves,
+  vector<entry> *ht, int tablesize, vector<real_curve*> & curves,
   int curve_index, vector<real_curve> & normalized_curves){
 
   int key{};
-  vector<real_curve*> temp{};
+  entry temp{};
 
   linear_combination(concat_norm_points,r,key,tablesize);
-  temp.push_back(curves[curve_index]);
-  temp.push_back(&normalized_curves[curve_index]);
+  temp.rcurve = curves[curve_index];
+  temp.gcurve = &normalized_curves[curve_index];
   ht[key].push_back(std::move(temp));
 }
 
 void hash_curves(const vector<vector<norm_curve>> & Lcurves,
-  int dimension, vector<vector<vector<vector<real_curve*>>>> & Lhashtable,
+  int dimension, vector<vector<vector<entry>>> & Lhashtable,
   int tablesize, vector<real_curve*> & pcurves,
   vector<real_curve> & normalized_curves){
 
@@ -50,7 +51,7 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
   vector<int> r{};
 
   for(int i=0; i<L; i++){
-    vector<vector<real_curve*>> hashtable[tablesize];
+    vector<entry> hashtable[tablesize];
     init_r(dimension,r);
 
     for(int j=0; j<curve_size; j++){
@@ -59,7 +60,7 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
     }
 
     r.clear();
-    vector<vector<vector<real_curve*>>> temp{};
+    vector<vector<entry>> temp{};
 
     for(int j=0;j<tablesize;j++){
       temp.push_back(std::move(hashtable[j]));
@@ -70,13 +71,13 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
   }
 }
 
-void print_hashtable(vector<vector<vector<real_curve*>>> & ht,
+void print_hashtable(vector<vector<entry>> & ht,
   int tablesize){
 
   for(int i=0; i<ht.size();i++){
     cout <<"key = "<<i<<": ";
     for(int j=0;j<ht[i].size();j++)
-      cout << "-->"<<ht[i][j][0]->get_id()<<" ";
+      cout << "-->"<<ht[i][j].rcurve->get_id()<<" ";
     cout << endl;
   }
   return ;

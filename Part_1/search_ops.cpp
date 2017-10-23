@@ -1,9 +1,11 @@
 #include <vector>
 #include <iostream>
+
 #include "classic_hash.h"
 #include "curve_ops.h"
 #include "distance_ops.h"
 #include "curve.h"
+#include "entry.h"
 
 using namespace std;
 
@@ -34,7 +36,7 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 
 
 void search_curves(vector<real_curve> & s_curves,
-  vector<vector<vector<vector<real_curve*>>>> & Lht, int k, int v_size,
+  vector<vector<vector<entry>>> & Lht, int k, int v_size,
   int dimension, int delta, int tablesize, string hash,
 	string dist, vector<real_curve*> & pcurves, bool stats,
 	double R, real_curve** nn_curve, double* nn_distance,
@@ -49,11 +51,8 @@ void search_curves(vector<real_curve> & s_curves,
   int key{};
 	double distance{};
   vector<int> curve_keys{};
-	for(int i=0; i<s_curves.size(); i++){
+	for(int i=0; i<s_curves.size(); i++)
 		grid_curve_found[i]=false;
-		//same_grid_curves.push_back({});//init with s_curves.size() empty vectors
-		//bucket_curves.push_back({});
-	}
 
 //k-concatenate the search curves
   Lconcatenate_kcurves(k,1,s_curves,dimension,delta,concat_s_curves,
@@ -72,12 +71,12 @@ void search_curves(vector<real_curve> & s_curves,
   for(int i=0; i<s_curves.size(); i++){
     for(int j=0; j<Lht.size(); j++){
 			for(int z=0; z<Lht[j][curve_keys[i]].size(); z++){
-				if(n_curves[i].get_points()==Lht[j][curve_keys[i]][z][1]->get_points())
+				if(n_curves[i].get_points()==Lht[j][curve_keys[i]][z].gcurve->get_points())
 				{//then we found the same grid curve...
 					grid_curve_found[i]=true;
-					same_grid_curves[i].push_back(Lht[j][curve_keys[i]][z][0]);
+					same_grid_curves[i].push_back(Lht[j][curve_keys[i]][z].rcurve);
 				}
-				bucket_curves[i].push_back(Lht[j][curve_keys[i]][z][0]);
+				bucket_curves[i].push_back(Lht[j][curve_keys[i]][z].rcurve);
 			}
     }
   }

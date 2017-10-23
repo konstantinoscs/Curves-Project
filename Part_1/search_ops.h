@@ -1,6 +1,8 @@
 #include <vector>
 #include <string>
+
 #include "curve.h"
+#include "entry.h"
 
 //gets the search curves and returns for everyone of them
 //1.a pointer to the nearest curve
@@ -8,7 +10,7 @@
 //3.if the same grid curve was found in hash table
 //all of them in vectors with size=s_curves.size() each of them
 void search_curves(std::vector<real_curve> & s_curves,
-  std::vector<std::vector<std::vector<std::vector<real_curve*>>>> & Lht,
+  std::vector<std::vector<std::vector<entry>>> & Lht,
   int k, int v_size, int dimension, int delta, int tablesize,
   std::string hash,std::string dist, std::vector<real_curve*> & pcurves,
   bool stats, double R, real_curve** nn_curve,double* nn_distance,

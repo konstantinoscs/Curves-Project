@@ -13,6 +13,7 @@
 #include "hash_f.h"
 #include "classic_hash.h"
 #include "lsh.h"
+#include "entry.h"
 
 #define REPETITIONS 100
 
@@ -59,7 +60,7 @@ int main(int argc, char **argv){
  	double R{};
  	//now you get the search curves
  	read_query_curves(query_s, s_curves, dimension, R);
-  cout << "Read " << s_curves.size() << "search curves" << endl;
+  cout << "Read " << s_curves.size() << " search curves" << endl;
 
 	int tsize{};
 	tsize = s_curves.size();
@@ -84,7 +85,7 @@ int main(int argc, char **argv){
   
   	//L arrays of vectors of pointers(to real curves)
   	//we need pointers to (1)real curves and (2)normalized curves
-  	vector<vector<vector<vector<real_curve*>>>> Lhashtable;
+  	vector<vector<vector<entry>>> Lhashtable;
   	hash_curves(concat_normalized_curves, dimension*k*v_size, Lhashtable,
   	  table_size, pcurves, normalized_curves);
   	//L = concat_normalized_curves.size()
@@ -101,7 +102,7 @@ int main(int argc, char **argv){
 			grid_curve_found, curves_in_R);//5.returns the 1,2,3,4
 
 
-		/*for(int i=0; i<s_curves.size(); i++){//output print example
+		for(int i=0; i<s_curves.size(); i++){//output print example
 			cout <<"id:"<<s_curves[i].get_id()<<endl;
 			cout <<"hash:"<<hash<<endl;
 			cout <<"distance function:"<<func<<endl;
@@ -111,7 +112,7 @@ int main(int argc, char **argv){
 			cout <<"ids in R distance:" <<endl;
 			for(int j=0; j<curves_in_R[i].size(); j++)
 				cout <<curves_in_R[i][j]<<endl;
-		}*/
+		}
 	}
   cout << "End" << endl;
   return 1;
