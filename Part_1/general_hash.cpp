@@ -49,8 +49,8 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
 		else if(hash=="probabilistic"){
       init_r(k, r);
       vector<hash_f> hs;
-      make_hashes(hs, w, , k);
-      int *g = new int [k];
+      vector<int> g;
+      make_hashes(hs, w, dimension, k);
       make_g(hs, g);
 //			for(int j=0; j<curve_size; j++)
 //	      lsh_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable, tablesize,
@@ -67,8 +67,6 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
     Lhashtable.push_back(std::move(temp));
     temp.clear();
   }
-  if(hash=="probabilistic")
-   delete [] g;
 }
 
 void print_hashtable(vector<vector<entry>> & ht,
