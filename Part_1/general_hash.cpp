@@ -33,8 +33,8 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
   int tablesize, vector<real_curve*> & pcurves,
   vector<real_curve> & normalized_curves, string hash, int k, int w){
 
-  int L{Lcurves.size()};
-  int curve_size{Lcurves[0].size()};
+  size_t L{Lcurves.size()};
+  size_t curve_size{Lcurves[0].size()};
   vector<int> r{};
 
 
@@ -43,7 +43,7 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
 
 		if(hash=="classic"){
       init_r(dimension, r);
-	    for(int j=0; j<curve_size; j++)
+	    for(size_t j=0; j<curve_size; j++)
 	      classic_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable, tablesize,
   	    	pcurves,j,normalized_curves);
   	 }
