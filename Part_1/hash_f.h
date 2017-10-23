@@ -18,7 +18,7 @@ public:
   hash_f(const hash_f & c_hash);
   hash_f(hash_f && m_hash);
   ~hash_f();
-  int hash(const std::vector<double> & p);
+  int hash(const std::vector<int> & p);
   void print();
 
 };
