@@ -15,22 +15,23 @@ void make_hashes(vector<hash_f> & hs, int w, int v_size, int k){
 //choose k h_i randomly, the indexes of the hash functions are
 //put in an int array g
 //g and hs have the same size!
-void make_g(const vector<hash_f> & hs, vector<int> g){
+void make_g(const vector<hash_f> & hs, vector<int> & g){
   for(size_t i=0; i<hs.size(); i++)
     g.push_back(int_uniform_rand(0, hs.size()-1));
 }
 
-void lsh_curve_hashing(const vector<int> & concat_norm_points, vector<int> & r,
-  vector<entry> *ht, int tablesize, vector<real_curve*> & curves,
-  int curve_index, vector<real_curve> & normalized_curves, int *g,
-  std::vector<hash_f> & hs){
+void lsh_curve_hashing(const vector<int> & concat_norm_points,
+  const vector<int> & r, vector<entry> *ht, int tablesize,
+  vector<real_curve*> & curves, int curve_index,
+  vector<real_curve> & normalized_curves, vector<int> & g,
+  vector<hash_f> & hs){
 
   int key{};
   entry temp{};
   vector<int> h_results;
 
   //remember: g and hs have the same size!
-  for (size_t i=0; hs.size(); i++){
+  for (size_t i=0; g.size(); i++){
     h_results.push_back(hs[g[i]].hash(concat_norm_points));
   }
 

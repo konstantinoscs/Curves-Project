@@ -37,6 +37,7 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
   int curve_size{Lcurves[0].size()};
   vector<int> r{};
 
+
   for(int i=0; i<L; i++){
     vector<entry> hashtable[tablesize];
 
@@ -52,9 +53,8 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
       vector<int> g;
       make_hashes(hs, w, dimension, k);
       make_g(hs, g);
-//			for(int j=0; j<curve_size; j++)
-//	      lsh_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable, tablesize,
-//  	    	pcurves,j,normalized_curves);
+		  for(int j=0; j<curve_size; j++)
+        lsh_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable, tablesize, pcurves, j, normalized_curves, g, hs);
     }
 
     r.clear();
