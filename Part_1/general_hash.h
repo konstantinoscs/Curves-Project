@@ -7,7 +7,7 @@
 void hash_curves(const std::vector<std::vector<norm_curve>> & Lcurves,
   int dimension, std::vector<std::vector<std::vector<entry>>> & Lhashtable,
   int tablesize, std::vector<real_curve*> & curves,
-  std::vector<real_curve> & normalized_curves, std::string hash, int k, int w);
+  std::vector<real_curve> & normalized_curves, std::string hash, int kvec, int w);
 
 //returns a vector of factors r
 //use in classic and lsh

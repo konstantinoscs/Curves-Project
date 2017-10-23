@@ -23,7 +23,7 @@ int main(int argc, char **argv){
   //k = locality sensitive functions
   //L  = number of hashtables
   //w = window for the hs
-  int k{4}, L{5}, w{4};
+  int k{4}, L{5}, w{4}, kvec{4};
   double delta{};
   int dimension{}, v_size{};
   bool stats{false};
@@ -87,7 +87,7 @@ int main(int argc, char **argv){
   	//we need pointers to (1)real curves and (2)normalized curves
   	vector<vector<vector<entry>>> Lhashtable;
   	hash_curves(concat_normalized_curves, dimension*k*v_size, Lhashtable,
-  	  table_size, pcurves, normalized_curves, hash, k, w);
+  	  table_size, pcurves, normalized_curves, hash, kvec, w);
   	//L = concat_normalized_curves.size()
 
   	//print_hashtable(Lhashtable[0],table_size);

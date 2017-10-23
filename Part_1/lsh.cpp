@@ -7,8 +7,8 @@
 using namespace std;
 
 //makes k hash functions and puts them in hs
-void make_hashes(vector<hash_f> & hs, int w, int v_size, int k){
-  for(int i =0; i<k; i++)
+void make_hashes(vector<hash_f> & hs, int w, int v_size, int kvec){
+  for(int i =0; i<kvec; i++)
     hs.push_back(std::move(hash_f(i, w, v_size)));
 }
 

@@ -5,7 +5,7 @@
 #include "hash_f.h"
 
 //makes k hash functions and puts them in hs
-void make_hashes(std::vector<hash_f> & hs, int w, int v_size, int k);
+void make_hashes(std::vector<hash_f> & hs, int w, int v_size, int kvec);
 
 //choose k h_i randomly, the indexes of the hash functions are
 //put in an int array g

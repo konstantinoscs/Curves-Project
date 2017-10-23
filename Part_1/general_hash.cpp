@@ -31,7 +31,7 @@ void linear_combination(const vector<int> & cur_points, const vector<int> & r,
 void hash_curves(const vector<vector<norm_curve>> & Lcurves,
   int dimension, vector<vector<vector<entry>>> & Lhashtable,
   int tablesize, vector<real_curve*> & pcurves,
-  vector<real_curve> & normalized_curves, string hash, int k, int w){
+  vector<real_curve> & normalized_curves, string hash, int kvec, int w){
 
   size_t L{Lcurves.size()};
   size_t curve_size{Lcurves[0].size()};
@@ -48,7 +48,7 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
   	    	pcurves,j,normalized_curves);
   	 }
 		else if(hash=="probabilistic"){
-      init_r(k, r);
+      init_r(kvec, r);
       vector<hash_f> hs;
       vector<int> g;
       make_hashes(hs, w, dimension, k);
