@@ -33,7 +33,7 @@ hash_f::~hash_f(){
 
 int hash_f::hash(const std::vector<int> & p){
   float sum{};
-  for(int i=0; i<v.size(); i++){
+  for(size_t i=0; i<v.size(); i++){
     sum += v[i]*p[i];
   }
   //(float) is necessary here
@@ -45,7 +45,7 @@ void hash_f::print(){
   cout << "t " << t << endl;
   cout << "w " << w << endl;
   cout << "v :" << endl;
-  for (int i=0; i<v.size(); i++)
+  for (size_t i=0; i<v.size(); i++)
     cout << v[i] << endl;;
 }
 

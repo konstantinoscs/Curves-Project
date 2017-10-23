@@ -23,7 +23,7 @@ void linear_combination(const vector<int> & cur_points, const vector<int> & r,
   //largest prime less than 2^{31}-->2^{31}-1
   int M{std::numeric_limits<int>::max()};//M=2^(31)-1
   int factor{0};
-  for(int i=0; i<cur_points.size(); i++)
+  for(size_t i=0; i<cur_points.size(); i++)
     factor += (cur_points[i]*r[i])%M;
   key = (factor % tablesize + tablesize) % tablesize;
 }
@@ -72,9 +72,9 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
 void print_hashtable(vector<vector<entry>> & ht,
   int tablesize){
 
-  for(int i=0; i<ht.size();i++){
+  for(size_t i=0; i<ht.size();i++){
     cout <<"key = "<<i<<": ";
-    for(int j=0;j<ht[i].size();j++)
+    for(size_t j=0;j<ht[i].size();j++)
       cout << "-->"<<ht[i][j].rcurve->get_id()<<" ";
     cout << endl;
   }
