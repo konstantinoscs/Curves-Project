@@ -1,5 +1,4 @@
 #include <vector>
-#include <new>
 
 #include "hash_f.h"
 #include "general_hash.h"
