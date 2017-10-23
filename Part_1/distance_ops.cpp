@@ -8,7 +8,7 @@ using namespace std;
 
 double euclid_dist(const vector<double> & p1, const vector<double> & p2){
 	double temp{},ed{0.0};
-	for(int i=0; i<p1.size(); i++){
+	for(size_t i=0; i<p1.size(); i++){
 		temp=abs(p1[i]-p2[i]);
 		ed+=temp*temp;
 	}
@@ -28,7 +28,7 @@ void computeDFD(const vector<vector<double>> & pointsA,
 		L[0][i] = maxdbl;
 	for(int i=1; i<m+1; i++)
 		for(int j=1; j<n+1; j++)
-			L[i][j] = max(euclid_dist(pointsA[i-1],pointsB[j-1]), 
+			L[i][j] = max(euclid_dist(pointsA[i-1],pointsB[j-1]),
 				min(L[i-1][j-1],min(L[i-1][j],L[i][j-1])));
 	distance = L[m][n];
 	return ;
@@ -44,10 +44,10 @@ void computeDTW(const vector<vector<double>> & pointsA,
 		L[i][0] = maxdbl;
 	for(int i=1; i<n+1; i++)
 		L[0][i] = maxdbl;
-	
+
 	for(int i=1; i<m+1; i++)
 		for(int j=1; j<n+1; j++)
-			L[i][j] = euclid_dist(pointsA[i-1],pointsB[j-1]) + 
+			L[i][j] = euclid_dist(pointsA[i-1],pointsB[j-1]) +
 				min(L[i-1][j-1],min(L[i-1][j],L[i][j-1]));
 	distance = L[m][n];
 	return ;

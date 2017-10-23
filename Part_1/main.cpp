@@ -72,7 +72,7 @@ int main(int argc, char **argv){
 	rep_constant = stats ? REPETITIONS : 1;
 
 	table_size = curves.size()/16;
-	for(int i=0; i<curves.size(); i++)
+	for(size_t i=0; i<curves.size(); i++)
 		pcurves.push_back(&curves[i]);
 
 	for(int i=0; i<rep_constant; i++){
@@ -102,7 +102,7 @@ int main(int argc, char **argv){
 			grid_curve_found, curves_in_R);//5.returns the 1,2,3,4
 
 
-		for(int i=0; i<s_curves.size(); i++){//output print example
+		for(size_t i=0; i<s_curves.size(); i++){//output print example
 			cout << "id:" << s_curves[i].get_id() << endl;
 			cout << "hash:"<< hash<< endl;
 			cout << "distance function:" << func << endl;
@@ -110,7 +110,7 @@ int main(int argc, char **argv){
 			cout << "nn_dist:"<< nn_distance[i] << endl;
 			cout << "grid_curve_found:" << grid_curve_found[i] << endl;
 			cout << "ids in R distance:" << endl;
-			for(int j=0; j<curves_in_R[i].size(); j++)
+			for(size_t j=0; j<curves_in_R[i].size(); j++)
 				cout << curves_in_R[i][j] << endl;
 		}
 	}

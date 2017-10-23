@@ -19,7 +19,7 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 	nneigh = pcurves[0];
 	if(!stats && distance<=R)
 			curves_in_R_i.push_back(pcurves[0]->get_id());
-	for(int i=1; i<pcurves.size(); i++){
+	for(size_t i=1; i<pcurves.size(); i++){
 		find_distance(scurve.get_points(),pcurves[i]->get_points(),
 			dist,temp_distance);
 		if(temp_distance<distance){
@@ -51,7 +51,7 @@ void search_curves(vector<real_curve> & s_curves,
   int key{};
 	double distance{};
   vector<int> curve_keys{};
-	for(int i=0; i<s_curves.size(); i++)
+	for(size_t i=0; i<s_curves.size(); i++)
 		grid_curve_found[i]=false;
 
 //k-concatenate the search curves
@@ -60,7 +60,7 @@ void search_curves(vector<real_curve> & s_curves,
   init_r(dimension*v_size*k,r);//if hash=="lsh" use first k elements of r
 //find the key for every search curve...
 //  if(hash=="classic"){
-    for(int i=0; i<s_curves.size(); i++){
+    for(size_t i=0; i<s_curves.size(); i++){
       linear_combination(concat_s_curves[0][i].as_vector(),r,key,tablesize);
       curve_keys.push_back(key);
     }
@@ -68,9 +68,9 @@ void search_curves(vector<real_curve> & s_curves,
 //  else if(hash=="probabilistic"){//lsh
 //  }
 //saves all curves in same bucket with s_curve[i]
-  for(int i=0; i<s_curves.size(); i++){
-    for(int j=0; j<Lht.size(); j++){
-			for(int z=0; z<Lht[j][curve_keys[i]].size(); z++){
+  for(size_t i=0; i<s_curves.size(); i++){
+    for(size_t j=0; j<Lht.size(); j++){
+			for(size_t z=0; z<Lht[j][curve_keys[i]].size(); z++){
 				if(n_curves[i].get_points()==Lht[j][curve_keys[i]][z].gcurve->get_points())
 				{//then we found the same grid curve...
 					grid_curve_found[i]=true;
@@ -82,7 +82,7 @@ void search_curves(vector<real_curve> & s_curves,
   }
 //let's find (probabilistic) nearest neighbor...
 	real_curve* nneigh{};
-	for(int i=0; i<s_curves.size(); i++){
+	for(size_t i=0; i<s_curves.size(); i++){
 		if(bucket_curves[i].size()==0){//hash tables were empty for i's key
 			find_nn(s_curves[i],pcurves,dimension,dist,nneigh,
 				distance,stats,R,curves_in_R[i]);//search greedy+in radius R

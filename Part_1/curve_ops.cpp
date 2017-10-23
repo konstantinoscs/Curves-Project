@@ -20,9 +20,9 @@ void curve_reduction(const real_curve & ur_curve, double delta,
   double cur_c_p{};
   vector<double> point_duplicate{};
 
-  for(unsigned int i=0; i<points.size(); i++){
+  for(size_t i=0; i<points.size(); i++){
     vector<double> point_coordinates{};
-    for(unsigned int j=0; j<(points[i]).size(); j++){
+    for(size_t j=0; j<(points[i]).size(); j++){
       negative_bit = 1;
       cur_c_p = points[i][j];//current coordinate of point
       if(cur_c_p != abs(cur_c_p))
@@ -62,8 +62,8 @@ void curve_move(const vector<vector<double>> & norm_points,
   vector<int> zero{};
   for(int i=0;i<dimension;i++)
     zero.push_back(0);
-  for(unsigned int i=0; i<norm_points.size(); i++){
-    for(unsigned int j=0; j<norm_points[i].size(); j++){
+  for(size_t i=0; i<norm_points.size(); i++){
+    for(size_t j=0; j<norm_points[i].size(); j++){
       dpoint = norm_points[i][j] + t[j];
       ipoint = int((dpoint +(delta/k)/2.0)/(delta/k));
       pointvec.push_back(ipoint);
@@ -89,7 +89,7 @@ void Lconcatenate_kcurves(int k, int L,
     int min{std::numeric_limits<int>::max()};
     max = 0;
 
-    for(unsigned int i=0; i<curves.size(); i++){
+    for(size_t i=0; i<curves.size(); i++){
       real_curve grid_cur(curves[i].get_dimension());
       grid_cur.set_id(curves[i].get_id());
       curve_reduction(curves[i],delta,grid_cur,min,max);
@@ -99,7 +99,7 @@ void Lconcatenate_kcurves(int k, int L,
 
     for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
       vector<norm_curve> concat_curves{};
-      for(unsigned int i=0; i<normalized_curves.size(); i++){//init concat_curve_points
+      for(size_t i=0; i<normalized_curves.size(); i++){//init concat_curve_points
         norm_curve moved_curve(normalized_curves[i].get_dimension());
         moved_curve.set_id(normalized_curves[i].get_id());
         concat_curves.push_back(std::move(moved_curve));
@@ -113,11 +113,11 @@ void Lconcatenate_kcurves(int k, int L,
         //  cout <<t[i] << " ";
         //}
         //cout <<")"<<'\n';
-        for(unsigned int i=0; i<normalized_curves.size(); i++){//for every norm curve...
+        for(size_t i=0; i<normalized_curves.size(); i++){//for every norm curve...
           vector<vector<int>> moved_points{};
           curve_move(normalized_curves[i].get_points(), t, max, delta,
             dimension, k, moved_points);
-          for(unsigned int j=0; j<moved_points.size(); j++){
+          for(size_t j=0; j<moved_points.size(); j++){
             concat_curves[i].set_point(std::move(moved_points[j]));
             moved_points[j].clear();
           }

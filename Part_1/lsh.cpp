@@ -17,7 +17,7 @@ void make_hashes(vector<hash_f> & hs, int w, int v_size, int k){
 //put in an int array g
 //g and hs have the same size!
 void make_g(const vector<hash_f> & hs, vector<int> g){
-  for(int i=0; i<hs.size(); i++)
+  for(size_t i=0; i<hs.size(); i++)
     g.push_back(int_uniform_rand(0, hs.size()-1));
 }
 
@@ -31,7 +31,7 @@ void lsh_curve_hashing(const vector<int> & concat_norm_points, vector<int> & r,
   vector<int> h_results;
 
   //remember: g and hs have the same size!
-  for (int i=0; hs.size(); i++){
+  for (size_t i=0; hs.size(); i++){
     h_results.push_back(hs[g[i]].hash(concat_norm_points));
   }
 
