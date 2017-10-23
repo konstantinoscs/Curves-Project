@@ -2,7 +2,7 @@
 #include <new>
 
 #include "hash_f.h"
-#include "classic_hash.h"
+#include "general_hash.h"
 #include "rand_utils.h"
 
 using namespace std;

@@ -1,3 +1,6 @@
+#ifndef SEARCH_OPS_H
+#define SEARCH_OPS_H
+
 #include <vector>
 #include <string>
 
@@ -21,3 +24,5 @@ void search_curves(std::vector<real_curve> & s_curves,
 void find_nn(real_curve & scurve,std::vector<real_curve*> pcurves,
 	int dimension,std::string dist, real_curve* & nneigh,double & distance,
 	bool stats, double R, std::vector<std::string> & curves_in_R_i);
+
+#endif

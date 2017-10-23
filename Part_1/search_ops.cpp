@@ -1,7 +1,7 @@
 #include <vector>
 #include <iostream>
 
-#include "classic_hash.h"
+#include "general_hash.h"
 #include "curve_ops.h"
 #include "distance_ops.h"
 #include "curve.h"

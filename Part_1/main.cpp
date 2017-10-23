@@ -11,7 +11,7 @@
 #include "curve.h"
 #include "curve_ops.h"
 #include "hash_f.h"
-#include "classic_hash.h"
+#include "general_hash.h"
 #include "lsh.h"
 #include "entry.h"
 
@@ -87,7 +87,7 @@ int main(int argc, char **argv){
   	//we need pointers to (1)real curves and (2)normalized curves
   	vector<vector<vector<entry>>> Lhashtable;
   	hash_curves(concat_normalized_curves, dimension*k*v_size, Lhashtable,
-  	  table_size, pcurves, normalized_curves);
+  	  table_size, pcurves, normalized_curves, hash);
   	//L = concat_normalized_curves.size()
 
   	//print_hashtable(Lhashtable[0],table_size);

@@ -1,3 +1,6 @@
+#ifndef DISTANCE_OPS_H
+#define DISTANCE_OPS_H
+
 #include <vector>
 #include <string>
 
@@ -13,3 +16,5 @@ void computeDTW(const std::vector<std::vector<double>> & pointsA,
 void find_distance(const std::vector<std::vector<double>> & pointsA,
 	const std::vector<std::vector<double>> & pointsB, std::string dist,
 	double & distance);
+
+#endif
