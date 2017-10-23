@@ -6,6 +6,7 @@
 #include "distance_ops.h"
 #include "curve.h"
 #include "entry.h"
+#include "lsh.h"
 
 using namespace std;
 
@@ -40,7 +41,7 @@ void search_curves(vector<real_curve> & s_curves,
   int dimension, int delta, int tablesize, string hash,
 	string dist, vector<real_curve*> & pcurves, bool stats,
 	double R, real_curve** nn_curve, double* nn_distance,
-	bool* grid_curve_found, vector<string> * curves_in_R){
+	bool* grid_curve_found, vector<string> * curves_in_R, int w){
 
   vector<vector<norm_curve>> concat_s_curves{};
 	vector<real_curve> n_curves{};//normalized_curves
@@ -53,20 +54,31 @@ void search_curves(vector<real_curve> & s_curves,
   vector<int> curve_keys{};
 	for(size_t i=0; i<s_curves.size(); i++)
 		grid_curve_found[i]=false;
-
 //k-concatenate the search curves
   Lconcatenate_kcurves(k,1,s_curves,dimension,delta,concat_s_curves,
     v_size,n_curves);
   init_r(dimension*v_size*k,r);//if hash=="lsh" use first k elements of r
 //find the key for every search curve...
-//  if(hash=="classic"){
+  if(hash=="classic"){
     for(size_t i=0; i<s_curves.size(); i++){
       linear_combination(concat_s_curves[0][i].as_vector(),r,key,tablesize);
       curve_keys.push_back(key);
     }
-//  }
-//  else if(hash=="probabilistic"){//lsh
-//  }
+  }
+  else if(hash=="probabilistic"){//lsh
+  	vector<hash_f> hs;
+    vector<int> g;
+    make_hashes(hs, w, dimension, k);
+    make_g(hs, g);
+  	for(size_t i=0; i<s_curves.size(); i++){
+  		vector<int> h_results{};
+  		for (size_t j=0; j<g.size(); j++)
+	    	h_results.push_back(hs[g[j]].hash(concat_s_curves[0][i].as_vector()));
+  		linear_combination(h_results,r,key,tablesize);
+			curve_keys.push_back(key);
+  	}
+  }
+  cout <<"here"<<endl;
 //saves all curves in same bucket with s_curve[i]
   for(size_t i=0; i<s_curves.size(); i++){
     for(size_t j=0; j<Lht.size(); j++){

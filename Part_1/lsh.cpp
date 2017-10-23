@@ -31,10 +31,10 @@ void lsh_curve_hashing(const vector<int> & concat_norm_points,
   vector<int> h_results;
 
   //remember: g and hs have the same size!
-  for (size_t i=0; g.size(); i++){
+  for (size_t i=0; i<g.size(); i++){
     h_results.push_back(hs[g[i]].hash(concat_norm_points));
   }
-
+  
   linear_combination(h_results,r,key,tablesize);
   temp.rcurve = curves[curve_index];
   temp.gcurve = &normalized_curves[curve_index];

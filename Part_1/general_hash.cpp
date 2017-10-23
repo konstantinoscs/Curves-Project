@@ -38,23 +38,24 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
   vector<int> r{};
 
 
-  for(int i=0; i<L; i++){
+  for(size_t i=0; i<L; i++){
     vector<entry> hashtable[tablesize];
 
 		if(hash=="classic"){
       init_r(dimension, r);
 	    for(size_t j=0; j<curve_size; j++)
-	      classic_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable, tablesize,
-  	    	pcurves,j,normalized_curves);
+	      classic_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable,
+	      	tablesize, pcurves, j, normalized_curves);
   	 }
 		else if(hash=="probabilistic"){
       init_r(kvec, r);
       vector<hash_f> hs;
       vector<int> g;
-      make_hashes(hs, w, dimension, k);
+      make_hashes(hs, w, dimension, kvec);
       make_g(hs, g);
-		  for(int j=0; j<curve_size; j++)
-        lsh_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable, tablesize, pcurves, j, normalized_curves, g, hs);
+		  for(size_t j=0; j<curve_size; j++)
+        lsh_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable,
+        	tablesize, pcurves, j, normalized_curves, g, hs);
     }
 
     r.clear();

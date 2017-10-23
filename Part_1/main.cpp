@@ -99,7 +99,7 @@ int main(int argc, char **argv){
 		vector<string> curves_in_R[tsize];//4.ids from all curves in R distance
   	search_curves(s_curves, Lhashtable, k, 0, dimension, delta, table_size,
   		hash, func, pcurves, stats, R, nn_curve, nn_distance,
-			grid_curve_found, curves_in_R);//5.returns the 1,2,3,4
+			grid_curve_found, curves_in_R, w);//5.returns the 1,2,3,4
 
 
 		for(size_t i=0; i<s_curves.size(); i++){//output print example
