@@ -31,7 +31,7 @@ void linear_combination(const vector<int> & cur_points, const vector<int> & r,
 void hash_curves(const vector<vector<norm_curve>> & Lcurves,
   int dimension, vector<vector<vector<entry>>> & Lhashtable,
   int tablesize, vector<real_curve*> & pcurves,
-  vector<real_curve> & normalized_curves, string hash){
+  vector<real_curve> & normalized_curves, string hash, int k, int w){
 
   int L{Lcurves.size()};
   int curve_size{Lcurves[0].size()};
@@ -39,18 +39,23 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
 
   for(int i=0; i<L; i++){
     vector<entry> hashtable[tablesize];
-    init_r(dimension,r);
 
 		if(hash=="classic"){
+      init_r(dimension, r);
 	    for(int j=0; j<curve_size; j++)
 	      classic_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable, tablesize,
   	    	pcurves,j,normalized_curves);
-  	  }
-//		else if(hash=="probabilistic"){
+  	 }
+		else if(hash=="probabilistic"){
+      init_r(k, r);
+      vector<hash_f> hs;
+      make_hashes(hs, w, , k);
+      int *g = new int [k];
+      make_g(hs, g);
 //			for(int j=0; j<curve_size; j++)
 //	      lsh_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable, tablesize,
 //  	    	pcurves,j,normalized_curves);
-//    }
+    }
 
     r.clear();
     vector<vector<entry>> temp{};
@@ -62,6 +67,8 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
     Lhashtable.push_back(std::move(temp));
     temp.clear();
   }
+  if(hash=="probabilistic")
+   delete [] g;
 }
 
 void print_hashtable(vector<vector<entry>> & ht,

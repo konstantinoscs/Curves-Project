@@ -82,12 +82,12 @@ int main(int argc, char **argv){
   	  concat_normalized_curves, v_size, normalized_curves);
 
   	//concat_normalized_curves[0][0].print();
-  
+
   	//L arrays of vectors of pointers(to real curves)
   	//we need pointers to (1)real curves and (2)normalized curves
   	vector<vector<vector<entry>>> Lhashtable;
   	hash_curves(concat_normalized_curves, dimension*k*v_size, Lhashtable,
-  	  table_size, pcurves, normalized_curves, hash);
+  	  table_size, pcurves, normalized_curves, hash, k, w);
   	//L = concat_normalized_curves.size()
 
   	//print_hashtable(Lhashtable[0],table_size);
@@ -103,15 +103,15 @@ int main(int argc, char **argv){
 
 
 		for(int i=0; i<s_curves.size(); i++){//output print example
-			cout <<"id:"<<s_curves[i].get_id()<<endl;
-			cout <<"hash:"<<hash<<endl;
-			cout <<"distance function:"<<func<<endl;
-			cout <<"nn_id:"<<nn_curve[i]->get_id()<<endl;
-			cout <<"nn_dist:"<<nn_distance[i]<<endl;
-			cout <<"grid_curve_found:"<<grid_curve_found[i]<<endl;
-			cout <<"ids in R distance:" <<endl;
+			cout << "id:" << s_curves[i].get_id() << endl;
+			cout << "hash:"<< hash<< endl;
+			cout << "distance function:" << func << endl;
+			cout << "nn_id:"<< nn_curve[i]->get_id() << endl;
+			cout << "nn_dist:"<< nn_distance[i] << endl;
+			cout << "grid_curve_found:" << grid_curve_found[i] << endl;
+			cout << "ids in R distance:" << endl;
 			for(int j=0; j<curves_in_R[i].size(); j++)
-				cout <<curves_in_R[i][j]<<endl;
+				cout << curves_in_R[i][j] << endl;
 		}
 	}
   cout << "End" << endl;
