@@ -51,7 +51,7 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
       init_r(kvec, r);
       vector<hash_f> hs;
       vector<int> g;
-      make_hashes(hs, w, dimension, k);
+      make_hashes(hs, w, dimension, kvec);
       make_g(hs, g);
 		  for(int j=0; j<curve_size; j++)
         lsh_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable, tablesize, pcurves, j, normalized_curves, g, hs);
