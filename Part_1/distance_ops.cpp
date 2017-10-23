@@ -55,10 +55,10 @@ void computeDTW(const vector<vector<double>> & pointsA,
 
 void find_distance(const vector<vector<double>> & pointsA,
 	const vector<vector<double>> & pointsB, string dist, double & distance){
-//	if(dist=="DFT")
+	if(dist=="DFT")
 			computeDFD(pointsA,pointsB,distance);
-//	else if(dist=="DTW")
-//			computeDTW(pointsA,pointsB,distance);
+	else if(dist=="DTW")
+			computeDTW(pointsA,pointsB,distance);
 //	else if(dist=="..something else..")
 
 	return ;

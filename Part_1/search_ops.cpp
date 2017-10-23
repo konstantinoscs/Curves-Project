@@ -60,13 +60,13 @@ void search_curves(vector<real_curve> & s_curves,
     v_size,n_curves);
   init_r(dimension*v_size*k,r);//if hash=="lsh" use first k elements of r
 //find the key for every search curve...
-//  if(hash=="1"){//classic
+//  if(hash=="classic"){
     for(int i=0; i<s_curves.size(); i++){
       linear_combination(concat_s_curves[0][i].as_vector(),r,key,tablesize);
       curve_keys.push_back(key);
     }
 //  }
-//  else if(hash=="2"){//lsh
+//  else if(hash=="probabilistic"){//lsh
 //  }
 //saves all curves in same bucket with s_curve[i]
   for(int i=0; i<s_curves.size(); i++){
