@@ -81,7 +81,8 @@ int main(int argc, char **argv){
 		nn_max_dist[i] = 0.0;
 	}
 
-  delta = R>0.001 ? 4*dimension*R : 0.05;
+  //delta = R>0.001 ? 4*dimension*R : 0.05;
+  delta = 0.05;
 	rep_constant = stats ? REPETITIONS : 1;
 
 	table_size = curves.size()/32;
@@ -91,14 +92,14 @@ int main(int argc, char **argv){
 	for(int i=0; i<rep_constant; i++){
 		vector<real_curve> normalized_curves{};
 	  vector<vector<norm_curve>> concat_normalized_curves{};
+  	//L arrays of vectors of entries we need pointers to:
+  	//(1)real curves and (2)normalized curves(== entry)
+  	vector<vector<vector<entry>>> Lhashtable{};
 	  /*Lconcatenate_kcurves will end with concat_normalized_curves having
   	L vectors of */
   	Lconcatenate_kcurves(k, L ,curves, dimension, delta,
   	  concat_normalized_curves, v_size, normalized_curves);
 
-  	//L arrays of vectors of entries we need pointers to:
-  	//(1)real curves and (2)normalized curves(== entry)
-  	vector<vector<vector<entry>>> Lhashtable{};
   	hash_curves(concat_normalized_curves, dimension*k*v_size, Lhashtable,
   	  table_size, pcurves, normalized_curves, hash, kvec, w);
 
