@@ -60,7 +60,10 @@ int main(int argc, char **argv){
  	vector<real_curve> s_curves{};
  	double R{};
  	//now gets the search curves
- 	read_query_curves(query_s, s_curves, dimension, R);
+ 	if(!read_query_curves(query_s, s_curves, dimension, R)){
+    cerr << "Something went wrong while reading the search queries!"<< endl;
+    return -1;
+  }
 
  	int tsize{};
 	tsize = s_curves.size();
