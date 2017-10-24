@@ -233,5 +233,6 @@ bool write_out_file(string out_s, string hash, string func,
     }
     out_f << endl;
 	}
+  out_f.close();
   return true;
 }
