@@ -2,10 +2,10 @@
 #include <fstream>
 #include <string>
 #include <vector>
-#include <array>
+#include <cmath>
 #include <iomanip>
 #include <ctime>
-#include "limits"
+#include <limits>
 
 #include "data_ops.h"
 #include "search_ops.h"
@@ -70,23 +70,22 @@ int main(int argc, char **argv){
  	bool grid_curve_found[tsize];//2
 	vector<string> curves_in_R[tsize];//3.ids from all curves in R distance
 	//if stats==true used as min distance
-  double nn_distance[tsize];//4.nn distance
-	double nn_max_distance[tsize];
-	double nn_avg_distance[tsize];
+  double nn_dist[tsize];//4.nn distance
+	double nn_max_dist[tsize];
+	double nn_avg_dist[tsize];
 
 	double double_max{std::numeric_limits<double>::max()};
 	//init min/max dist
 	for(int i=0; i<tsize; i++){
-		nn_distance[i] = double_max;
-		nn_max_distance[i] = 0.0;
+		nn_dist[i] = double_max;
+		nn_max_dist[i] = 0.0;
 	}
 
-  //delta = 4*dimension*minm*r; (should be like that)
-  delta = 0.05;
+  delta = R ? 4*dimension*R : 0.05;
 
 	rep_constant = stats ? REPETITIONS : 1;
 
-	table_size = curves.size()/16;
+	table_size = curves.size()/32;
 	for(size_t i=0; i<curves.size(); i++)
 		pcurves.push_back(&curves[i]);
 
@@ -111,14 +110,23 @@ int main(int argc, char **argv){
 			grid_curve_found, curves_in_R, w);
 			
 		for(int i=0; i<tsize; i++){
-			nn_distance[i] = min(nn_distance[i],temp_nn_dist[i]);
-			nn_max_distance[i] = max(nn_max_distance[i],temp_nn_dist[i]);
-			nn_avg_distance[i] += temp_nn_dist[i]/REPETITIONS; 
+			nn_dist[i] = min(nn_dist[i],temp_nn_dist[i]);
+			nn_max_dist[i] = max(nn_max_dist[i],temp_nn_dist[i]);
+			nn_avg_dist[i] += temp_nn_dist[i]/REPETITIONS; 
 		}
 	}
 
+	double true_nn_dist[tsize];
+	real_curve* true_nn[tsize];
+	vector<string> temp;
+	if(stats){
+		for(int i=0; i<tsize; i++)//find true nn for all s_curves
+			find_nn(s_curves[i], pcurves, dimension, func, true_nn[i],
+				true_nn_dist[i], true, 0, temp);
+	}
+
 	for(size_t i=0; i<s_curves.size(); i++){//output print example
-		cout << "id:" << s_curves[i].get_id() << endl;//comments-->for stats=false
+		cout << "id:" << s_curves[i].get_id() << endl;//for stats=false
 		cout << "hash:"<< hash<< endl;
 		cout << "distance function:" << func << endl;
 		//cout << "nn_id:"<< nn_curve[i]->get_id() << endl;
@@ -127,9 +135,10 @@ int main(int argc, char **argv){
 		//cout << "ids in R distance:" << endl;
 		//for(size_t j=0; j<curves_in_R[i].size(); j++)
 		//	cout << curves_in_R[i][j] << endl;
-		cout <<"min_dist:"<<nn_distance[i] << endl;//here forstats=true
-		cout <<"max_dist:"<<nn_max_distance[i] << endl;
-		cout <<"avg_dist:"<<nn_avg_distance[i] << endl;
+		//here for stats=true
+		cout <<"|min_dist-true_dist|:"<<abs(nn_dist[i]-true_nn_dist[i])<<endl;
+		cout <<"|max_dist-true_dist|:"<<abs(nn_max_dist[i]-true_nn_dist[i])<<endl;
+		cout <<"|avg_dist-true_dist|:"<<abs(nn_avg_dist[i]-true_nn_dist[i])<<endl;
 	}
   cout << "End" << endl;
   return 1;
