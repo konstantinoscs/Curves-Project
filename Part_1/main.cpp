@@ -81,7 +81,7 @@ int main(int argc, char **argv){
 		nn_max_dist[i] = 0.0;
 	}
 
-  delta = R ? 4*dimension*R : 0.05;
+  delta = R>0.001 ? 4*dimension*R : 0.05;
 
 	rep_constant = stats ? REPETITIONS : 1;
 
@@ -119,27 +119,27 @@ int main(int argc, char **argv){
 	double true_nn_dist[tsize];
 	real_curve* true_nn[tsize];
 	vector<string> temp;
-	if(stats){
-		for(int i=0; i<tsize; i++)//find true nn for all s_curves
-			find_nn(s_curves[i], pcurves, dimension, func, true_nn[i],
-				true_nn_dist[i], true, 0, temp);
-	}
+	for(int i=0; i<tsize; i++)//find true nn for all s_curves
+		find_nn(s_curves[i], pcurves, dimension, func, true_nn[i],
+			true_nn_dist[i], true, 0, temp);
 
-	for(size_t i=0; i<s_curves.size(); i++){//output print example
+/*	for(size_t i=0; i<s_curves.size(); i++){//output print example
 		cout << "id:" << s_curves[i].get_id() << endl;//for stats=false
 		cout << "hash:"<< hash<< endl;
 		cout << "distance function:" << func << endl;
-		//cout << "nn_id:"<< nn_curve[i]->get_id() << endl;
-		//cout << "nn_dist:"<< nn_distance[i] << endl;
+		//cout << "Nearest Neighbor:"<< nn_curve[i]->get_id() << endl;
+		//cout << "True Nearest Neighbor:"<< true_nn[i]->get_id() << endl;
+		//cout << "Nearest Neighbor Distance:"<< nn_dist[i] << endl;
+		//cout << "True Nearest Neighbor Distance:"<< true_nn_dist[i] << endl;
 		//cout << "grid_curve_found:" << grid_curve_found[i] << endl;
 		//cout << "ids in R distance:" << endl;
-		//for(size_t j=0; j<curves_in_R[i].size(); j++)
+		//for(size_t j=0; j<curves_in_R[i].size() && j<5 ; j++)
 		//	cout << curves_in_R[i][j] << endl;
 		//here for stats=true
 		cout <<"|min_dist-true_dist|:"<<abs(nn_dist[i]-true_nn_dist[i])<<endl;
 		cout <<"|max_dist-true_dist|:"<<abs(nn_max_dist[i]-true_nn_dist[i])<<endl;
 		cout <<"|avg_dist-true_dist|:"<<abs(nn_avg_dist[i]-true_nn_dist[i])<<endl;
-	}
+	}*/
   cout << "End" << endl;
   return 1;
 }
