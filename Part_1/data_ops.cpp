@@ -202,35 +202,36 @@ bool write_out_file(string out_s, string hash, string func,
   }
 
   for(size_t i=0; i<s_curves.size(); i++){
-    out_f << "Query:" << s_curves[i].get_id() << endl;//for stats=false
-		out_f << "DistanceFunction:" << func << endl;
-    out_f << "HashFunction:"<< hash<< endl;
+    out_f << "Query: " << s_curves[i].get_id() << endl;//for stats=false
+		out_f << "DistanceFunction: " << func << endl;
+    out_f << "HashFunction: "<< hash<< endl;
     if(!stats){
       found = grid_curve_found[i]? "True" : "False";
-      out_f << "FoundGridCurve:" << found << endl;
-		  out_f << "LSH Nearest Neighbor:"<< nn_curve[i]->get_id() << endl;
-		  out_f << "True Nearest Neighbor:"<< true_nn[i]->get_id() << endl;
-		  out_f << "distanceLSH:"<< nn_dist[i] << endl;
-		  out_f << "distanceTrue:"<< true_nn_dist[i] << endl;
+      out_f << "FoundGridCurve: " << found << endl;
+		  out_f << "LSH Nearest Neighbor: " << nn_curve[i]->get_id() << endl;
+		  out_f << "True Nearest Neighbor: " << true_nn[i]->get_id() << endl;
+		  out_f << "distanceLSH: " << nn_dist[i] << endl;
+		  out_f << "distanceTrue: " << true_nn_dist[i] << endl;
 		  out_f << "R-near neighbors:" << endl;
-		   for(size_t j=0; j<curves_in_R[i].size() && j<5 ; j++)
+		   for(size_t j=0; j<curves_in_R[i].size(); j++)
 			 out_f << curves_in_R[i][j] << endl;
     }
     else{
       temp_dist = nn_dist[i]-true_nn_dist[i];
       temp_dist = temp_dist < 0 ? temp_dist*=-1 : temp_dist;
-		  out_f << "|minDistanceLSH - distanceTrue|:" << temp_dist <<endl;
+		  out_f << "|minDistanceLSH - distanceTrue|: " << temp_dist <<endl;
       temp_dist = nn_max_dist[i]-true_nn_dist[i];
       temp_dist = temp_dist < 0 ? temp_dist*=-1 : temp_dist;
-		  out_f << "|maxDistance - distanceTrue|:" << temp_dist <<endl;
+		  out_f << "|maxDistance - distanceTrue|: " << temp_dist <<endl;
       temp_dist = nn_avg_dist[i]-true_nn_dist[i];
       temp_dist = temp_dist < 0 ? temp_dist*=-1 : temp_dist;
-		  out_f << "|avgDistance - distanceTrue|:" << temp_dist <<endl;
+		  out_f << "|avgDistance - distanceTrue|: " << temp_dist <<endl;
 		  out_f << "tLSHmin: " << time1 << endl;
       out_f << "tLSHmax: " << time1 << endl;
       out_f << "tLSHavg: " << time1 << endl;
-		  out_f << "t_true: "<< time2<< endl;
+		  out_f << "tTrue: "<< time2<< endl;
     }
+    out_f << endl;
 	}
   return true;
 }
