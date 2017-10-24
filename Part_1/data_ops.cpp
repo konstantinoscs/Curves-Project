@@ -128,7 +128,7 @@ bool read_dataset_curves(string data_s, vector<real_curve> & curves,
 
   //test if there is a file to get the data from
   if (!data.is_open()){
-    cout << "couldn't find data file!" << endl;
+    cerr << "couldn't find data file!" << endl;
     return false;
   }
 
@@ -166,7 +166,7 @@ bool read_query_curves(string query_s, vector<real_curve> & curves,
   ifstream query(query_s);
 
   if (!query.is_open()){
-    cout << "couldn't find query file!" << endl;
+    cerr << "couldn't find query file!" << endl;
     return false;
   }
 
@@ -182,5 +182,55 @@ bool read_query_curves(string query_s, vector<real_curve> & curves,
   }
 
   query.close();
+  return true;
+}
+
+bool write_out_file(string out_s, string hash, string func,
+  vector<real_curve> & s_curves, bool stats, int tsize, real_curve ** nn_curve,
+  real_curve ** true_nn, double * nn_dist ,double * nn_max_dist,
+  double * nn_avg_dist, double * true_nn_dist, bool * grid_curve_found,
+  vector<string> * curves_in_R, double time1, double time2){
+
+  //temp dist will be used to calculate the distance differences
+  double temp_dist{};
+  ofstream out_f(out_s);
+  string found;
+  //test if there is a file to get the data from
+  if (!out_f.is_open()){
+    cerr << "couldn't create output  file!" << endl;
+    return false;
+  }
+
+  for(size_t i=0; i<s_curves.size(); i++){
+    out_f << "Query:" << s_curves[i].get_id() << endl;//for stats=false
+		out_f << "DistanceFunction:" << func << endl;
+    out_f << "HashFunction:"<< hash<< endl;
+    if(!stats){
+      found = grid_curve_found[i]? "True" : "False";
+      out_f << "FoundGridCurve:" << found << endl;
+		  out_f << "LSH Nearest Neighbor:"<< nn_curve[i]->get_id() << endl;
+		  out_f << "True Nearest Neighbor:"<< true_nn[i]->get_id() << endl;
+		  out_f << "distanceLSH:"<< nn_dist[i] << endl;
+		  out_f << "distanceTrue:"<< true_nn_dist[i] << endl;
+		  out_f << "R-near neighbors:" << endl;
+		   for(size_t j=0; j<curves_in_R[i].size() && j<5 ; j++)
+			 out_f << curves_in_R[i][j] << endl;
+    }
+    else{
+      temp_dist = nn_dist[i]-true_nn_dist[i];
+      temp_dist = temp_dist < 0 ? temp_dist*=-1 : temp_dist;
+		  out_f << "|minDistanceLSH - distanceTrue|:" << temp_dist <<endl;
+      temp_dist = nn_max_dist[i]-true_nn_dist[i];
+      temp_dist = temp_dist < 0 ? temp_dist*=-1 : temp_dist;
+		  out_f << "|maxDistance - distanceTrue|:" << temp_dist <<endl;
+      temp_dist = nn_avg_dist[i]-true_nn_dist[i];
+      temp_dist = temp_dist < 0 ? temp_dist*=-1 : temp_dist;
+		  out_f << "|avgDistance - distanceTrue|:" << temp_dist <<endl;
+		  out_f << "tLSHmin: " << time1 << endl;
+      out_f << "tLSHmax: " << time1 << endl;
+      out_f << "tLSHavg: " << time1 << endl;
+		  out_f << "t_true: "<< time2<< endl;
+    }
+	}
   return true;
 }
