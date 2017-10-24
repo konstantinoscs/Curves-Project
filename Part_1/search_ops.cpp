@@ -78,7 +78,6 @@ void search_curves(vector<real_curve> & s_curves,
 			curve_keys.push_back(key);
   	}
   }
-  cout <<"here"<<endl;
 //saves all curves in same bucket with s_curve[i]
   for(size_t i=0; i<s_curves.size(); i++){
     for(size_t j=0; j<Lht.size(); j++){
