@@ -74,7 +74,7 @@ int main(int argc, char **argv){
 	double nn_max_distance[tsize];
 	double nn_avg_distance[tsize];
 
-	double double_max = {std::numeric_limits<double>::max()};
+	double double_max{std::numeric_limits<double>::max()};
 	//init min/max dist
 	for(int i=0; i<tsize; i++){
 		nn_distance[i] = double_max;
@@ -83,7 +83,6 @@ int main(int argc, char **argv){
 
   //delta = 4*dimension*minm*r; (should be like that)
   delta = 0.05;
-  //cout <<"For delta = "<<delta <<endl;
 
 	rep_constant = stats ? REPETITIONS : 1;
 
@@ -99,22 +98,17 @@ int main(int argc, char **argv){
   	Lconcatenate_kcurves(k, L ,curves, dimension, delta,
   	  concat_normalized_curves, v_size, normalized_curves);
 
-  	//concat_normalized_curves[0][0].print();
-
-  	//L arrays of vectors of pointers(to real curves)
-  	//we need pointers to (1)real curves and (2)normalized curves
+  	//L arrays of vectors of entries we need pointers to:
+  	//(1)real curves and (2)normalized curves(== entry)
   	vector<vector<vector<entry>>> Lhashtable{};
   	hash_curves(concat_normalized_curves, dimension*k*v_size, Lhashtable,
   	  table_size, pcurves, normalized_curves, hash, kvec, w);
-  	//L = concat_normalized_curves.size()
-
-  	//print_hashtable(Lhashtable[0],table_size);
 
 		double temp_nn_dist[tsize];
 
   	search_curves(s_curves, Lhashtable, k, 0, dimension, delta, table_size,
   		hash, func, pcurves, stats, R, nn_curve, temp_nn_dist,
-			grid_curve_found, curves_in_R, w);//5.returns the 1,2,3,4
+			grid_curve_found, curves_in_R, w);
 			
 		for(int i=0; i<tsize; i++){
 			nn_distance[i] = min(nn_distance[i],temp_nn_dist[i]);
@@ -124,7 +118,7 @@ int main(int argc, char **argv){
 	}
 
 	for(size_t i=0; i<s_curves.size(); i++){//output print example
-		cout << "id:" << s_curves[i].get_id() << endl;
+		cout << "id:" << s_curves[i].get_id() << endl;//comments-->for stats=false
 		cout << "hash:"<< hash<< endl;
 		cout << "distance function:" << func << endl;
 		//cout << "nn_id:"<< nn_curve[i]->get_id() << endl;
@@ -133,7 +127,7 @@ int main(int argc, char **argv){
 		//cout << "ids in R distance:" << endl;
 		//for(size_t j=0; j<curves_in_R[i].size(); j++)
 		//	cout << curves_in_R[i][j] << endl;
-		cout <<"min_dist:"<<nn_distance[i] << endl;
+		cout <<"min_dist:"<<nn_distance[i] << endl;//here forstats=true
 		cout <<"max_dist:"<<nn_max_distance[i] << endl;
 		cout <<"avg_dist:"<<nn_avg_distance[i] << endl;
 	}

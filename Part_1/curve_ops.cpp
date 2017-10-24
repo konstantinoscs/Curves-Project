@@ -95,7 +95,6 @@ void Lconcatenate_kcurves(int k, int L,
       curve_reduction(curves[i],delta,grid_cur,min,max);
       normalized_curves.push_back(std::move(grid_cur));
     }
-    //cout <<"max="<<max<<"\nmin="<<min<<endl;
 
     for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
       vector<norm_curve> concat_curves{};
