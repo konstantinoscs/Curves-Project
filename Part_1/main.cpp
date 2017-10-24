@@ -25,13 +25,13 @@ int main(int argc, char **argv){
   //L  = number of hashtables
   //w = window for the hs
   int k{4}, L{5}, w{4}, kvec{4};
-  double delta{},elapsed_time_1{0.0},elapsed_time_2{};
-  clock_t begin,end;
+  double delta{}, elapsed_time_1{0.0}, elapsed_time_2{};
+  clock_t begin, end;
   int dimension{}, v_size{};
   bool stats{false};
   int rep_constant{};
   int table_size{};
-  string data_s{"trajectories_dataset"}, query_s{"test_dataset"}, out_s;
+  string data_s{"trajectories_dataset"}, query_s{"test_dataset"}, out_s{"results"};
   string func, hash;
   //our curves aka the dataset
   vector<real_curve> curves{};
@@ -61,10 +61,10 @@ int main(int argc, char **argv){
  	double R{};
  	//now gets the search curves
  	read_query_curves(query_s, s_curves, dimension, R);
- 	
+
  	int tsize{};
 	tsize = s_curves.size();
- 	
+
   cout << "Read " << s_curves.size() << " search curves" << endl;
   //used only if stats==false(1,2,3)
 	real_curve* nn_curve[tsize];//1.nearest neighbor for every s curve
@@ -109,13 +109,13 @@ int main(int argc, char **argv){
   	search_curves(s_curves, Lhashtable, k, 0, dimension, delta, table_size,
   		hash, func, pcurves, stats, R, nn_curve, temp_nn_dist,
 			grid_curve_found, curves_in_R, w);
-			
+
 		for(int i=0; i<tsize; i++){
 			nn_dist[i] = min(nn_dist[i],temp_nn_dist[i]);
 			nn_max_dist[i] = max(nn_max_dist[i],temp_nn_dist[i]);
-			nn_avg_dist[i] += temp_nn_dist[i]/REPETITIONS; 
+			nn_avg_dist[i] += temp_nn_dist[i]/REPETITIONS;
 		}
-		
+
 		end = clock();
 		elapsed_time_1 += double(end - begin) / CLOCKS_PER_SEC;
 	}
@@ -130,25 +130,9 @@ int main(int argc, char **argv){
 	end = clock();
 	elapsed_time_2 = double(end - begin) / CLOCKS_PER_SEC;
 
-/*	for(size_t i=0; i<s_curves.size(); i++){//output print example
-		cout << "id:" << s_curves[i].get_id() << endl;//for stats=false
-		cout << "hash:"<< hash<< endl;
-		cout << "distance function:" << func << endl;
-		//cout << "Nearest Neighbor:"<< nn_curve[i]->get_id() << endl;
-		//cout << "True Nearest Neighbor:"<< true_nn[i]->get_id() << endl;
-		//cout << "Nearest Neighbor Distance:"<< nn_dist[i] << endl;
-		//cout << "True Nearest Neighbor Distance:"<< true_nn_dist[i] << endl;
-		//cout << "grid_curve_found:" << grid_curve_found[i] << endl;
-		//cout << "ids in R distance:" << endl;
-		//for(size_t j=0; j<curves_in_R[i].size() && j<5 ; j++)
-		//	cout << curves_in_R[i][j] << endl;
-		//here for stats=true
-		cout <<"|min_dist-true_dist|:"<<abs(nn_dist[i]-true_nn_dist[i])<<endl;
-		cout <<"|max_dist-true_dist|:"<<abs(nn_max_dist[i]-true_nn_dist[i])<<endl;
-		cout <<"|avg_dist-true_dist|:"<<abs(nn_avg_dist[i]-true_nn_dist[i])<<endl;
-		cout <<"t_min=t_max=t_avg:"<<elapsed_time_1<<endl;
-		cout <<"t_true:"<<elapsed_time_2<<endl;
-	}*/
+  write_out_file(out_s, hash, func, s_curves, stats, tsize, nn_curve, true_nn,
+    nn_dist, nn_max_dist, nn_avg_dist, true_nn_dist, grid_curve_found,
+    curves_in_R, elapsed_time_1, elapsed_time_2);
   cout << "End" << endl;
   return 1;
 }
