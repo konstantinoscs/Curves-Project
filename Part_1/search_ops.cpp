@@ -84,7 +84,6 @@ void search_curves(vector<real_curve> & s_curves,
 			for(size_t z=0; z<Lht[j][curve_keys[i]].size(); z++){
 				if(n_curves[i].get_points()==Lht[j][curve_keys[i]][z].gcurve->get_points())
 				{//then we found the same grid curve...
-					cout << "Found true" << endl;
 					grid_curve_found[i] = true;
 					same_grid_curves[i].push_back(Lht[j][curve_keys[i]][z].rcurve);
 				}
