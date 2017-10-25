@@ -57,8 +57,18 @@ int main(int argc, char **argv){
   // cout << data_s << endl << query_s << endl << out_s << endl;
   // cout << func << endl << hash << endl;
 
+  //delta = R>0.002 ? 4*dimension*R : 0.01;
+  delta = 0.05;
+	rep_constant = stats ? REPETITIONS : 1;
+
+	table_size = curves.size()/16;
+	for(size_t i=0; i<curves.size(); i++)
+		pcurves.push_back(&curves[i]);
+
  	vector<real_curve> s_curves{};
  	double R{};
+ 	
+ 	//here should be a do...while loop
  	//now gets the search curves
  	if(!read_query_curves(query_s, s_curves, dimension, R)){
     cerr << "Something went wrong while reading the search queries!"<< endl;
@@ -84,14 +94,6 @@ int main(int argc, char **argv){
 		nn_max_dist[i] = 0.0;
 		elapsed_time_1[i] = 0.0;
 	}
-
-  //delta = R>0.001 ? 4*dimension*R : 0.05;
-  delta = 0.05;
-	rep_constant = stats ? REPETITIONS : 1;
-
-	table_size = curves.size()/16; //curves.size();
-	for(size_t i=0; i<curves.size(); i++)
-		pcurves.push_back(&curves[i]);
 
 	for(int i=0; i<rep_constant; i++){
 		vector<real_curve> normalized_curves{};

@@ -19,6 +19,7 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 //initialize distance with first curve's distance
 	find_distance(scurve.get_points(),pcurves[0]->get_points(),dist,distance);
 	nneigh = pcurves[0];
+	curves_in_R_i.clear();
 	if(!stats && distance<=R)
 			curves_in_R_i.push_back(pcurves[0]->get_id());
 	for(size_t i=1; i<pcurves.size(); i++){
@@ -32,7 +33,7 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 			curves_in_R_i.push_back(pcurves[i]->get_id());
 	}
 	if(!stats && R==0.0 && !(curves_in_R_i.size()))//maybe same curve(s) found
-				curves_in_R_i.push_back(nneigh->get_id());//else push the nneigh
+		curves_in_R_i.push_back(nneigh->get_id());//else push the nneigh
 	return ;
 }
 
@@ -118,8 +119,8 @@ void search_curves(vector<real_curve> & s_curves,
 		if(!stats)//search in radius R
 			find_nn(s_curves[i],pcurves,dimension,dist,nneigh,
 				distance,stats,R,curves_in_R[i]);
-	end = clock();
-	elapsed_time[i] += double(end - begin) / CLOCKS_PER_SEC;
+		end = clock();
+		elapsed_time[i] += double(end - begin) / CLOCKS_PER_SEC;
 	}
 	return ;
 }

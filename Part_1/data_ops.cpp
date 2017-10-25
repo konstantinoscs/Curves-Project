@@ -213,8 +213,8 @@ bool write_out_file(string out_s, string hash, string func,
 		  out_f << "distanceLSH: " << nn_dist[i] << endl;
 		  out_f << "distanceTrue: " << true_nn_dist[i] << endl;
 		  out_f << "R-near neighbors:" << endl;
-		   for(size_t j=0; j<curves_in_R[i].size(); j++)
-			    out_f << curves_in_R[i][j] << endl;
+		  for(size_t j=0; j<curves_in_R[i].size(); j++)
+			  out_f << curves_in_R[i][j] << endl;
         //dokimase kai auto kanontas comment out tis 2 pano grammes
         //out_f << curves_in_R[i][0] << endl;
     }
