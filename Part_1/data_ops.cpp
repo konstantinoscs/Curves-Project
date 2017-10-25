@@ -206,7 +206,7 @@ bool write_out_file(string out_s, string hash, string func,
 		out_f << "DistanceFunction: " << func << endl;
     out_f << "HashFunction: "<< hash<< endl;
     if(!stats){
-      found = grid_curve_found[i]? "True" : "False";
+      found = grid_curve_found[i] ? "True" : "False";
       out_f << "FoundGridCurve: " << found << endl;
 		  out_f << "LSH Nearest Neighbor: " << nn_curve[i]->get_id() << endl;
 		  out_f << "True Nearest Neighbor: " << true_nn[i]->get_id() << endl;

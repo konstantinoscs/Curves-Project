@@ -38,7 +38,7 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 
 void search_curves(vector<real_curve> & s_curves,
   vector<vector<vector<entry>>> & Lht, int k, int v_size,
-  int dimension, int delta, int tablesize, string hash,
+  int dimension, double delta, int tablesize, string hash,
 	string dist, vector<real_curve*> & pcurves, bool stats,
 	double R, real_curve** nn_curve, double* nn_distance,
 	bool* grid_curve_found, vector<string> * curves_in_R, int w){
@@ -57,8 +57,8 @@ void search_curves(vector<real_curve> & s_curves,
 //k-concatenate the search curves
   Lconcatenate_kcurves(k,1,s_curves,dimension,delta,concat_s_curves,
     v_size,n_curves);
-  init_r(dimension*v_size*k,r);//if hash=="lsh" use first k elements of r
-//find the key for every search curve...
+  init_r(dimension*v_size*k,r);
+
   if(hash=="classic"){
     for(size_t i=0; i<s_curves.size(); i++){
       linear_combination(concat_s_curves[0][i].as_vector(),r,key,tablesize);
@@ -84,7 +84,8 @@ void search_curves(vector<real_curve> & s_curves,
 			for(size_t z=0; z<Lht[j][curve_keys[i]].size(); z++){
 				if(n_curves[i].get_points()==Lht[j][curve_keys[i]][z].gcurve->get_points())
 				{//then we found the same grid curve...
-					grid_curve_found[i]=true;
+					cout << "Found true" << endl;
+					grid_curve_found[i] = true;
 					same_grid_curves[i].push_back(Lht[j][curve_keys[i]][z].rcurve);
 				}
 				bucket_curves[i].push_back(Lht[j][curve_keys[i]][z].rcurve);
