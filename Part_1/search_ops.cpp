@@ -19,7 +19,6 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 //initialize distance with first curve's distance
 	find_distance(scurve.get_points(),pcurves[0]->get_points(),dist,distance);
 	nneigh = pcurves[0];
-	curves_in_R_i.clear();
 	if(!stats && distance<=R)
 			curves_in_R_i.push_back(pcurves[0]->get_id());
 	for(size_t i=1; i<pcurves.size(); i++){
@@ -106,7 +105,7 @@ void search_curves(vector<real_curve> & s_curves,
 				distance,stats,R,curves_in_R[i]);//search greedy+in radius R
 			stats = true;//use stats as flag to avoid calling second time this fnct
 		}
-		else if(grid_curve_found[i]){//search only in same grid curves
+		else if(same_grid_curves[i].size()!=0){//search only in same grid curves
 			find_nn(s_curves[i],same_grid_curves[i],dimension,dist,nneigh,
 				distance,stats,R,curves_in_R[i]);//also check if their distance<=R
 			stats = true;

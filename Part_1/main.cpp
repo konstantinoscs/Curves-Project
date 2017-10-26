@@ -60,8 +60,7 @@ int main(int argc, char **argv){
   //delta = R>0.002 ? 4*dimension*R : 0.01;
   delta = 0.05;
 	rep_constant = stats ? REPETITIONS : 1;
-
-	table_size = curves.size()/16;
+	table_size = curves.size()/32;
 
   do{
   vector<real_curve> s_curves{};
@@ -93,14 +92,6 @@ int main(int argc, char **argv){
 		elapsed_time_1[i] = 0.0;
 	}
 
-  //delta = R>0.001 ? 4*dimension*R : 0.05;
-  delta = 0.05;
-	rep_constant = stats ? REPETITIONS : 1;
-
-	table_size = curves.size()/16;
-	for(size_t i=0; i<curves.size(); i++)
-		pcurves.push_back(&curves[i]);
-
 	for(int i=0; i<rep_constant; i++){
 		vector<real_curve> normalized_curves{};
 	  vector<vector<norm_curve>> concat_normalized_curves{};
@@ -129,7 +120,6 @@ int main(int argc, char **argv){
 			elapsed_time_1[i] += double(end - begin) / CLOCKS_PER_SEC;
 		}
 	}
-
 	double true_nn_dist[tsize];
 	real_curve* true_nn[tsize];
 	vector<string> temp;
