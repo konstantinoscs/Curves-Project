@@ -1,5 +1,4 @@
 #include <vector>
-#include <string>
 
 #include "curve.h"
 #include "general_hash.h"

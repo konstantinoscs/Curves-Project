@@ -1,8 +1,9 @@
 #include <vector>
 #include <string>
-#include <iostream>
 #include <cmath>
 #include <limits>
+
+#include "minmax.h"
 
 using namespace std;
 
@@ -28,8 +29,8 @@ void computeDFD(const vector<vector<double>> & pointsA,
 		L[0][i] = maxdbl;
 	for(int i=1; i<m+1; i++)
 		for(int j=1; j<n+1; j++)
-			L[i][j] = max(euclid_dist(pointsA[i-1],pointsB[j-1]),
-				min(L[i-1][j-1],min(L[i-1][j],L[i][j-1])));
+			L[i][j] = MYmax(euclid_dist(pointsA[i-1],pointsB[j-1]),
+				MYmin(L[i-1][j-1],MYmin(L[i-1][j],L[i][j-1])));
 	distance = L[m][n];
 	return ;
 }

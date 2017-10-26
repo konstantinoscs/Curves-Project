@@ -13,7 +13,7 @@ using namespace std;
 
 void init_r(int dimension, vector<int> & r){
     for(int i=0; i< dimension; i++)
-      r.push_back(int_uniform_rand(0,1000000));//idk the [M,N]
+      r.push_back(int_uniform_rand(0,1000000));//the selected [M,N] was random
     return ;
 }
 
@@ -46,6 +46,8 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
 	    for(size_t j=0; j<curve_size; j++)
 	      classic_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable,
 	      	tablesize, pcurves, j, normalized_curves);
+	      //after calling the above function we inserted in hashtable
+	      //the curve[j] as an entry
   	 }
 		else if(hash=="probabilistic"){
       init_r(kvec, r);
@@ -56,6 +58,7 @@ void hash_curves(const vector<vector<norm_curve>> & Lcurves,
 		  for(size_t j=0; j<curve_size; j++)
         lsh_curve_hashing(Lcurves[i][j].as_vector(),r, hashtable,
         	tablesize, pcurves, j, normalized_curves, g, hs);
+        //same here like before after calling this function
     }
 
     r.clear();
