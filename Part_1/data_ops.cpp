@@ -45,7 +45,7 @@ std::string &func, std::string &hash){
   return true;
 }
 
-void input_parameters(std::string &data_s, std::string &func, std::string &hash){
+void input_parameters(string &data_s, string &func, string &hash, string &query_s){
   int choice{};
 
   if(data_s.empty()){
@@ -71,6 +71,12 @@ void input_parameters(std::string &data_s, std::string &func, std::string &hash)
     cin >> choice;
     cout << endl;
     hash = choice-1 ? "probabilistic" : "classic";
+  }
+
+  if(query_s.empty()){
+    cout << "Give the path to the query file: " << endl;
+    cin >> query_s;
+    cout << endl;
   }
 }
 
