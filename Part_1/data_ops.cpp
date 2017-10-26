@@ -189,7 +189,7 @@ bool write_out_file(string out_s, string hash, string func,
   vector<real_curve> & s_curves, bool stats, int tsize, real_curve ** nn_curve,
   real_curve ** true_nn, double * nn_dist ,double * nn_max_dist,
   double * nn_avg_dist, double * true_nn_dist, bool * grid_curve_found,
-  vector<string> * curves_in_R, double time1, double time2){
+  vector<string> * curves_in_R, double * time1, double * time2){
 
   //temp dist will be used to calculate the distance differences
   double temp_dist{};
@@ -213,8 +213,8 @@ bool write_out_file(string out_s, string hash, string func,
 		  out_f << "distanceLSH: " << nn_dist[i] << endl;
 		  out_f << "distanceTrue: " << true_nn_dist[i] << endl;
 		  out_f << "R-near neighbors:" << endl;
-		   for(size_t j=0; j<curves_in_R[i].size(); j++)
-			    out_f << curves_in_R[i][j] << endl;
+		  for(size_t j=0; j<curves_in_R[i].size(); j++)
+			  out_f << curves_in_R[i][j] << endl;
         //dokimase kai auto kanontas comment out tis 2 pano grammes
         //out_f << curves_in_R[i][0] << endl;
     }
@@ -228,10 +228,10 @@ bool write_out_file(string out_s, string hash, string func,
       temp_dist = nn_avg_dist[i]-true_nn_dist[i];
       temp_dist = temp_dist < 0 ? temp_dist*=-1 : temp_dist;
 		  out_f << "|avgDistance - distanceTrue|: " << temp_dist <<endl;
-		  out_f << "tLSHmin: " << time1 << endl;
-      out_f << "tLSHmax: " << time1 << endl;
-      out_f << "tLSHavg: " << time1 << endl;
-		  out_f << "tTrue: "<< time2<< endl;
+		  out_f << "tLSHmin: " << time1[i] << endl;
+      out_f << "tLSHmax: " << time1[i] << endl;
+      out_f << "tLSHavg: " << time1[i] << endl;
+		  out_f << "tTrue: "<< time2[i] << endl;
     }
     out_f << endl;
 	}

@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <ctime>
 
 #include "general_hash.h"
 #include "curve_ops.h"
@@ -18,6 +19,7 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 //initialize distance with first curve's distance
 	find_distance(scurve.get_points(),pcurves[0]->get_points(),dist,distance);
 	nneigh = pcurves[0];
+	curves_in_R_i.clear();
 	if(!stats && distance<=R)
 			curves_in_R_i.push_back(pcurves[0]->get_id());
 	for(size_t i=1; i<pcurves.size(); i++){
@@ -31,7 +33,7 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 			curves_in_R_i.push_back(pcurves[i]->get_id());
 	}
 	if(!stats && R==0.0 && !(curves_in_R_i.size()))//maybe same curve(s) found
-				curves_in_R_i.push_back(nneigh->get_id());//else push the nneigh
+		curves_in_R_i.push_back(nneigh->get_id());//else push the nneigh
 	return ;
 }
 
@@ -41,7 +43,8 @@ void search_curves(vector<real_curve> & s_curves,
   int dimension, double delta, int tablesize, string hash,
 	string dist, vector<real_curve*> & pcurves, bool stats,
 	double R, real_curve** nn_curve, double* nn_distance,
-	bool* grid_curve_found, vector<string> * curves_in_R, int w){
+	bool* grid_curve_found, vector<string> * curves_in_R, int w,
+	double* elapsed_time){
 
   vector<vector<norm_curve>> concat_s_curves{};
 	vector<real_curve> n_curves{};//normalized_curves
@@ -52,13 +55,16 @@ void search_curves(vector<real_curve> & s_curves,
   int key{};
 	double distance{};
   vector<int> curve_keys{};
+  clock_t begin,end;
+  
 	for(size_t i=0; i<s_curves.size(); i++)
 		grid_curve_found[i]=false;
-//k-concatenate the search curves
+  //k-concatenate the search curves
   Lconcatenate_kcurves(k,1,s_curves,dimension,delta,concat_s_curves,
     v_size,n_curves);
-  init_r(dimension*v_size*k,r);
+  init_r(dimension*v_size*k,r);//if hash=="lsh" use first k elements of r
 
+  //find the key for every search curve...
   if(hash=="classic"){
     for(size_t i=0; i<s_curves.size(); i++){
       linear_combination(concat_s_curves[0][i].as_vector(),r,key,tablesize);
@@ -94,6 +100,7 @@ void search_curves(vector<real_curve> & s_curves,
 //let's find (probabilistic) nearest neighbor...
 	real_curve* nneigh{};
 	for(size_t i=0; i<s_curves.size(); i++){
+		begin = clock();
 		if(bucket_curves[i].size()==0){//hash tables were empty for i's key
 			find_nn(s_curves[i],pcurves,dimension,dist,nneigh,
 				distance,stats,R,curves_in_R[i]);//search greedy+in radius R
@@ -112,6 +119,8 @@ void search_curves(vector<real_curve> & s_curves,
 		if(!stats)//search in radius R
 			find_nn(s_curves[i],pcurves,dimension,dist,nneigh,
 				distance,stats,R,curves_in_R[i]);
+		end = clock();
+		elapsed_time[i] += double(end - begin) / CLOCKS_PER_SEC;
 	}
 	return ;
 }
