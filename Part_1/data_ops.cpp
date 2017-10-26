@@ -80,6 +80,8 @@ void input_parameters(string &data_s, string &func, string &hash, string &query_
   }
 }
 
+//read_curve reads a curve from data file with "dimension" and puts it on
+//ocurve
 bool read_curve(real_curve & ocurve, ifstream & data, int dimension){
   string id;
   int points_no{};
@@ -206,7 +208,7 @@ bool write_out_file(string out_s, string hash, string func,
     cerr << "couldn't create output  file!" << endl;
     return false;
   }
-
+  //for every curve print the info
   for(size_t i=0; i<s_curves.size(); i++){
     out_f << "Query: " << s_curves[i].get_id() << endl;//for stats=false
 		out_f << "DistanceFunction: " << func << endl;

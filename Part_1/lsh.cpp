@@ -6,14 +6,16 @@
 
 using namespace std;
 
-//makes k hash functions and puts them in hs
+//makes kvec hash functions and puts them in hs
 void make_hashes(vector<hash_f> & hs, int w, int v_size, int kvec){
+  //we use the constructor that picks the t so we don't have to
+  //provide it
   for(int i =0; i<kvec; i++)
     hs.push_back(std::move(hash_f(i, w, v_size)));
 }
 
-//choose k h_i randomly, the indexes of the hash functions are
-//put in an int array g
+//choose kvec h_i randomly, the indexes of the hash functions are
+//put in an int vector g
 //g and hs have the same size!
 void make_g(const vector<hash_f> & hs, vector<int> & g){
   for(size_t i=0; i<hs.size(); i++)
@@ -34,7 +36,7 @@ void lsh_curve_hashing(const vector<int> & concat_norm_points,
   for (size_t i=0; i<g.size(); i++){
     h_results.push_back(hs[g[i]].hash(concat_norm_points));
   }
-  
+  //compute the linear_combination of h and r
   linear_combination(h_results,r,key,tablesize);
   temp.rcurve = curves[curve_index];
   temp.gcurve = &normalized_curves[curve_index];

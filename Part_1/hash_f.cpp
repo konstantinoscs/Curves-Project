@@ -20,7 +20,6 @@ w(t_w){
 
 hash_f::hash_f(const hash_f & c_hash): id(c_hash.id), t(c_hash.t), w(c_hash.w),
   v(c_hash.v){
-
 }
 
 hash_f::hash_f(hash_f && m_hash): id(m_hash.id), t(m_hash.t), w(m_hash.w),
@@ -37,7 +36,7 @@ int hash_f::hash(const std::vector<int> & p){
     sum += v[i]*p[i];
   }
   //(float) is necessary here
-  return floor((float)(sum+t) / w);
+  return (float)((sum+t) / w);
 }
 
 void hash_f::print(){

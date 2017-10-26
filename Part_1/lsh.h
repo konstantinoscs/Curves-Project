@@ -8,7 +8,7 @@
 void make_hashes(std::vector<hash_f> & hs, int w, int v_size, int kvec);
 
 //choose k h_i randomly, the indexes of the hash functions are
-//put in an int array g
+//put in an int vector g
 void make_g(const std::vector<hash_f> & hs, std::vector<int> & g);
 
 //the lsh hashing, most probably will be omitted and integrated in
