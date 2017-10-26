@@ -58,8 +58,6 @@ int main(int argc, char **argv){
   for(size_t i=0; i<curves.size(); i++)
 		pcurves.push_back(&curves[i]);
 
-  delta = R>0.002 ? 4*dimension*R : 0.01;
-  //delta = 0.05;
 	rep_constant = stats ? REPETITIONS : 1;
 	table_size = curves.size()/32;
 
@@ -77,6 +75,10 @@ int main(int argc, char **argv){
 	tsize = s_curves.size();
 
   cout << "Read " << s_curves.size() << " search curves" << endl;
+  
+  delta = R>0.002 ? 4*dimension*R : 0.01;
+  //delta = 0.05;
+
   //used only if stats==false(1,2,3)
 	real_curve* nn_curve[tsize];//1.nearest neighbor for every s curve
  	bool grid_curve_found[tsize];//2
