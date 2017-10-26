@@ -28,10 +28,10 @@ int main(int argc, char **argv){
   double delta{};
   clock_t begin, end;
   int dimension{}, v_size{};
-  bool stats{false};
+  bool stats{false}, more{true};
   int rep_constant{};
   int table_size{};
-  string data_s{"trajectories_dataset"}, query_s{"test_dataset"}, out_s{"results"};
+  string data_s{}, query_s{}, out_s{"results"};
   string func, hash;
   //our curves aka the dataset
   vector<real_curve> curves{};
@@ -43,7 +43,7 @@ int main(int argc, char **argv){
 
   //initialize all parameters
   parse_arguments(argc, argv, data_s,query_s, k, L, out_s, stats, func, hash);
-  input_parameters(data_s, func, hash);
+  input_parameters(data_s, func, hash, query_s);
 
   //data_s = "./trajectories_dataset";        //for testing purposes
   if(!read_dataset_curves(data_s, curves, dimension)){
@@ -54,20 +54,18 @@ int main(int argc, char **argv){
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
 
-  // cout << data_s << endl << query_s << endl << out_s << endl;
-  // cout << func << endl << hash << endl;
+  for(size_t i=0; i<curves.size(); i++)
+		pcurves.push_back(&curves[i]);
 
   //delta = R>0.002 ? 4*dimension*R : 0.01;
   delta = 0.05;
 	rep_constant = stats ? REPETITIONS : 1;
 
 	table_size = curves.size()/16;
-	for(size_t i=0; i<curves.size(); i++)
-		pcurves.push_back(&curves[i]);
 
- 	vector<real_curve> s_curves{};
- 	double R{};
-
+  do{
+  vector<real_curve> s_curves{};
+   double R{};
  	//here should be a do...while loop
  	//now gets the search curves
  	if(!read_query_curves(query_s, s_curves, dimension, R)){
@@ -109,8 +107,7 @@ int main(int argc, char **argv){
   	//L arrays of vectors of entries we need pointers to:
   	//(1)real curves and (2)normalized curves(== entry)
   	vector<vector<vector<entry>>> Lhashtable{};
-	  /*Lconcatenate_kcurves will end with concat_normalized_curves having
-  	L vectors of */
+
   	Lconcatenate_kcurves(k, L ,curves, dimension, delta,
   	  concat_normalized_curves, v_size, normalized_curves);
 
@@ -146,6 +143,8 @@ int main(int argc, char **argv){
   write_out_file(out_s, hash, func, s_curves, stats, tsize, nn_curve, true_nn,
     nn_dist, nn_max_dist, nn_avg_dist, true_nn_dist, grid_curve_found,
     curves_in_R, elapsed_time_1, elapsed_time_2);
+  more = check_more(query_s);
+}while(more);
   cout << "End" << endl;
   return 1;
 }

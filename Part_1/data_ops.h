@@ -25,4 +25,6 @@ bool write_out_file(std::string out_s, std::string hash, std::string func,
   double * nn_avg_dist, double * true_nn_dist, bool * grid_curve_found,
   std::vector<std::string> * curves_in_R, double * time1, double * time2);
 
+bool check_more(std::string & query_s);
+
 #endif

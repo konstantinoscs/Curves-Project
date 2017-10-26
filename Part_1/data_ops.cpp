@@ -244,3 +244,18 @@ bool write_out_file(string out_s, string hash, string func,
   out_f.close();
   return true;
 }
+
+bool check_more(string & query_s){
+  int choice{};
+  bool more{};
+  cout << "would you like to give another query file?" << endl;
+  cout << "1. Yes" << endl;
+  cout << "2. No" << endl;
+  cin >> choice;
+  more = choice -1 ? false : true;
+  if(more){
+    cout << "Give path to the query file: " << endl;
+    cin >> query_s;
+  }
+  return more;
+}
