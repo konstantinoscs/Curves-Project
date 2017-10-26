@@ -4,7 +4,7 @@ OBJECTS = classic_hash.o curve.o curve_ops.o data_ops.o distance_ops.o general_h
 
 all : main
 
-main : classic_hash.o curve.o curve_ops.o data_ops.o distance_ops.o general_hash.o hash_f.o lsh.o main.o minmax.o rand_utils.o search_ops.o
+main : $(OBJECTS)
 	$(CC) $(FLAGS) -o mainexec classic_hash.o curve.o curve_ops.o data_ops.o distance_ops.o general_hash.o hash_f.o lsh.o main.o minmax.o rand_utils.o search_ops.o
 
 classic_hash.o : classic_hash.cpp
