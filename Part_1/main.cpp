@@ -16,7 +16,7 @@
 #include "lsh.h"
 #include "entry.h"
 
-#define REPETITIONS 5
+#define REPETITIONS 100
 
 using namespace std;
 
@@ -88,7 +88,7 @@ int main(int argc, char **argv){
   delta = 0.05;
 	rep_constant = stats ? REPETITIONS : 1;
 
-	table_size = curves.size()/curves.size();
+	table_size = curves.size()/32;
 	for(size_t i=0; i<curves.size(); i++)
 		pcurves.push_back(&curves[i]);
 
