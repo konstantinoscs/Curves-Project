@@ -1,5 +1,4 @@
 #include <vector>
-#include <iostream>
 #include <ctime>
 
 #include "general_hash.h"
@@ -19,18 +18,19 @@ void find_nn(real_curve & scurve,vector<real_curve*> pcurves,
 //initialize distance with first curve's distance
 	find_distance(scurve.get_points(),pcurves[0]->get_points(),dist,distance);
 	nneigh = pcurves[0];
-	if(!stats && distance<=R)
-			curves_in_R_i.push_back(pcurves[0]->get_id());
-	for(size_t i=1; i<pcurves.size(); i++){
+	if(!stats && distance<=R)//if stats==false compare their distance to
+			curves_in_R_i.push_back(pcurves[0]->get_id());//keep it's id (maybe)
+	for(size_t i=1; i<pcurves.size(); i++){//for the rest curves...
 		find_distance(scurve.get_points(),pcurves[i]->get_points(),
 			dist,temp_distance);
-		if(temp_distance<distance){
-			distance = temp_distance;
+		if(temp_distance<distance){//in the end we'll have in nneigh the
+			distance = temp_distance;//nearest curve
 			nneigh = pcurves[i];
 		}
-		if(!stats && temp_distance<=R)
+		if(!stats && temp_distance<=R)//again check if we'll keep curve's id
 			curves_in_R_i.push_back(pcurves[i]->get_id());
 	}
+	//only if R=0 we put in "curves_in_R_i" the nearest curve's id
 	if(!stats && R==0.0 && !(curves_in_R_i.size()))//maybe same curve(s) found
 		curves_in_R_i.push_back(nneigh->get_id());//else push the nneigh
 	return ;
@@ -53,7 +53,7 @@ void search_curves(vector<real_curve> & s_curves,
   vector<int> r{};
   int key{};
 	double distance{};
-  vector<int> curve_keys{};
+  vector<int> curve_keys{};//has the key for every s_curve(after we find it)
   clock_t begin,end;
   
 	for(size_t i=0; i<s_curves.size(); i++)
@@ -83,42 +83,49 @@ void search_curves(vector<real_curve> & s_curves,
 			curve_keys.push_back(key);
   	}
   }
-//saves all curves in same bucket with s_curve[i]
+  //creates here the vector which we'll search for nn
   for(size_t i=0; i<s_curves.size(); i++){
-    for(size_t j=0; j<Lht.size(); j++){
+    for(size_t j=0; j<Lht.size(); j++){//looking in all (L) hashtables
+    	//search in same bucket with s_curves[i]: 
 			for(size_t z=0; z<Lht[j][curve_keys[i]].size(); z++){
 				if(n_curves[i].get_points()==Lht[j][curve_keys[i]][z].gcurve->get_points())
-				{//then we found the same grid curve...
+				{//here we found the same grid curve...
 					grid_curve_found[i] = true;
 					same_grid_curves[i].push_back(Lht[j][curve_keys[i]][z].rcurve);
+					//push the curve in vector to search first here if its not empty
 				}
 				bucket_curves[i].push_back(Lht[j][curve_keys[i]][z].rcurve);
+				//second try:looking all curves in same bucket^^
+				//else we search all curves for nn
 			}
     }
   }
 //let's find (probabilistic) nearest neighbor...
 	real_curve* nneigh{};
 	for(size_t i=0; i<s_curves.size(); i++){
-		begin = clock();
+		begin = clock();//starts counting the time
 		if(bucket_curves[i].size()==0){//hash tables were empty for i's key
+			//our last resolution:searching in all curves
 			find_nn(s_curves[i],pcurves,dimension,dist,nneigh,
 				distance,stats,R,curves_in_R[i]);//search greedy+in radius R
 			stats = true;//use stats as flag to avoid calling second time this fnct
 		}
-		else if(same_grid_curves[i].size()!=0){//search only in same grid curves
+		else if(same_grid_curves[i].size()!=0){
+			//lucky:we found same grid curves so search in them
 			find_nn(s_curves[i],same_grid_curves[i],dimension,dist,nneigh,
 				distance,stats,R,curves_in_R[i]);//also check if their distance<=R
 			stats = true;
 		}
-		else//search in bucket curves
+		else//search in bucket_curves
 			find_nn(s_curves[i],bucket_curves[i],dimension,dist,nneigh,
 				distance,true,0,curves_in_R[i]);
 		nn_curve[i] = nneigh;
 		nn_distance[i] = distance;
 		if(!stats)//search in radius R
+			//access here only if we search only in bucket_curves
 			find_nn(s_curves[i],pcurves,dimension,dist,nneigh,
 				distance,stats,R,curves_in_R[i]);
-		end = clock();
+		end = clock();//counting ended
 		elapsed_time[i] += double(end - begin) / CLOCKS_PER_SEC;
 	}
 	return ;

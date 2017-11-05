@@ -2,7 +2,6 @@
 #include <cstdlib>
 #include <limits>
 #include <cmath>
-#include <iostream>
 
 #include "curve.h"
 #include "rand_utils.h"
@@ -38,7 +37,7 @@ void curve_reduction(const real_curve & ur_curve, double delta,
       point_counter++;
     }
   }
-  if(point_counter>max)
+  if(point_counter>max)//find min-max
     max = point_counter;
   else if(point_counter<min)
     min = point_counter;
@@ -54,29 +53,29 @@ void curve_move(const vector<vector<double>> & norm_points,
     const vector<double> & t, int max, double delta,
     int dimension,int k,vector<vector<int>> &moved_points){
   vector<int> pointvec{};
-  int ipoint{};
+  int ipoint{};//the integer coordinate
   double dpoint{};
   vector<vector<int>>::iterator iter{};
   int mysize{};
   mysize = norm_points.size();
-  vector<int> zero{};
+  vector<int> zero{};//a zero vector with dimension:"dimension"
   for(int i=0;i<dimension;i++)
     zero.push_back(0);
-  for(size_t i=0; i<norm_points.size(); i++){
-    for(size_t j=0; j<norm_points[i].size(); j++){
-      dpoint = norm_points[i][j] + t[j];
-      ipoint = int((dpoint +(delta/k)/2.0)/(delta/k));
+  for(size_t i=0; i<norm_points.size(); i++){//for every point...
+    for(size_t j=0; j<norm_points[i].size(); j++){//for all its coords...
+      dpoint = norm_points[i][j] + t[j];//move the coord by t
+      ipoint = int((dpoint +(delta/k)/2.0)/(delta/k));//make the int coord
       pointvec.push_back(ipoint);
     }
-    moved_points.push_back(std::move(pointvec));
-    pointvec.clear();
+    moved_points.push_back(std::move(pointvec));//creates the vector of int
+    pointvec.clear();//which we'll return from this function
   }
-  for(int i=0;i<int((max-mysize)/2);i++){
+  for(int i=0;i<int((max-mysize)/2);i++){//adds zeros to the previous vector
     iter = moved_points.begin();
-    moved_points.insert(iter,zero);
+    moved_points.insert(iter,zero);//here at the begining
   }
   for (int i=0;i<int((max-mysize+1)/2);i++)
-    moved_points.push_back(zero);
+    moved_points.push_back(zero);//and here in its end
   return ;
 }
 
@@ -89,16 +88,17 @@ void Lconcatenate_kcurves(int k, int L,
     int min{std::numeric_limits<int>::max()};
     max = 0;
 
-    for(size_t i=0; i<curves.size(); i++){
+    for(size_t i=0; i<curves.size(); i++){//make grid curves from curves
       real_curve grid_cur(curves[i].get_dimension());
       grid_cur.set_id(curves[i].get_id());
-      curve_reduction(curves[i],delta,grid_cur,min,max);
+      curve_reduction(curves[i],delta,grid_cur,min,max);//also finding min-max
       normalized_curves.push_back(std::move(grid_cur));
     }
 
     for(int Lrep=0; Lrep<L; Lrep++){//for L repetitions
       vector<norm_curve> concat_curves{};
-      for(size_t i=0; i<normalized_curves.size(); i++){//init concat_curve_points
+      //init dimension and id for concat_curve_points
+      for(size_t i=0; i<normalized_curves.size(); i++){
         norm_curve moved_curve(normalized_curves[i].get_dimension());
         moved_curve.set_id(normalized_curves[i].get_id());
         concat_curves.push_back(std::move(moved_curve));
@@ -107,12 +107,7 @@ void Lconcatenate_kcurves(int k, int L,
         t.clear();
         //let's choose a t...
         chosen_t(delta,dimension,t);
-        //cout << "t= (";
-        //for(int i=0;i<dimension;i++){
-        //  cout <<t[i] << " ";
-        //}
-        //cout <<")"<<'\n';
-        for(size_t i=0; i<normalized_curves.size(); i++){//for every norm curve...
+        for(size_t i=0; i<normalized_curves.size(); i++){//for every grid curve...
           vector<vector<int>> moved_points{};
           curve_move(normalized_curves[i].get_points(), t, max, delta,
             dimension, k, moved_points);

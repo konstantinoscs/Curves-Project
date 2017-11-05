@@ -4,12 +4,17 @@
 #include "curve.h"
 #include "entry.h"
 
+//here are functions used in both hash methods: classic and lsh
+
 //main function for the hashing
 //returns the L hash tables
 void hash_curves(const std::vector<std::vector<norm_curve>> & Lcurves,
-  int dimension, std::vector<std::vector<std::vector<entry>>> & Lhashtable,
+  int dimension,
+  std::vector<std::vector<std::vector<entry>>> & Lhashtable,//[output]
   int tablesize, std::vector<real_curve*> & curves,
-  std::vector<real_curve> & normalized_curves, std::string hash, int kvec, int w);
+  std::vector<real_curve> & normalized_curves,
+  std::string hash,//specifies the hash method
+  int kvec, int w);
 
 //returns a vector of factors r
 void init_r(int dimension,std::vector<int> & r);
