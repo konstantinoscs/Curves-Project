@@ -11,8 +11,7 @@ void make_hashes(std::vector<hash_f> & hs, int w, int v_size, int kvec);
 //put in an int vector g
 void make_g(const std::vector<hash_f> & hs, std::vector<int> & g);
 
-//the lsh hashing, most probably will be omitted and integrated in
-//hash_curves of "classic_hash.cpp"
+//the lsh hashing
 void lsh_curve_hashing(const std::vector<int> & concat_norm_points,
   const std::vector<int> & r, std::vector<entry> *ht, int tablesize,
   std::vector<real_curve*> & curves, int curve_index,

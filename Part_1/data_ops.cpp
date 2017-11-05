@@ -223,8 +223,6 @@ bool write_out_file(string out_s, string hash, string func,
 		  out_f << "R-near neighbors:" << endl;
 		  for(size_t j=0; j<curves_in_R[i].size(); j++)
 			  out_f << curves_in_R[i][j] << endl;
-        //dokimase kai auto kanontas comment out tis 2 pano grammes
-        //out_f << curves_in_R[i][0] << endl;
     }
     else{
       temp_dist = nn_dist[i]-true_nn_dist[i];
@@ -250,7 +248,7 @@ bool write_out_file(string out_s, string hash, string func,
 bool check_more(string & query_s){
   int choice{};
   bool more{};
-  cout << "would you like to give another query file?" << endl;
+  cout << "Would you like to give another query file?" << endl;
   cout << "1. Yes" << endl;
   cout << "2. No" << endl;
   cin >> choice;
