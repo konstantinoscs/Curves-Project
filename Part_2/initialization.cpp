@@ -9,7 +9,7 @@
 using namespace std;
 
 void random_init(vector<real_curve*> & curves,int k,
-      vector<real_curve*> centroid){
+      vector<real_curve*> & centroid){
   centroid.clear();//just to be sure that it's empty
   int index{};
   for(int i=0; i<k; i++){
@@ -17,7 +17,6 @@ void random_init(vector<real_curve*> & curves,int k,
     centroid.push_back(curves[index]);
     curves.erase(curves.begin() + index);//remove centroid
   }
-  return ;
 }
 
 int find_t(vector<double> A,double x,int start,int end){
@@ -62,7 +61,7 @@ void kmeans_init(vector<real_curve*> & curves,int k,
           dist, temp_min2);
         temp_min1 = MYmin(temp_min1,temp_min2);
       }
-      Sum.push_back(Sum[i-1] + temp_min1*temp_min1);//Sum[i] = Sum[i-1]+d[i]^2
+      Sum.push_back(Sum[i] + temp_min1*temp_min1);//Sum[i+1] = Sum[i]+d[i+1]^2
     }
     new_t = double_uniform_rand(Sum[Sum.size()-1]);
     t = find_t(Sum, new_t, 0, Sum.size()-1);//finds new centroid's index
