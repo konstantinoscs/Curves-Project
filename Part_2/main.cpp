@@ -19,9 +19,7 @@ int main(int argc, char **argv){
   string data_s{}, query_s{}, out_s{"results"};
   //our curves aka the dataset
   vector<real_curve> curves{};
-  vector<real_curve*> pcurves{},centroids{};
-  cout << std::fixed;
-  cout << std::setprecision(17);
+  vector<real_curve*> pcurves{}, centroids{};
   srand(time(0));
 
   data_s = "./trajectories_dataset";        //for testing purposes
@@ -33,7 +31,7 @@ int main(int argc, char **argv){
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
 
-  pcurves.clear();
+  //pcurves.clear(); //?????????
   for(unsigned int i=0; i<curves.size(); i++)
 		pcurves.push_back(&curves[i]);
 
@@ -46,4 +44,3 @@ int main(int argc, char **argv){
 
   return 0;
 }
-
