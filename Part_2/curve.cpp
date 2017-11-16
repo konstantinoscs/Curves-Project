@@ -9,14 +9,14 @@ curve::curve(int dim): dimension(dim){
 
 curve::curve(const curve & c_curve): id(c_curve.id),
   dimension(c_curve.dimension){
-  //cout << "Copy constructor of curve called!" <<endl;
+
 }
 
 curve::curve(curve && m_curve): id(std::move(m_curve.id)),
   dimension(m_curve.dimension){
   //we moved the string so now we have to clear it
   m_curve.id.clear();
-  //cout << "Move constructor of curve called!" <<endl;
+
   }
 
 curve::~curve(){
@@ -45,14 +45,14 @@ real_curve::real_curve(int dim)
 
 real_curve::real_curve(const real_curve & c_curve) : curve(c_curve),
   points(c_curve.points) {
-  //cout << "Copy constructor of curve called!" <<endl;
+
 }
 
 real_curve::real_curve(real_curve && m_curve) : curve(std::move(m_curve)),
   points(std::move(m_curve.points)){
   //points of m_curve are moved so now we clear them
   m_curve.points.clear();
-  //cout << "Move constructor of real_curve called!" <<endl;
+
 }
 
 real_curve::~real_curve(){}

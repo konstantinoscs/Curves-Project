@@ -7,8 +7,8 @@
 
 using namespace std;
 
-void random_init(vector<real_curve*> & curves,int k,
-      vector<real_curve*> centroid){
+void random_init(vector<real_curve*> & curves, int k,
+  vector<real_curve*> centroid){
   centroid.clear();//just to be sure that it's empty
   int index{};
   for(int i=0; i<k; i++){
@@ -16,11 +16,10 @@ void random_init(vector<real_curve*> & curves,int k,
     centroid.push_back(curves[index]);
     curves.erase(curves.begin() + index);
   }
-  return ;
 }
 
-void kmeans_init(vector<real_curve*> & curves,int k,
-      vector<real_curve*> & centroid){
+void kmeans_init(vector<real_curve*> & curves, int k,
+  vector<real_curve*> & centroid){
   centroid.clear();
   int index{int_uniform_rand(0,curves.size()-1)};
   centroid.push_back(curves[index]);//first centroid
@@ -50,7 +49,4 @@ void kmeans_init(vector<real_curve*> & curves,int k,
     centroid.push_back(curves[t]);
     curves.erase(curves.begin() + t);
   }
-  return ;
 }
-
-
