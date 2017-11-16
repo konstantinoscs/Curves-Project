@@ -1,14 +1,14 @@
 #include <vector>
 
 #include "curve.h"
-#include "assign_entry"
+#include "assign_entry.h"
 
 using namespace std;
 
 void init_assign_entries(vector<assign_entry> & entries,
-  const vector<real_curve> & curves){
+  vector<real_curve> & curves){
   entries.clear();
-  for(unsigned int i=0; i<pcurves.size(); i++){
+  for(unsigned int i=0; i<curves.size(); i++){
     assign_entry entry{};
     entry.rcurve = &curves[i];
     entry.centroid = -1;
