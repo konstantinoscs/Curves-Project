@@ -15,26 +15,26 @@ bool lloyds_assignment(vector<real_curve *> centroids,
     assignment.clear();
 
   do{
-  pr_assignment = assignment;
+    pr_assignment = assignment;
 
-  assignment.clear();
-  assignment.resize(centroids.size());
+    assignment.clear();
+    assignment.resize(centroids.size());
 
-  for(int i=0, i<curves.size(), i++){
-    jmin = 0;
-    vector<vector<double>> & c_points = curves[i]->get_points();
-    computeDFD(c_points, centroids[0]->get_points(), dist);
-    for (int j=1; j<centroids.size(), j++){
-      computeDFD(c_points, centroids[j]->get_points(), dist);
-      if(dist < distmin){
-        distmin = dist
-        jmin = j;
+    for(int i=0, i<curves.size(), i++){
+      jmin = 0;
+      vector<vector<double>> & c_points = curves[i]->get_points();
+      computeDFD(c_points, centroids[0]->get_points(), dist);
+      for (int j=1; j<centroids.size(), j++){
+        computeDFD(c_points, centroids[j]->get_points(), dist);
+        if(dist < distmin){
+          distmin = dist
+          jmin = j;
+        }
       }
+      //assign curve i to centroid jmin
+      assignment[jmin].push_back(curves[i]);
     }
-    //assign curve i to centroid jmin
-    assignment[jmin].push_back(curves[i]);
-  }
-}while (assignment != pr_assignment);
+  }while (assignment != pr_assignment);
 
   return true;
 }
