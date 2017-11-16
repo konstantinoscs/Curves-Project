@@ -69,7 +69,3 @@ void kmeans_init(vector<real_curve*> & curves,int k,
     curves.erase(curves.begin() + t);//and remove it from here
   }
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> 5174deaa7adc25ef6c96a0ce698ae3b8c387b4c0

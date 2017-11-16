@@ -6,11 +6,6 @@
 
 #include "curve.h"
 
-<<<<<<< HEAD
-void random_init(std::vector<real_curve*> & curves, int k, std::vector<real_curve*> & centroid);
-
-void kmeans_init(std::vector<real_curve*> & curves, int k, std::vector<real_curve*> & centroid);
-=======
 void random_init(
   std::vector<real_curve*> & curves,//start:has all curves,end:without the k centroids
   int k,//number of centroids
@@ -23,6 +18,5 @@ void kmeans_init(std::vector<real_curve*> & curves,int k,
 //A is a sorted array
 //returns the A's index which has the min value bigger than x
 int find_t(std::vector<double> A,double x,int start,int end);
->>>>>>> 5174deaa7adc25ef6c96a0ce698ae3b8c387b4c0
 
 #endif
