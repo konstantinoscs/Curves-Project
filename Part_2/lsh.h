@@ -15,9 +15,8 @@ void make_g(const std::vector<hash_f> & hs, std::vector<int> & g);
 //the lsh hashing
 void lsh_curve_hashing(const std::vector<int> & concat_norm_points,
   const std::vector<int> & r, std::vector<assign_entry*> *ht, int tablesize,
-  int curve_index, int L_centr_index,
-  std::vector<assign_entry> & entries, std::vector<int> & g,
+  int curve_index, std::vector<assign_entry> & entries, std::vector<int> & g,
   std::vector<hash_f> & hs, const std::vector<real_curve> & curves,
-  const std::vector<real_curve*> & centroids, int** centroid_keys);
+  const std::vector<real_curve*> &centroids, std::vector<int> *centroid_keys);
 
 #endif

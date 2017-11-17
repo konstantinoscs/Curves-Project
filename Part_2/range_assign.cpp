@@ -31,7 +31,7 @@ void init_assign_entries(vector<assign_entry> & entries,
 void init_hashtable(int L, int k, vector<assign_entry> & entries,
   int dimension, double  delta, const vector<real_curve*> & centroids,
   int kvec, int w, const vector<real_curve> & curves, int tablesize,
-  vector<vector<vector<assign_entry*>>> &Lht, int** centroid_keys){
+  vector<vector<vector<assign_entry*>>> &Lht, vector<int> *centroid_keys){
 
   vector<real_curve> normalized_curves{};//just temporary to call below function 
   vector<vector<norm_curve>> concat_normalized_curves{};

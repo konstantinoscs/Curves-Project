@@ -26,10 +26,9 @@ void make_g(const vector<hash_f> & hs, vector<int> & g){
 
 void lsh_curve_hashing(const vector<int> & concat_norm_points,
   const vector<int> & r, vector<assign_entry*> *ht, int tablesize,
-  int curve_index, int L_centr_index,
-  vector<assign_entry> & entries, vector<int> & g,
+  int curve_index, vector<assign_entry> & entries, vector<int> & g,
   vector<hash_f> & hs, const vector<real_curve> & curves,
-  const vector<real_curve*> & centroids, int** centroid_keys){
+  const vector<real_curve*> & centroids, vector<int> * centroid_keys){
 
   int key{};
   //assign_entry* temp{};
@@ -44,7 +43,7 @@ void lsh_curve_hashing(const vector<int> & concat_norm_points,
   //check if its centroid then save the key
   int isC = isCentroid(curves[curve_index].get_id(),centroids);
   if(isC){
-    centroid_keys[L_centr_index][isC-1] = key;
+    centroid_keys[isC-1].push_back(key);
     return ;
   }
   ht[key].push_back(&entries[curve_index]);
