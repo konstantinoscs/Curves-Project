@@ -33,9 +33,9 @@ void init_assign_entries(vector<assign_entry> & entries,
 }
 
 void init_hashtable(int L, int k, vector<assign_entry> & entries,
-  int dimension, double  delta, const vector<real_curve*> & centroids,
-  int kvec, int w, const vector<real_curve> & curves, int tablesize,
-  vector<vector<vector<assign_entry*>>> &Lht, vector<int> *centroid_keys){
+  int dimension, double  delta,int kvec, int w,
+  const vector<real_curve> & curves, int tablesize,
+  vector<vector<vector<assign_entry*>>> &Lht){
 
   vector<real_curve> normalized_curves{};//just temporary to call below function 
   vector<vector<norm_curve>> concat_normalized_curves{};
@@ -44,9 +44,29 @@ void init_hashtable(int L, int k, vector<assign_entry> & entries,
     concat_normalized_curves, max, normalized_curves);
 
   hash_curves(concat_normalized_curves, dimension*k*max, Lht,
-    tablesize, entries, kvec, w, curves, centroids, centroid_keys);
+    tablesize, entries, kvec, w);
 
 }
+
+void find_keys(std::vector<std::vector<std::vector<assign_entry*>>> &Lht,
+  const vector<real_curve*> & centroids,
+  vector<vector<int>> & centroid_keys){
+  int k{};
+  centroid_keys.clear();
+  centroid_keys.resize(centroids.size());
+  for(unsigned int i=0; i<Lht.size(); i++){//0<=i<L
+    for(unsigned int j=0; j<Lht[i].size(); j++){//0<=j<tablesize
+      for(unsigned int z=0; z<Lht[i][j].size(); z++){//every curve in bucket
+        k = isCentroid(Lht[i][j][z]->rcurve->get_id(),centroids);
+        if(k){//k in [1,c] if its centroid else k=0
+          centroid_keys[k-1].push_back(j);
+        }
+      }
+    }
+  }
+}
+
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 double find_R0(const vector<real_curve*> & centroids,string dist){
   double min_dist{std::numeric_limits<int>::max()},min_dist2{};

@@ -45,16 +45,18 @@ int main(int argc, char **argv){
   double delta = 0.08;
   int tablesize = curves.size()/32;
   vector<vector<vector<assign_entry*>>> Lhashtable;
-  vector<int> centroid_keys[c];
 
-  init_hashtable(L,k,entries,dimension,delta,centroids,kvec,w,curves,
-    tablesize,Lhashtable,centroid_keys);
+  init_hashtable(L,k,entries,dimension,delta,kvec,w,curves,
+    tablesize,Lhashtable);
+
+  vector<vector<int>> keys{};
+  find_keys(Lhashtable,centroids,keys);
 
   //test keys
   for(int i=0; i<c; i++){
     cout << "for " << centroids[i]->get_id() << ":";
     for(int j=0; j<L; j++){
-      cout << " " << centroid_keys[i][j];
+      cout << " " << keys[i][j] ;
     }
     cout << endl;
   }

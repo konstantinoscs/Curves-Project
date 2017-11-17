@@ -17,10 +17,13 @@ void init_assign_entries(std::vector<assign_entry> & entries,
 //we keep the bucket keys were (should) belong every
 //centroid in array centroid_keys
 void init_hashtable(int L, int k, std::vector<assign_entry> & entries,
-  int dimension, double  delta, const std::vector<real_curve*> & centroids,
-  int kvec, int w, const std::vector<real_curve> & curves, int tablesize,
-  std::vector<std::vector<std::vector<assign_entry*>>> &Lht,
-  std::vector<int> *centroid_keys);//centroid_keys = array[L][c]
+  int dimension, double  delta, int kvec, int w,
+  const std::vector<real_curve> & curves, int tablesize,
+  std::vector<std::vector<std::vector<assign_entry*>>> &Lht);
+
+void find_keys(std::vector<std::vector<std::vector<assign_entry*>>> &Lht,
+  const std::vector<real_curve*> & centroids,
+  std::vector<std::vector<int>> & centroid_keys);
 
 //until here were functions helping to init the lsh hashtable
 

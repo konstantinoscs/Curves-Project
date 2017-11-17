@@ -13,11 +13,11 @@ bool lloyds_assignment(vector<real_curve *> centroids,
   if(!assignment.empty())
     assignment.resize(centroids.size());
 
-  for(int i=0; i<curves.size(); i++){
+  for(unsigned int i=0; i<curves.size(); i++){
     jmin = 0;
     const vector<vector<double>> & c_points = curves[i]->get_points();
     computeDFD(c_points, centroids[0]->get_points(), distmin);
-    for (int j=1; j<centroids.size(); j++){
+    for (unsigned int j=1; j<centroids.size(); j++){
       computeDFD(c_points, centroids[j]->get_points(), dist);
       if(dist < distmin){
         distmin = dist;
