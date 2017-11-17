@@ -36,9 +36,6 @@ int main(int argc, char **argv){
   for(unsigned int i=0; i<curves.size(); i++)
 		pcurves.push_back(&curves[i]);
 
-
-  
-
   random_init(pcurves,c,centroids);
   //kmeans_init(pcurves,c,centroids,"DFT");
 
@@ -49,7 +46,7 @@ int main(int argc, char **argv){
   int tablesize = curves.size()/32;
   vector<vector<vector<assign_entry*>>> Lhashtable;
   vector<int> centroid_keys[c];
-  printf("woohoo\n");
+
   init_hashtable(L,k,entries,dimension,delta,centroids,kvec,w,curves,
     tablesize,Lhashtable,centroid_keys);
 

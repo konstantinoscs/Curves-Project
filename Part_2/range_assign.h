@@ -22,5 +22,9 @@ void init_hashtable(int L, int k, std::vector<assign_entry> & entries,
   std::vector<std::vector<std::vector<assign_entry*>>> &Lht,
   std::vector<int> *centroid_keys);//centroid_keys = array[L][c]
 
+//until here were functions helping to init the lsh hashtable
+
+//returns the min distance between centroids
+double find_R0(const std::vector<real_curve*> & centroids,std::string dist);
 
 #endif
