@@ -12,6 +12,7 @@
 #include "initialization.h"
 #include "assign_entry.h"
 #include "range_assign.h"
+#include "hashtable_init.h"
 
 using namespace std;
 
@@ -56,7 +57,8 @@ int main(int argc, char **argv){
   for(int i=0; i<c; i++){
     cout << "for " << centroids[i]->get_id() << ":";
     for(int j=0; j<L; j++){
-      cout << " " << keys[i][j] ;
+      int aaa = Lhashtable[j][keys[i][j]].size();
+      cout << " " << keys[i][j] << "(" << aaa << ")";
     }
     cout << endl;
   }
