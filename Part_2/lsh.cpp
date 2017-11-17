@@ -4,6 +4,7 @@
 #include "general_hash.h"
 #include "rand_utils.h"
 #include "assign_entry.h"
+#include "range_assign.h"
 
 using namespace std;
 
@@ -25,9 +26,10 @@ void make_g(const vector<hash_f> & hs, vector<int> & g){
 
 void lsh_curve_hashing(const vector<int> & concat_norm_points,
   const vector<int> & r, vector<assign_entry*> *ht, int tablesize,
-  vector<real_curve*> & curves, int curve_index,
-  vector<real_curve> & normalized_curves, vector<int> & g,
-  vector<hash_f> & hs){
+  int curve_index, int L_centr_index,
+  vector<assign_entry> & entries, vector<int> & g,
+  vector<hash_f> & hs, const vector<real_curve> & curves,
+  const vector<real_curve*> & centroids, int** centroid_keys){
 
   int key{};
   //assign_entry* temp{};
@@ -39,8 +41,11 @@ void lsh_curve_hashing(const vector<int> & concat_norm_points,
   }
   //compute the linear_combination of h and r
   linear_combination(h_results,r,key,tablesize);
-  //temp.rcurve = curves[curve_index];
-  //temp.gcurve = &normalized_curves[curve_index];
-  //ht[key].push_back(std::move(temp));
-  //here insert &assign_entry into ht
+  //check if its centroid then save the key
+  int isC = isCentroid(curves[curve_index].get_id(),centroids);
+  if(isC){
+    centroid_keys[L_centr_index][isC-1] = key;
+    return ;
+  }
+  ht[key].push_back(&entries[curve_index]);
 }

@@ -11,10 +11,9 @@
 void hash_curves(const std::vector<std::vector<norm_curve>> & Lcurves,
   int dimension,
   std::vector<std::vector<std::vector<assign_entry*>>> & Lhashtable,//[output]
-  int tablesize, std::vector<real_curve*> & curves,
-  std::vector<real_curve> & normalized_curves,
-  std::string hash,//specifies the hash method
-  int kvec, int w);
+  int tablesize, std::vector<assign_entry> & entries, int kvec, int w,
+  const std::vector<real_curve> & curves,
+  const std::vector<real_curve*> & centroids, int** centroid_keys);
 
 //returns a vector of factors r
 void init_r(int dimension,std::vector<int> & r);
