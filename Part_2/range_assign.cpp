@@ -9,6 +9,7 @@ using namespace std;
 
 int isCentroid(string id, const vector<real_curve*> & centroids){
   for(unsigned int i=0; i<centroids.size(); i++){
+    //if it's centroid will return here something != 0
     if(!id.compare(centroids[i]->get_id()))//id==c[i]->id
       return i+1;//to avoid returning value 0 here
   }
