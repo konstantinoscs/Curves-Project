@@ -36,11 +36,11 @@ int main(int argc, char **argv){
   for(unsigned int i=0; i<curves.size(); i++)
 		pcurves.push_back(&curves[i]);
 
-  random_init(pcurves,c,centroids);
+  random_init(pcurves, c, centroids);
   //kmeans_init(pcurves,c,centroids,"DFT");
 
   vector<assign_entry> entries;
-  init_assign_entries(entries,curves);//init entries
+  init_assign_entries(entries, curves);//init entries
 
   double delta = 0.08;
   int tablesize = curves.size()/32;
@@ -52,11 +52,11 @@ int main(int argc, char **argv){
 
   //test keys
   for(int i=0; i<c; i++){
-    cout <<"for "<< centroids[i]->get_id()<<":";
+    cout << "for " << centroids[i]->get_id() << ":";
     for(int j=0; j<L; j++){
-      cout <<" "<<centroid_keys[i][j];
+      cout << " " << centroid_keys[i][j];
     }
-    cout <<endl;
+    cout << endl;
   }
 
   return 0;
