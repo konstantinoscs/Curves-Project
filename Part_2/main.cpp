@@ -14,6 +14,7 @@
 #include "assign_entry.h"
 #include "range_assign.h"
 #include "hashtable_init.h"
+#include "assignment.h"
 
 using namespace std;
 
@@ -23,7 +24,7 @@ int main(int argc, char **argv){
   string data_s{}, query_s{}, out_s{"results"};
   //our curves aka the dataset
   vector<real_curve> curves{};
-  vector<real_curve*> pcurves{}, centroids{};
+  vector<real_curve*> pcurves{}, centroids{}, pcurves2{};
   clock_t begin, end;
   srand(time(0));
 
@@ -36,18 +37,20 @@ int main(int argc, char **argv){
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
 
-  for(unsigned int i=0; i<curves.size(); i++)
-		pcurves.push_back(&curves[i]);
+  for(unsigned int i=0; i<curves.size(); i++){
+    pcurves.push_back(&curves[i]);
+    pcurves2.push_back(&curves[i]);
+  }
 
-  begin = clock();
   random_init(pcurves, c, centroids);
   //kmeans_init(pcurves,c,centroids,"DFT");
 
+  begin = clock();
   vector<assign_entry> entries;
   init_assign_entries(entries, curves);//init entries
 
   double delta = 0.08;
-  int tablesize = curves.size()/32;
+  int tablesize = curves.size()/50;
   vector<vector<vector<assign_entry*>>> Lhashtable;
 
   init_hashtable(L,k,entries,dimension,delta,kvec,w,curves,
@@ -69,6 +72,17 @@ int main(int argc, char **argv){
     }
     cout << "-->" << assigned_objects[i].size() << endl;
   }
-  cout << (double(end - begin) / CLOCKS_PER_SEC) << endl;
+  cout <<"range:"<< (double(end - begin) / CLOCKS_PER_SEC) << endl;
+
+  begin = clock();
+  assigned_objects.clear();
+  assigned_objects.resize(c);
+  lloyds_assignment(centroids,pcurves2,assigned_objects);
+  end = clock();
+  for(int i=0; i<c; i++){
+    cout << "for " << centroids[i]->get_id() << ":";
+    cout << "-->" << assigned_objects[i].size() << endl;
+  }
+  cout <<"lloyds:"<< (double(end - begin) / CLOCKS_PER_SEC) << endl;
   return 0;
 }
