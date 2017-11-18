@@ -4,7 +4,8 @@
 #include <vector>
 #include "curve.h"
 
-bool lloyds_assignment(vector<real_curve *> centroids,
-  vector<real_curve *> curves, vector<vector<real_curve *>> & assignment)
+bool lloyds_assignment(std::vector<real_curve *> centroids,
+  std::vector<real_curve *> curves,
+  std::vector<std::vector<real_curve *>> & assignment);
 
 #endif

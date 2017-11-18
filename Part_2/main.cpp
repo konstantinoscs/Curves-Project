@@ -53,6 +53,10 @@ int main(int argc, char **argv){
   vector<vector<int>> keys{};
   find_keys(Lhashtable,centroids,keys);
 
+  vector<vector<real_curve*>> assigned_objects{};
+  assigned_objects.resize(c);
+  assign_by_range_search(centroids,Lhashtable,entries,keys,"DFT",assigned_objects);
+
   //test keys
   for(int i=0; i<c; i++){
     cout << "for " << centroids[i]->get_id() << ":";
@@ -60,8 +64,7 @@ int main(int argc, char **argv){
       int aaa = Lhashtable[j][keys[i][j]].size();
       cout << " " << keys[i][j] << "(" << aaa << ")";
     }
-    cout << endl;
+    cout << "-->" << assigned_objects[i].size() << endl;
   }
-
   return 0;
 }
