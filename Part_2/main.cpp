@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 #include <iomanip>
+#include <ctime>
 
 #include "data_ops.h"
 #include "curve.h"
@@ -23,6 +24,7 @@ int main(int argc, char **argv){
   //our curves aka the dataset
   vector<real_curve> curves{};
   vector<real_curve*> pcurves{}, centroids{};
+  clock_t begin, end;
   srand(time(0));
 
   data_s = "./trajectories_dataset";        //for testing purposes
@@ -37,6 +39,7 @@ int main(int argc, char **argv){
   for(unsigned int i=0; i<curves.size(); i++)
 		pcurves.push_back(&curves[i]);
 
+  begin = clock();
   random_init(pcurves, c, centroids);
   //kmeans_init(pcurves,c,centroids,"DFT");
 
@@ -56,7 +59,7 @@ int main(int argc, char **argv){
   vector<vector<real_curve*>> assigned_objects{};
   assigned_objects.resize(c);
   assign_by_range_search(centroids,Lhashtable,entries,keys,"DFT",assigned_objects);
-
+  end = clock();
   //test keys
   for(int i=0; i<c; i++){
     cout << "for " << centroids[i]->get_id() << ":";
@@ -66,5 +69,6 @@ int main(int argc, char **argv){
     }
     cout << "-->" << assigned_objects[i].size() << endl;
   }
+  cout << (double(end - begin) / CLOCKS_PER_SEC) << endl;
   return 0;
 }
