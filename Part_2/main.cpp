@@ -19,7 +19,7 @@
 using namespace std;
 
 int main(int argc, char **argv){
-  int c{5},L{3},k{2},kvec{4},w{4};
+  int c{5}, L{3}, k{2}, kvec{4}, w{4};
   int dimension{};
   string data_s{}, query_s{}, out_s{"results"};
   //our curves aka the dataset
@@ -53,15 +53,15 @@ int main(int argc, char **argv){
   int tablesize = curves.size()/50;
   vector<vector<vector<assign_entry*>>> Lhashtable;
 
-  init_hashtable(L,k,entries,dimension,delta,kvec,w,curves,
+  init_hashtable(L, k, entries, dimension, delta, kvec, w, curves,
     tablesize,Lhashtable);
 
   vector<vector<int>> keys{};
-  find_keys(Lhashtable,centroids,keys);
+  find_keys(Lhashtable, centroids, keys);
 
   vector<vector<real_curve*>> assigned_objects{};
   assigned_objects.resize(c);
-  assign_by_range_search(centroids,Lhashtable,entries,keys,"DFT",assigned_objects);
+  assign_by_range_search(centroids, Lhashtable, entries, keys, "DFT", assigned_objects);
   end = clock();
   //test keys
   for(int i=0; i<c; i++){
