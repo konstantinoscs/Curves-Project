@@ -33,7 +33,7 @@ void find_mean(const vector<vector<double>> & pointsA,
       L[i][j] = MYmax(euclid_dist(pointsA[i-1],pointsB[j-1]),
                   MYmin(L[i-1][j-1],MYmin(L[i-1][j],L[i][j-1])));
   int minidx;
-  while(P!=1 && Q!=1){
+  while(P!=1 || Q!=1){
     minidx = minIndex(L[P-1][Q],L[P][Q-1],L[P-1][Q-1]);
     if(minidx==0)
       index_path.push_back({--P,Q});//finding the reversed index vector
@@ -42,11 +42,6 @@ void find_mean(const vector<vector<double>> & pointsA,
     else
       index_path.push_back({--P,--Q});
   }
-  //let's check if P or Q reached 1 first to add the remaining indexes
-  while(P!=1)
-    index_path.push_back({--P,1});
-  while(Q!=1)
-    index_path.push_back({1,--Q});
 
   int Msize = index_path.size();
   vector<double> point{};
