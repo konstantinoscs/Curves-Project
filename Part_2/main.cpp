@@ -77,7 +77,7 @@ int main(int argc, char **argv){
   begin = clock();
   assigned_objects.clear();
   assigned_objects.resize(c);
-  lloyds_assignment(centroids,pcurves2,assigned_objects);
+  lloyds_assignment(centroids, pcurves_all, assigned_objects);
   end = clock();
   for(int i=0; i<c; i++){
     cout << "for " << centroids[i]->get_id() << ":";
