@@ -24,7 +24,7 @@ int main(int argc, char **argv){
   string data_s{}, query_s{}, out_s{"results"};
   //our curves aka the dataset
   vector<real_curve> curves{};
-  vector<real_curve*> pcurves{}, centroids{}, pcurves2{};
+  vector<real_curve*> pcurves{}, centroids{}, pcurves_all{};
   clock_t begin, end;
   srand(time(0));
 
@@ -39,7 +39,7 @@ int main(int argc, char **argv){
 
   for(unsigned int i=0; i<curves.size(); i++){
     pcurves.push_back(&curves[i]);
-    pcurves2.push_back(&curves[i]);
+    pcurves_all.push_back(&curves[i]);
   }
 
   random_init(pcurves, c, centroids);

@@ -34,4 +34,6 @@ int pam_update(vector<real_curve *> & centroids, vector<real_curve *> & curves,
   centroids = std::move(opt_config);
   curves.clear();
 
+  return minobj;
+
 }
