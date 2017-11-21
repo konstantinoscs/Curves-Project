@@ -4,8 +4,8 @@
 
 using namespace std;
 
-double lloyds_assignment(vector<real_curve *> centroids,
-  vector<real_curve *> curves, vector<vector<real_curve *>> & assignment){
+double lloyds_assignment(vector<real_curve *> & centroids,
+  vector<real_curve *> & curves, vector<vector<real_curve *>> & assignment){
 
   int jmin{}, objective{};
   double distmin{}, dist{};
