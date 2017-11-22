@@ -1,6 +1,7 @@
 #include <vector>
 #include <limits>
 
+#include "curve.h"
 #include "distance_ops.h"
 #include "minmax.h"
 
@@ -14,15 +15,19 @@ int minIndex(double a, double b ,double c){
   return 2;//c is min
 }
 
-void find_mean(const vector<vector<double>> & pointsA,
-  const vector<vector<double>> & pointsB,
-  vector<vector<double>> & pointsMean){
+void find_mean(const real_curve & curveA,
+  const real_curve & curveB, real_curve & curveMean){
+  vector<vector<double>> pointsA = curveA.get_points();
+  vector<vector<double>> pointsB = curveB.get_points();
+  vector<double> point{};//every mean's point
   int m=pointsA.size(), n=pointsB.size();
   int P=m,Q=n;
   vector<vector<int>> index_path{{P,Q}};  
   double L[m+1][n+1];
   double maxdbl{std::numeric_limits<double>::max()};
-  pointsMean.clear();
+  curveMean.set_id("-1");
+  curveMean.set_dimension(curveA.get_dimension());
+
   L[0][0]=0.0;
   for(int i=1; i<m+1; i++)
     L[i][0] = maxdbl;
@@ -44,11 +49,10 @@ void find_mean(const vector<vector<double>> & pointsA,
   }
 
   int Msize = index_path.size();
-  vector<double> point{};
   for(int i = Msize-1; i>=0; i--){
     for(unsigned int j=0; j<pointsA[index_path[i][0]-1].size(); j++)
       point.push_back((pointsA[index_path[i][0]-1][j] + pointsB[index_path[i][1]-1][j])/2);
-    pointsMean.push_back(point);
+    curveMean.set_point(std::move(point));
     point.clear();
   }
   return ;
