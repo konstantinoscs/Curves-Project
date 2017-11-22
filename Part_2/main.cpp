@@ -61,7 +61,8 @@ int main(int argc, char **argv){
 
   vector<vector<real_curve*>> assigned_objects{};
   assigned_objects.resize(c);
-  assign_by_range_search(centroids, Lhashtable, entries, keys, "DFT", assigned_objects);
+  double objf{0.0};
+  objf = assign_by_range_search(centroids, Lhashtable, entries, keys, "DFT", assigned_objects);
   end = clock();
   //test keys
   for(int i=0; i<c; i++){
@@ -72,17 +73,18 @@ int main(int argc, char **argv){
     }
     cout << "-->" << assigned_objects[i].size() << endl;
   }
-  cout <<"range:"<< (double(end - begin) / CLOCKS_PER_SEC) << endl;
+  cout <<"range:"<< (double(end - begin) / CLOCKS_PER_SEC) << "--" << objf << endl;
 
   begin = clock();
   assigned_objects.clear();
   assigned_objects.resize(c);
-  lloyds_assignment(centroids, pcurves_all, assigned_objects);
+  objf = 0;
+  objf = lloyds_assignment(centroids, pcurves_all, assigned_objects);
   end = clock();
   for(int i=0; i<c; i++){
     cout << "for " << centroids[i]->get_id() << ":";
     cout << "-->" << assigned_objects[i].size() << endl;
   }
-  cout <<"lloyds:"<< (double(end - begin) / CLOCKS_PER_SEC) << endl;
+  cout <<"lloyds:"<< (double(end - begin) / CLOCKS_PER_SEC) << "--" << objf  << endl;
   return 0;
 }

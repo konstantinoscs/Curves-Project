@@ -7,7 +7,7 @@
 typedef struct assign_entry{
   real_curve* rcurve;//pointer to the original curve
   int centroid;//centroid in which will belong the rcurve
-  int distance;//in case of conflicts check min distance
+  double distance;//in case of conflicts check min distance
 }assign_entry;
 
 #endif
