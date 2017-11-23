@@ -6,6 +6,6 @@
 int minIndex(double a, double b ,double c);
 
 void find_mean(const real_curve & curveA,
-  const real_curve & curveB, real_curve & curveMean);
+  const real_curve & curveB, real_curve * curveMean);
 
 #endif

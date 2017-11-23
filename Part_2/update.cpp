@@ -12,6 +12,14 @@ double compute_objective(vector<real_curve *> & centroids,
 double mean_discrete_frechet(std::vector<real_curve *> & centroids,
   std::vector<std::vector<real_curve *>> & assignment, double objective){
 
+  //find which centroids were mean curves (not in dataset) and
+  //delete them
+  for(size_t i=0; i<centroids.size(); i++){
+    if(centroid[i]->get_id() == -1)
+      delete centroid[i];
+    centroid[i] = nullptr;
+  }
+
 
 }
 
