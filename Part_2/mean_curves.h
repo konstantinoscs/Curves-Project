@@ -5,8 +5,7 @@
 
 int minIndex(double a, double b ,double c);
 
-void find_mean(const std::vector<std::vector<double>> & pointsA,
-  const std::vector<std::vector<double>> & pointsB,
-  std::vector<std::vector<double>> & pointsMean);
+void find_mean(const real_curve & curveA,
+  const real_curve & curveB, real_curve & curveMean);
 
 #endif
