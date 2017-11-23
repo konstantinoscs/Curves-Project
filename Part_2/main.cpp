@@ -22,6 +22,7 @@ int main(int argc, char **argv){
   int c{5}, L{3}, k{2}, kvec{4}, w{4};
   int dimension{};
   string data_s{}, query_s{}, out_s{"results"};
+  string dist{"DFT"};
   //our curves aka the dataset
   vector<real_curve> curves{};
   vector<real_curve*> pcurves{}, centroids{}, pcurves_all{};
@@ -45,24 +46,24 @@ int main(int argc, char **argv){
   random_init(pcurves, c, centroids);
   //kmeans_init(pcurves,c,centroids,"DFT");
 
-  begin = clock();
   vector<assign_entry> entries;
   init_assign_entries(entries, curves);//init entries
 
-  double delta = 0.08;
-  int tablesize = curves.size()/50;
+  double delta = 0.06;
+  int tablesize = curves.size()/16;
   vector<vector<vector<assign_entry*>>> Lhashtable;
 
   init_hashtable(L, k, entries, dimension, delta, kvec, w, curves,
     tablesize,Lhashtable);
-
+  cout << "Hashtable just initialized!" << endl;
+  begin = clock();
   vector<vector<int>> keys{};
   find_keys(Lhashtable, centroids, keys);
 
   vector<vector<real_curve*>> assigned_objects{};
   assigned_objects.resize(c);
   double objf{0.0};
-  objf = assign_by_range_search(centroids, Lhashtable, entries, keys, "DFT", assigned_objects);
+  objf = assign_by_range_search(centroids, Lhashtable, entries, keys, dist, assigned_objects);
   end = clock();
   //test keys
   for(int i=0; i<c; i++){
@@ -79,7 +80,7 @@ int main(int argc, char **argv){
   assigned_objects.clear();
   assigned_objects.resize(c);
   objf = 0;
-  objf = lloyds_assignment(centroids, pcurves_all, assigned_objects);
+  objf = lloyds_assignment(centroids, pcurves_all, dist, assigned_objects);
   end = clock();
   for(int i=0; i<c; i++){
     cout << "for " << centroids[i]->get_id() << ":";

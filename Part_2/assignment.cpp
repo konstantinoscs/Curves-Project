@@ -1,11 +1,14 @@
 #include <vector>
+#include <string>
+
 #include "curve.h"
 #include "distance_ops.h"
 
 using namespace std;
 
 double lloyds_assignment(vector<real_curve *> & centroids,
-  vector<real_curve *> & curves, vector<vector<real_curve *>> & assignment){
+  vector<real_curve *> & curves,string dist_func,
+  vector<vector<real_curve *>> & assignment){
 
   int jmin{};
   double distmin{}, dist{}, objective{};
@@ -18,10 +21,10 @@ double lloyds_assignment(vector<real_curve *> & centroids,
     jmin = 0;
     const vector<vector<double>> & c_points = curves[i]->get_points();
     //set as min distance the distance from the first centroid
-    computeDFD(c_points, centroids[0]->get_points(), distmin);
+    find_distance(c_points, centroids[0]->get_points(), dist_func, distmin);
     //compare the min with all the other distances
-    for (size_t j=1; j<centroids.size(); j++){
-      computeDFD(c_points, centroids[j]->get_points(), dist);
+    for (unsigned int j=1; j<centroids.size(); j++){
+      find_distance(c_points, centroids[j]->get_points(), dist_func, dist);
       if(dist < distmin){
         distmin = dist;
         jmin = j;

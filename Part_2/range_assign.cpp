@@ -103,7 +103,7 @@ double assign_by_range_search(vector<real_curve*> & centroids,
       final_flag++;
   }
   collect_remaining_objects(entries,rem_curves);
-  obj_function += lloyds_assignment(centroids,rem_curves,assigned_objects);
+  obj_function += lloyds_assignment(centroids,rem_curves,dist,assigned_objects);
   return obj_function;
 }
 
