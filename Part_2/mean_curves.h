@@ -5,7 +5,7 @@
 
 int minIndex(double a, double b ,double c);
 
-void find_mean(const real_curve & curveA,
-  const real_curve & curveB, real_curve * curveMean);
+real_curve * find_mean(const real_curve * curveA,
+  const real_curve * curveB);
 
 #endif
