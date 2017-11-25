@@ -45,41 +45,6 @@ std::string &func, std::string &hash){
   return true;
 }
 
-void input_parameters(string &data_s, string &func, string &hash, string &query_s){
-  int choice{};
-
-  if(data_s.empty()){
-    cout << "Give the path to the dataset file: " << endl;
-    cin >> data_s;
-    cout << endl;
-  }
-
-  if(func.empty()){
-    cout << "Specify the distance function: " << endl;
-    cout << "1. DFT - Discrete Frechet Traversal." << endl;
-    cout << "2. DTW - Dynamic Time Warping." << endl;
-    //user gives a number and then we use the conditional operator
-    cin >> choice;
-    cout << endl;
-    func = choice-1 ? "DTW" : "DFT";
-  }
-
-  if(hash.empty()){
-    cout << "Specify the hash: " << endl;
-    cout << "1. Classic." << endl;
-    cout << "2. Probabilistic (LSH)." << endl;
-    cin >> choice;
-    cout << endl;
-    hash = choice-1 ? "probabilistic" : "classic";
-  }
-
-  if(query_s.empty()){
-    cout << "Give the path to the query file: " << endl;
-    cin >> query_s;
-    cout << endl;
-  }
-}
-
 //read_curve reads a curve from data file with "dimension" and puts it on
 //ocurve
 bool read_curve(real_curve & ocurve, ifstream & data, int dimension){
