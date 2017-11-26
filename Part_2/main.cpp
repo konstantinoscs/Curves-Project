@@ -15,6 +15,7 @@
 #include "range_assign.h"
 #include "hashtable_init.h"
 #include "assignment.h"
+#include "update.h"
 
 using namespace std;
 
@@ -37,17 +38,12 @@ int main(int argc, char **argv){
 
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
-
+  vector<assign_entry> entries;//for range assign
+  init_assign_entries(entries, curves);//init entries
   for(unsigned int i=0; i<curves.size(); i++){
     pcurves.push_back(&curves[i]);
     pcurves_all.push_back(&curves[i]);
   }
-
-  random_init(pcurves, c, centroids);
-  //kmeans_init(pcurves, c, centroids, "DFT");
-
-  vector<assign_entry> entries;
-  init_assign_entries(entries, curves);//init entries
 
   double delta = 0.06;
   int tablesize = curves.size()/16;
@@ -56,36 +52,54 @@ int main(int argc, char **argv){
   init_hashtable(L, k, entries, dimension, delta, kvec, w, curves,
     tablesize,Lhashtable);
   cout << "Hashtable just initialized!" << endl;
-  begin = clock();
-  vector<vector<int>> keys{};
-  find_keys(Lhashtable, centroids, keys);
 
-  vector<vector<real_curve*>> assigned_objects{};
-  assigned_objects.resize(c);
-  double objf{0.0};
-  objf = assign_by_range_search(centroids, Lhashtable, entries, keys, dist, assigned_objects);
-  end = clock();
-  //test keys
-  for(int i=0; i<c; i++){
-    cout << "for " << centroids[i]->get_id() << ":";
-    for(int j=0; j<L; j++){
-      int aaa = Lhashtable[j][keys[i][j]].size();
-      cout << " " << keys[i][j] << "(" << aaa << ")";
+//variables for main loop
+  double objf{};
+
+  vector<vector<int>> keys{};//for range assign
+  vector<vector<real_curve*>> assigned_objects{};//assignment
+  vector<real_curve*> prev_centroids{};//to check when to stop
+  prev_centroids.resize(c);
+  for(int i=0; i<1; i++){//for inits
+    if(i)//i=1
+      kmeans_init(pcurves, c, centroids, dist);
+    else//i=0
+      random_init(pcurves, c, centroids);
+    for(int j=0; j<1; j++){//for assigns
+      for(int z=1; z<2; z++){//for updates
+        cout << "rep " << (4*i+2*j+z+1) << ":" << endl;
+        while(1){//if small-(no) update break
+          cout << "assignment:";
+          begin = clock();
+          assigned_objects.clear();
+          assigned_objects.resize(c);
+          if(j){//assignment here changes "assigned_objects"
+            init_assign_entries(entries, curves);//init entries
+            find_keys(Lhashtable, centroids, keys);
+            objf = assign_by_range_search(centroids, Lhashtable, entries, keys, dist, assigned_objects);//j=1
+          }
+          else
+            objf = lloyds_assignment(centroids, pcurves_all, dist, assigned_objects);//j=0
+          end = clock();
+          cout << "OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
+          cout << "objf:" << objf << endl;
+          for(int t=0; t<c; t++)//save previous centroids
+            prev_centroids[t]=centroids[t];
+          cout << "update:" <<endl;
+          begin = clock();
+          if(z)//update here changes "centroids"
+            pam_update(centroids, assigned_objects, objf, dist);//z=1
+          else
+            mean_discrete_frechet(centroids, assigned_objects);//z=0
+          end = clock();
+          cout << "OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
+          if(prev_centroids == centroids)
+            break;
+        }
+        //output here :-)
+      }
     }
-    cout << "-->" << assigned_objects[i].size() << endl;
   }
-  cout <<"range:"<< (double(end - begin) / CLOCKS_PER_SEC) << "--" << objf << endl;
 
-  begin = clock();
-  assigned_objects.clear();
-  assigned_objects.resize(c);
-  objf = 0;
-  objf = lloyds_assignment(centroids, pcurves_all, dist, assigned_objects);
-  end = clock();
-  for(int i=0; i<c; i++){
-    cout << "for " << centroids[i]->get_id() << ":";
-    cout << "-->" << assigned_objects[i].size() << endl;
-  }
-  cout <<"lloyds:"<< (double(end - begin) / CLOCKS_PER_SEC) << "--" << objf  << endl;
   return 0;
 }
