@@ -44,7 +44,7 @@ int main(int argc, char **argv){
   }
 
   random_init(pcurves, c, centroids);
-  //kmeans_init(pcurves,c,centroids,"DFT");
+  //kmeans_init(pcurves, c, centroids, "DFT");
 
   vector<assign_entry> entries;
   init_assign_entries(entries, curves);//init entries
