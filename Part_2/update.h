@@ -9,6 +9,7 @@ bool mean_discrete_frechet(std::vector<real_curve *> & centroids,
 
 //pam chooses a medoid
 double pam_update(std::vector<real_curve *> & centroids,
-  std::vector<std::vector<real_curve *>> & assignment, double objective);
+  std::vector<std::vector<real_curve *>> & assignment, double objective,
+  std::string func);
 
 #endif

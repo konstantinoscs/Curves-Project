@@ -1,6 +1,7 @@
 #include <vector>
 #include <utility>
 #include <string>
+
 #include "curve.h"
 #include "distance_ops.h"
 #include "mean_curves.h"
@@ -82,7 +83,7 @@ double pam_update(vector<real_curve *> & centroids,
         centroids[i] = assignment[i][j];
         assignment[i][j] = temp;
         //compute objective
-        obj = compute_objective(centroids, assignment,func);
+        obj = compute_objective(centroids, assignment, func);
         if(obj < minobj){
           minobj = obj;
           opt_config = centroids;
