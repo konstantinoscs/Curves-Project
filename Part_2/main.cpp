@@ -66,7 +66,7 @@ int main(int argc, char **argv){
     else//i=0
       random_init(pcurves, c, centroids);
     for(int j=0; j<1; j++){//for assigns
-      for(int z=1; z<2; z++){//for updates
+      for(int z=0; z<1; z++){//for updates
         cout << "rep " << (4*i+2*j+z+1) << ":" << endl;
         while(1){//if small-(no) update break
           cout << "assignment:";

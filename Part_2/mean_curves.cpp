@@ -1,5 +1,6 @@
 #include <vector>
 #include <limits>
+#include <iostream>
 
 #include "curve.h"
 #include "distance_ops.h"
@@ -17,17 +18,24 @@ int minIndex(double a, double b ,double c){
 
 real_curve * find_mean(const real_curve * curveA,
   const real_curve * curveB){
-  vector<vector<double>> pointsA = curveA->get_points();
-  vector<vector<double>> pointsB = curveB->get_points();
+  const vector<vector<double>> & pointsA = curveA->get_points();
+  cout << "A" << endl;
+  const vector<vector<double>> & pointsB = curveB->get_points();
+  cout << "B" << endl;
   vector<double> point{};//every mean's point
   int m=pointsA.size(), n=pointsB.size();
+  cout << "C" << endl;
   int P=m,Q=n;
   vector<vector<int>> index_path{{P,Q}};
+  cout << "D" << endl;
   double L[m+1][n+1];
+  cout << "E" << endl;
   double maxdbl{std::numeric_limits<double>::max()};
+  cout << "F" << endl;
   real_curve * curveMean = new real_curve();
   curveMean->set_id("-1");
   curveMean->set_dimension(curveA->get_dimension());
+  cout << "G" << endl;
 
   L[0][0]=0.0;
   for(int i=1; i<m+1; i++)
