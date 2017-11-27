@@ -69,6 +69,6 @@ real_curve * find_mean(const real_curve * curveA,
   }
   for(int i=0; i<m+1; i++)
     delete [] L[i];
-  delete L;
+  delete [] L;
   return curveMean;
 }
