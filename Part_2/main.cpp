@@ -61,10 +61,13 @@ int main(int argc, char **argv){
   vector<real_curve*> prev_centroids{};//to check when to stop
   prev_centroids.resize(c);
   for(int i=0; i<1; i++){//for inits
+    begin = clock();
     if(i)//i=1
       kmeans_init(pcurves, c, centroids, dist);
     else//i=0
       random_init(pcurves, c, centroids);
+    end = clock();
+    cout << "init:OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
     for(int j=0; j<1; j++){//for assigns
       for(int z=0; z<1; z++){//for updates
         cout << "rep " << (4*i+2*j+z+1) << ":" << endl;

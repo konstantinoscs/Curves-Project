@@ -15,23 +15,23 @@ double compute_objective(vector<real_curve *> & centroids,
 real_curve * cluster_centroid(vector<real_curve *> & cluster){
   vector<real_curve *> means;
   //compute centroids from the dataset curves (bottom leaf level)
-  cout << "3" <<endl;
+  //cout << "3" <<endl;
   for(size_t i=0; i<cluster.size(); i+=2){
     if(i+1<cluster.size())
       means.push_back(find_mean(cluster[i], cluster[i+1]));
     else
       means.push_back(cluster[i]);
   }
-  cout << "4" <<endl;
+  //cout << "4" <<endl;
   //start the reduction until you get to the root
   while(means.size()>1){
     vector<real_curve *> temp_means;
     for(size_t i=0; i<means.size(); i+=2){
 
       if(i+1<means.size()){
-        cout << "5" <<endl;
+        //cout << "5" <<endl;
         temp_means.push_back(find_mean(means[i], means[i+1]));
-        cout << "5.5" <<endl;
+        //cout << "5.5" <<endl;
         //check if the curves were temporary means and delete them
         //(in the case of odd number of curves one leaf will be part
         // of the original dataset so don't delete it)
@@ -41,10 +41,10 @@ real_curve * cluster_centroid(vector<real_curve *> & cluster){
           delete means[i+1];
       }
       else{
-        cout << "6" <<endl;
+        //cout << "6" <<endl;
         temp_means.push_back(means[i]);
       }
-      cout << "7" <<endl;
+      //cout << "7" <<endl;
     }
     means = std::move(temp_means);
   }
@@ -63,13 +63,13 @@ bool mean_discrete_frechet(vector<real_curve *> & centroids,
       delete centroids[i];
     centroids[i] = nullptr;
   }
-  cout << "1" <<endl;
+  //cout << "1" <<endl;
   //for each cluster compute the new centroid
   for(size_t i=0; i<centroids.size(); i++){
-    cout << "i " << i << endl;
+    //cout << "i " << i << endl;
     centroids[i] = cluster_centroid(assignment[i]);
   }
-  cout << "2" <<endl;
+  //cout << "2" <<endl;
 
   return true;
 }

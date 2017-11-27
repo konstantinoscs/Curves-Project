@@ -13,8 +13,7 @@ double euclid_dist(const vector<double> & p1, const vector<double> & p2){
 		temp = p1[i]-p2[i];
 		ed += temp*temp;
 	}
-	ed = sqrt(ed);
-	return ed;
+	return sqrt(ed);
 }
 
 void computeDFD(const vector<vector<double>> & pointsA,
