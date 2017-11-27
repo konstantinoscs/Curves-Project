@@ -28,6 +28,7 @@ int main(int argc, char **argv){
   vector<real_curve> curves{};
   vector<real_curve*> pcurves{}, centroids{}, pcurves_all{};
   clock_t begin, end;
+  double init_time{};
   srand(time(0));
 
   data_s = "./trajectories_dataset";        //for testing purposes
@@ -55,27 +56,32 @@ int main(int argc, char **argv){
 
 //variables for main loop
   double objf{};
-
+  int assign_sizes[c],prev_assign_sizes[c];
+  for(int i=0; i<c; i++)
+    assign_sizes[i]=0;
+  int changes{};
   vector<vector<int>> keys{};//for range assign
   vector<vector<real_curve*>> assigned_objects{};//assignment
   vector<real_curve*> prev_centroids{};//to check when to stop
   prev_centroids.resize(c);
-  for(int i=0; i<1; i++){//for inits
+  for(int i=1; i<2; i++){//for inits
     begin = clock();
     if(i)//i=1
       kmeans_init(pcurves, c, centroids, dist);
     else//i=0
       random_init(pcurves, c, centroids);
     end = clock();
-    cout << "init:OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
+    init_time = double(end - begin) / CLOCKS_PER_SEC;
     for(int j=0; j<1; j++){//for assigns
       for(int z=0; z<1; z++){//for updates
         cout << "rep " << (4*i+2*j+z+1) << ":" << endl;
+        cout << "init:OK (" << init_time << ")" << endl;
         while(1){//if small-(no) update break
-          cout << "assignment:";
           begin = clock();
           assigned_objects.clear();
           assigned_objects.resize(c);
+          for(int t=0; t<c; t++)//saves last assign sizes
+            prev_assign_sizes[t]=assign_sizes[t];
           if(j){//assignment here changes "assigned_objects"
             init_assign_entries(entries, curves);//init entries
             find_keys(Lhashtable, centroids, keys);
@@ -84,25 +90,28 @@ int main(int argc, char **argv){
           else
             objf = lloyds_assignment(centroids, pcurves_all, dist, assigned_objects);//j=0
           end = clock();
-          cout << "OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
+          cout << "assignment:OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
           cout << "objf:" << objf << endl;
-          for(int t=0; t<c; t++)//save previous centroids
+          changes=0;
+          for(int t=0; t<c; t++){//save previous centroids and assign sizes
             prev_centroids[t]=centroids[t];
-          cout << "update:" <<endl;
+            assign_sizes[t]=assigned_objects[t].size();
+            cout << "prev:" << prev_assign_sizes[t] << ",new:" << assign_sizes[t] << endl;
+            changes += abs(assign_sizes[t]-prev_assign_sizes[t]);
+          }
+          if(changes < 5) break;//if just 2 objects changed cluster-->litle update-->break
           begin = clock();
           if(z)//update here changes "centroids"
             pam_update(centroids, assigned_objects, objf, dist);//z=1
           else
             mean_discrete_frechet(centroids, assigned_objects);//z=0
           end = clock();
-          cout << "OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
-          if(prev_centroids == centroids)
-            break;
+          cout << "update:OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
+          if(prev_centroids == centroids) break;
         }
         //output here :-)
       }
     }
   }
-
   return 0;
 }

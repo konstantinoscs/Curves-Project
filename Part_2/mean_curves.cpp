@@ -19,26 +19,20 @@ int minIndex(double a, double b ,double c){
 real_curve * find_mean(const real_curve * curveA,
   const real_curve * curveB){
   const vector<vector<double>> & pointsA = curveA->get_points();
-  //cout << "A" << endl;
   const vector<vector<double>> & pointsB = curveB->get_points();
-  //cout << "B" << endl;
   vector<double> point{};//every mean's point
   int m=pointsA.size(), n=pointsB.size();
-  //cout << "C" << endl;
   int P=m,Q=n;
   vector<vector<int>> index_path{{P,Q}};
-  //cout << "D" << endl;
+
   double ** L;
   L = new double*[m+1];
   for(int i=0; i<m+1; i++)
     L[i] = new double[n+1];
-  //cout << "E" << endl;
   double maxdbl{std::numeric_limits<double>::max()};
-  //cout << "F" << endl;
   real_curve * curveMean = new real_curve();
   curveMean->set_id("-1");
   curveMean->set_dimension(curveA->get_dimension());
-  //cout << "G" << endl;
 
   L[0][0]=0.0;
   for(int i=1; i<m+1; i++)
@@ -59,13 +53,21 @@ real_curve * find_mean(const real_curve * curveA,
     else
       index_path.push_back({--P,--Q});
   }
-
+  vector<double> prev_point{};
+  for(int i=0;i<curveA->get_dimension();i++)//init prev_point
+    prev_point.push_back(maxdbl);
   int Msize = index_path.size();
+  int counter{0};
   for(int i = Msize-1; i>=0; i--){
     for(unsigned int j=0; j<pointsA[index_path[i][0]-1].size(); j++)
       point.push_back((pointsA[index_path[i][0]-1][j] + pointsB[index_path[i][1]-1][j])/2);
-    curveMean->set_point(std::move(point));
+    if(point!=prev_point){//insert in mean if not same point
+      curveMean->set_point(std::move(point));
+      prev_point=point;
+    }
     point.clear();
+    if(counter==2000) break;//wtf means will have countless points
+    counter++;
   }
   for(int i=0; i<m+1; i++)
     delete [] L[i];

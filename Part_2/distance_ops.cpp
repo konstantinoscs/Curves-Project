@@ -19,9 +19,11 @@ double euclid_dist(const vector<double> & p1, const vector<double> & p2){
 void computeDFD(const vector<vector<double>> & pointsA,
 	const vector<vector<double>> & pointsB,double & distance){
 	int m=pointsA.size(), n=pointsB.size();
-	double L[m+1][n+1];
 	double maxdbl{std::numeric_limits<double>::max()};
-	L[0][0]=0.0;
+	double ** L;
+	L = new double*[m+1];
+	for(int i=0; i<m+1; i++)
+		L[i] = new double[n+1];
 	for(int i=1; i<m+1; i++)
 		L[i][0] = maxdbl;
 	for(int i=1; i<n+1; i++)
@@ -31,15 +33,20 @@ void computeDFD(const vector<vector<double>> & pointsA,
 			L[i][j] = MYmax(euclid_dist(pointsA[i-1],pointsB[j-1]),
 				MYmin(L[i-1][j-1],MYmin(L[i-1][j],L[i][j-1])));
 	distance = L[m][n];
+	for(int i=0; i<m+1; i++)
+		delete [] L[i];
+	delete [] L;
 	return ;
 }
 
 void computeDTW(const vector<vector<double>> & pointsA,
 	const vector<vector<double>> & pointsB,double & distance){
 	int m=pointsA.size(), n=pointsB.size();
-	double L[m+1][n+1];
+	double **L;
 	double maxdbl{std::numeric_limits<double>::max()};
-	L[0][0]=0.0;
+	L = new double*[m+1];
+	for(int i=0; i<m+1; i++)
+		L[i] = new double[n+1];
 	for(int i=1; i<m+1; i++)
 		L[i][0] = maxdbl;
 	for(int i=1; i<n+1; i++)
@@ -50,6 +57,9 @@ void computeDTW(const vector<vector<double>> & pointsA,
 			L[i][j] = euclid_dist(pointsA[i-1],pointsB[j-1]) +
 				min(L[i-1][j-1],min(L[i-1][j],L[i][j-1]));
 	distance = L[m][n];
+	for(int i=0; i<m+1; i++)
+		delete [] L[i];
+	delete [] L;
 	return ;
 }
 
