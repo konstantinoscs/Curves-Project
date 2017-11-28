@@ -60,6 +60,7 @@ int main(int argc, char **argv){
   for(int i=0; i<c; i++)
     assign_sizes[i]=0;
   int changes{};
+  int flag{1};//used to create keys from 2nd rep(in while) for mean centroid
   vector<vector<int>> keys{};//for range assign
   vector<vector<real_curve*>> assigned_objects{};//assignment
   vector<real_curve*> prev_centroids{};//to check when to stop
@@ -72,7 +73,7 @@ int main(int argc, char **argv){
       random_init(pcurves, c, centroids);
     end = clock();
     init_time = double(end - begin) / CLOCKS_PER_SEC;
-    for(int j=0; j<1; j++){//for assigns
+    for(int j=1; j<2; j++){//for assigns
       for(int z=0; z<1; z++){//for updates
         cout << "rep " << (4*i+2*j+z+1) << ":" << endl;
         cout << "init:OK (" << init_time << ")" << endl;
@@ -84,7 +85,14 @@ int main(int argc, char **argv){
             prev_assign_sizes[t]=assign_sizes[t];
           if(j){//assignment here changes "assigned_objects"
             init_assign_entries(entries, curves);//init entries
-            find_keys(Lhashtable, centroids, keys);
+            if(z || flag)
+              find_keys(Lhashtable, centroids, keys);//pam or mean's first rep
+            else{
+              cout << "before" << endl;
+              create_mean_keys(w, k, dimension, tablesize, L, centroids, delta, keys);//2nd rep++ on mean
+              cout << "after" << endl;
+            }
+            flag = 0;
             objf = assign_by_range_search(centroids, Lhashtable, entries, keys, dist, assigned_objects);//j=1
           }
           else

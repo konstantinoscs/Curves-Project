@@ -71,17 +71,17 @@ void search_curves(vector<real_curve> & s_curves,
     }
   }
   else if(hash=="probabilistic"){//lsh
-  	vector<hash_f> hs;
+    vector<hash_f> hs;
     vector<int> g;
     make_hashes(hs, w, dimension, k);
     make_g(hs, g);
-  	for(size_t i=0; i<s_curves.size(); i++){
-  		vector<int> h_results{};
-  		for (size_t j=0; j<g.size(); j++)
-	    	h_results.push_back(hs[g[j]].hash(concat_s_curves[0][i].as_vector()));
-  		linear_combination(h_results,r,key,tablesize);
-			curve_keys.push_back(key);
-  	}
+    for(size_t i=0; i<s_curves.size(); i++){
+      vector<int> h_results{};
+      for (size_t j=0; j<g.size(); j++)
+        h_results.push_back(hs[g[j]].hash(concat_s_curves[0][i].as_vector()));
+      linear_combination(h_results,r,key,tablesize);
+      curve_keys.push_back(key);
+      }
   }
   //creates here the vector which we'll search for nn
   for(size_t i=0; i<s_curves.size(); i++){

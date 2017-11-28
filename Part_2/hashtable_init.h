@@ -25,5 +25,9 @@ void find_keys(std::vector<std::vector<std::vector<assign_entry*>>> &Lht,
   const std::vector<real_curve*> & centroids,
   std::vector<std::vector<int>> & centroid_keys);
 
+void create_mean_keys(int w, int k, int dimension, int tablesize, int L,
+  std::vector<real_curve*> & centroids, int delta,
+  std::vector<std::vector<int>> & centroid_keys);
+
 #endif
 
