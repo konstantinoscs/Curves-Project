@@ -28,7 +28,6 @@ int main(int argc, char **argv){
   vector<real_curve> curves{};
   vector<real_curve*> pcurves{}, centroids{}, pcurves_all{};
   clock_t begin, end;
-  double init_time{};
   srand(time(0));
 
   data_s = "./trajectories_dataset";        //for testing purposes
@@ -47,7 +46,7 @@ int main(int argc, char **argv){
   }
 
   double delta = 0.06;
-  int tablesize = curves.size()/16;
+  int tablesize = curves.size()/4;
   vector<vector<vector<assign_entry*>>> Lhashtable;
 
   init_hashtable(L, k, entries, dimension, delta, kvec, w, curves,
@@ -57,26 +56,27 @@ int main(int argc, char **argv){
 //variables for main loop
   double objf{};
   int assign_sizes[c],prev_assign_sizes[c];
-  for(int i=0; i<c; i++)
-    assign_sizes[i]=0;
   int changes{};
   int flag{1};//used to create keys from 2nd rep(in while) for mean centroid
   vector<vector<int>> keys{};//for range assign
   vector<vector<real_curve*>> assigned_objects{};//assignment
   vector<real_curve*> prev_centroids{};//to check when to stop
   prev_centroids.resize(c);
-  for(int i=0; i<1; i++){//for inits
-    begin = clock();
-    if(i)//i=1
-      kmeans_init(pcurves, c, centroids, dist);
-    else//i=0
-      random_init(pcurves, c, centroids);
-    end = clock();
-    init_time = double(end - begin) / CLOCKS_PER_SEC;
-    for(int j=1; j<2; j++){//for assigns
-      for(int z=0; z<1; z++){//for updates
+  for(int i=0; i<2; i++){//for inits
+    for(int j=0; j<1; j++){//for assigns
+      for(int z=0; z<2; z++){//for updates
+        if(!z && dist=="DTW") continue;//for DTW only PAM
         cout << "rep " << (4*i+2*j+z+1) << ":" << endl;
-        cout << "init:OK (" << init_time << ")" << endl;
+        begin = clock();
+        if(i)//i=1
+          kmeans_init(pcurves, c, centroids, dist);
+        else//i=0
+          random_init(pcurves, c, centroids);
+        end = clock();
+        cout << "init:OK (" << double(end - begin) / CLOCKS_PER_SEC << ")" << endl;
+        for(int i=0; i<c; i++)
+          assign_sizes[i]=0;
+        flag = 1;
         while(1){//if small-(no) update break
           begin = clock();
           assigned_objects.clear();
@@ -87,11 +87,8 @@ int main(int argc, char **argv){
             init_assign_entries(entries, curves);//init entries
             if(z || flag)
               find_keys(Lhashtable, centroids, keys);//pam or mean's first rep
-            else{
-              cout << "before" << endl;
+            else
               create_mean_keys(w, k, dimension, tablesize, L, centroids, delta, keys);//2nd rep++ on mean
-              cout << "after" << endl;
-            }
             flag = 0;
             objf = assign_by_range_search(centroids, Lhashtable, entries, keys, dist, assigned_objects);//j=1
           }
