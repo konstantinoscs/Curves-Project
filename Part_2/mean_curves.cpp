@@ -9,11 +9,11 @@
 using namespace std;
 
 int minIndex(double a, double b ,double c){
-  if(a<=b && a<=c)
+  if(a<b && a<c)
     return 0;//a is min
-  if(b<=c)//a sure not min,check only b,c
+  if(b<c)//a sure not min,check only b,c
     return 1;//b is min
-  return 2;//c is min
+  return 2;//c is min--->returns 2 if a=b=c
 }
 
 real_curve * find_mean(const real_curve * curveA,
@@ -57,17 +57,21 @@ real_curve * find_mean(const real_curve * curveA,
   for(int i=0;i<curveA->get_dimension();i++)//init prev_point
     prev_point.push_back(maxdbl);
   int Msize = index_path.size();
-  int counter{0};
+  int counter{1};
+  int flag{1};//when we have less than 600 points we push them all in mean
+  if(Msize>600) flag=0;//else the points are too much so we skip some of them
   for(int i = Msize-1; i>=0; i--){
     for(unsigned int j=0; j<pointsA[index_path[i][0]-1].size(); j++)
       point.push_back((pointsA[index_path[i][0]-1][j] + pointsB[index_path[i][1]-1][j])/2);
     if(point!=prev_point){//insert in mean if not same point
-      curveMean->set_point(std::move(point));
-      prev_point=point;
+      if(counter%3 || flag){//if Msize>600 keep 2/3 of points
+        curveMean->set_point(std::move(point));
+        prev_point=point;
+        counter++;
+      }
+      else counter=1;
     }
     point.clear();
-    if(counter==2000) break;//wtf means will have countless points
-    counter++;
   }
   for(int i=0; i<m+1; i++)
     delete [] L[i];

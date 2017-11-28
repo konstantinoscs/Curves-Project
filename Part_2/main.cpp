@@ -64,7 +64,7 @@ int main(int argc, char **argv){
   vector<vector<real_curve*>> assigned_objects{};//assignment
   vector<real_curve*> prev_centroids{};//to check when to stop
   prev_centroids.resize(c);
-  for(int i=1; i<2; i++){//for inits
+  for(int i=0; i<1; i++){//for inits
     begin = clock();
     if(i)//i=1
       kmeans_init(pcurves, c, centroids, dist);
@@ -99,7 +99,7 @@ int main(int argc, char **argv){
             cout << "prev:" << prev_assign_sizes[t] << ",new:" << assign_sizes[t] << endl;
             changes += abs(assign_sizes[t]-prev_assign_sizes[t]);
           }
-          if(changes < 5) break;//if just 2 objects changed cluster-->litle update-->break
+          if(changes < 2*c+1) break;//if just c objects changed cluster-->litle update-->break
           begin = clock();
           if(z)//update here changes "centroids"
             pam_update(centroids, assigned_objects, objf, dist);//z=1
@@ -108,6 +108,9 @@ int main(int argc, char **argv){
           end = clock();
           cout << "update:OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
           if(prev_centroids == centroids) break;
+          for(int jj=0; jj<c; jj++)
+            cout << centroids[jj]->get_points().size() << " - ";
+          cout << endl;
         }
         //output here :-)
       }
