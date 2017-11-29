@@ -49,30 +49,30 @@ int partfunc(vector<real_curve *> & sortme,
   return leftP;
 }
 
-void quicksort_one(vector<real_curve *> & sortme, int left, int right){
+void quicksort(vector<real_curve *> & sortme, int left, int right){
   if(right-left<=0) return ;
   string pivot = sortme[right]->get_id();
   int partition = partfunc(sortme,left,right,pivot);
-  quicksort_one(sortme, left, partition-1);
-  quicksort_one(sortme, partition+1, right);
+  quicksort(sortme, left, partition-1);
+  quicksort(sortme, partition+1, right);
 }
 
-void quicksort_two(vector<real_curve *> & sortme,
+void quicksort(vector<real_curve *> & sortme,
   vector<vector<real_curve *>> & followswap, int left, int right){
 
   if(right-left<=0) return ;
   string pivot = sortme[right]->get_id();
   int partition = partfunc(sortme, followswap, left, right, pivot);
-  quicksort_two(sortme, followswap, left, partition-1);
-  quicksort_two(sortme, followswap, partition+1, right);
+  quicksort(sortme, followswap, left, partition-1);
+  quicksort(sortme, followswap, partition+1, right);
 }
 
 void sort_clusters(vector<real_curve *> & centroids,
   vector<vector<real_curve *>> & assignment, int x){
 
   for(unsigned int i=0; i<centroids.size(); i++)
-    quicksort_one(assignment[i],0,assignment[i].size()-1);
+    quicksort(assignment[i],0,assignment[i].size()-1);
 
   if(!x)//if not frechet update
-    quicksort_two(centroids, assignment, 0, centroids.size()-1);
+    quicksort(centroids, assignment, 0, centroids.size()-1);
 }
