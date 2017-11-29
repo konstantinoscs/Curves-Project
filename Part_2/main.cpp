@@ -20,7 +20,7 @@
 using namespace std;
 
 int main(int argc, char **argv){
-  int c{5}, L{3}, k{2}, kvec{4}, w{4};
+  int c{4}, L{3}, k{2}, kvec{4}, w{4};
   int dimension{};
   string data_s{}, query_s{}, out_s{"results"};
   string dist{"DFT"};
@@ -30,7 +30,7 @@ int main(int argc, char **argv){
   clock_t begin, end;
   srand(time(0));
 
-  data_s = "./trajectories_dataset";        //for testing purposes
+  data_s = "./test_dataset";        //for testing purposes
   if(!read_dataset_curves(data_s, curves, dimension)){
     cerr << "Something went wrong while reading the dataset!"<< endl;
     return -1;
@@ -47,6 +47,12 @@ int main(int argc, char **argv){
 
   double delta = 0.06;
   int tablesize = curves.size()/4;
+  int a;//mult with c and will be the
+  double b;
+  if(curves.size() < 500) a = c + (c%2-1);
+  else if(curves.size() < 2000)  a = 2*c + 1;
+  else a = 3*c + (c%2-1);
+  b = (dist=="DFT") ? 0.1*a : a;
   vector<vector<vector<assign_entry*>>> Lhashtable;
 
   init_hashtable(L, k, entries, dimension, delta, kvec, w, curves,
@@ -104,7 +110,7 @@ int main(int argc, char **argv){
             cout << "prev:" << prev_assign_sizes[t] << ",new:" << assign_sizes[t] << endl;
             changes += abs(assign_sizes[t]-prev_assign_sizes[t]);
           }
-          if(changes < 2*c+1) break;//if just c objects changed cluster-->litle update-->break
+          if(changes < a) break;//if just c objects changed cluster-->litle update-->break
           begin = clock();
           if(z)//update here changes "centroids"
             pam_update(centroids, assigned_objects, objf, dist);//z=1

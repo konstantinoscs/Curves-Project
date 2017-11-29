@@ -12,4 +12,7 @@ double pam_update(std::vector<real_curve *> & centroids,
   std::vector<std::vector<real_curve *>> & assignment, double objective,
   std::string func);
 
+double compute_objective(real_curve* centroid,
+  std::vector<real_curve *> & assignment, std::string func);
+
 #endif

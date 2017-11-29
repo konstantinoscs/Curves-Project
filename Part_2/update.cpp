@@ -1,6 +1,7 @@
 #include <vector>
 #include <utility>
 #include <string>
+#include <limits>
 #include <iostream>
 
 #include "curve.h"
@@ -9,8 +10,11 @@
 
 using namespace std;
 
-double compute_objective(vector<real_curve *> & centroids,
-  vector<vector<real_curve *>> & assignment, string func);
+double compute_objective(real_curve* centroid,
+  vector<real_curve *> & assignment, string func);
+
+//double compute_objective(vector<real_curve *> & centroids,
+//  vector<vector<real_curve *>> & assignment, string func);
 
 real_curve * cluster_centroid(vector<real_curve *> & cluster){
   vector<real_curve *> means;
@@ -67,27 +71,27 @@ bool mean_discrete_frechet(vector<real_curve *> & centroids,
 double pam_update(vector<real_curve *> & centroids,
   vector<vector<real_curve *>> & assignment, double objective, string func){
 
-  double obj{}, minobj{objective};
-  vector<real_curve *> opt_config = centroids;
-  real_curve * temp{nullptr};
+  double obj{}, minobj{};
+  vector<real_curve *> opt_config{};
+  opt_config.resize(centroids.size());
+  //real_curve * temp{nullptr};
 
   //start swapping every centroid
   for(size_t i=0; i<centroids.size(); i++){
     cout << "for centroid " << i << endl;
-    //swap with every curve in the current cluster
+    minobj = std::numeric_limits<double>::max();
+    //swap centroid with every curve in the current cluster to find medoid
       for(size_t j=0; j<assignment[i].size(); j++){
         cout << "for j " << j <<endl;
-        //swap centroid
-        temp = centroids[i];
+        //"swap" centroid
         centroids[i] = assignment[i][j];
-        assignment[i][j] = temp;
         //compute objective
-        obj = compute_objective(centroids, assignment, func);
+        obj = compute_objective(centroids[i], assignment[i], func);
+        //here every 
         if(obj < minobj){
           minobj = obj;
-          opt_config = centroids;
+          opt_config[i] = centroids[i];
         }
-
       }
     }
   //now centroids has the new configuration
@@ -96,7 +100,17 @@ double pam_update(vector<real_curve *> & centroids,
   return minobj;
 }
 
-double compute_objective(vector<real_curve *> & centroids,
+double compute_objective(real_curve* centroid,
+  vector<real_curve *> & assignment, string func){
+
+  double dist{},objective{};
+  for(unsigned int i=0; i<assignment.size(); i++){
+    find_distance(centroid->get_points(), assignment[i]->get_points(), func, dist);
+    objective += dist;
+  }
+  return objective;
+}
+/*double compute_objective(vector<real_curve *> & centroids,
   vector<vector<real_curve *>> & assignment, string func){
 
   double objective{}, dist{};
@@ -110,4 +124,4 @@ double compute_objective(vector<real_curve *> & centroids,
     objective += dist;
   }
   return objective;
-}
+}*/
