@@ -39,13 +39,13 @@ int main(int argc, char **argv){
     return -1;
   }
 
+  if((int)curves.size()<c){ 
+    cerr << "Centroids can't be more than curves!" << endl; 
+    return -1; 
+  }
+
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
-
-  if((int)curves.size()<c){
-    cerr << "Centroids can't be more than curves!" << endl;
-    return -1;
-  }
 
   vector<assign_entry> entries;//for range assign
   init_assign_entries(entries, curves);//init entries
@@ -91,8 +91,8 @@ int main(int argc, char **argv){
           random_init(pcurves, c, centroids);
         end = clock();
         cout << "init:OK (" << double(end - begin) / CLOCKS_PER_SEC << ")" << endl;
-        for(int i=0; i<c; i++)
-          assign_sizes[i]=0;
+        for(int u=0; u<c; u++)
+          assign_sizes[u]=0;
         flag = 1;
         while(1){//if small-(no) update break
           begin = clock();
@@ -137,12 +137,7 @@ int main(int argc, char **argv){
         compute_silhuette(centroids, assigned_objects, dist, Si, Stotal);
         if(complete)//update=mean frechet(z=0)->don't sort centroids
           sort_clusters(centroids, assigned_objects, z);// else sort them
-        cout << "Results:" << endl;
-        for(unsigned int q=0; q<centroids.size(); q++){
-          cout << "for " << q << "cluster:" << endl;
-          for(unsigned int e=0; e<assigned_objects[q].size(); e++)
-            cout << assigned_objects[q][e]->get_id() << endl;
-        }
+
         //output here :-(
       }
     }

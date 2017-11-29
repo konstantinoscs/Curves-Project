@@ -4,54 +4,54 @@
 
 using namespace std;
 
-void swap(real_curve * x, real_curve * y){
-  real_curve *temp=x;
-  x = y;
-  y = temp;
-}
-
-void swap(vector<real_curve *> x, vector<real_curve *> y){
-  x.swap(y);
-}
-
-int partfunc(vector<real_curve *> & sortme, int left, int right, string pivot){
+int partfunc(vector<real_curve *> & sortme, int left, int right, int pivot){
   int leftP{left},rightP{right-1};
+  real_curve* temp{};
   while(1){
-    while(sortme[leftP]->get_id().compare(pivot)<0) leftP++;
-
-    while(sortme[rightP]->get_id().compare(pivot)>0) rightP++;
+    while(stoi(sortme[leftP]->get_id()) < pivot && leftP<right) leftP++; 
+    while(stoi(sortme[rightP]->get_id()) > pivot && rightP>left) rightP--;
 
     if(leftP>=rightP) break;
-    else swap(sortme[leftP++],sortme[rightP--]);
+    else{
+      temp = sortme[leftP];
+      sortme[leftP] = sortme[rightP];
+      sortme[rightP] = temp;
+    }
+    leftP++;
+    rightP--;
   }
-
-  swap(sortme[leftP],sortme[right]);
+  temp = sortme[leftP];
+  sortme[leftP] = sortme[right];
+  sortme[right] = temp;
   return leftP;
 }
 
 int partfunc(vector<real_curve *> & sortme,
-  vector<vector<real_curve *>> & followswap, int left, int right, string pivot){
+  vector<vector<real_curve *>> & followswap, int left, int right, int pivot){
   int leftP{left},rightP{right-1};
+  real_curve *temp{};
   while(1){
-    while(sortme[leftP]->get_id().compare(pivot)<0) leftP++;
-
-    while(sortme[rightP]->get_id().compare(pivot)>0) rightP++;
+    while(stoi(sortme[leftP]->get_id()) < pivot && leftP<right) leftP++;
+    while(stoi(sortme[rightP]->get_id()) > pivot && rightP>left) rightP--;
 
     if(leftP>=rightP) break;
     else{
-      swap(sortme[leftP],sortme[rightP]);
-      swap(followswap[leftP++],followswap[rightP--]);
+      temp = sortme[leftP];
+      sortme[leftP] = sortme[rightP];
+      sortme[rightP] = temp;
+      followswap[leftP++].swap(followswap[rightP--]);
     }
   }
-
-  swap(sortme[leftP],sortme[right]);
-  swap(followswap[leftP],followswap[right]);
+  temp = sortme[leftP];
+  sortme[leftP] = sortme[right];
+  sortme[right] = temp;
+  followswap[leftP].swap(followswap[right]);
   return leftP;
 }
 
 void quicksort(vector<real_curve *> & sortme, int left, int right){
-  if(right-left<=0) return ;
-  string pivot = sortme[right]->get_id();
+  if(right<=left) return ;
+  int pivot{stoi(sortme[right]->get_id())};
   int partition = partfunc(sortme,left,right,pivot);
   quicksort(sortme, left, partition-1);
   quicksort(sortme, partition+1, right);
@@ -59,9 +59,8 @@ void quicksort(vector<real_curve *> & sortme, int left, int right){
 
 void quicksort(vector<real_curve *> & sortme,
   vector<vector<real_curve *>> & followswap, int left, int right){
-
   if(right-left<=0) return ;
-  string pivot = sortme[right]->get_id();
+  int pivot{stoi(sortme[right]->get_id())};
   int partition = partfunc(sortme, followswap, left, right, pivot);
   quicksort(sortme, followswap, left, partition-1);
   quicksort(sortme, followswap, partition+1, right);
@@ -73,6 +72,6 @@ void sort_clusters(vector<real_curve *> & centroids,
   for(unsigned int i=0; i<centroids.size(); i++)
     quicksort(assignment[i],0,assignment[i].size()-1);
 
-  if(!x)//if not frechet update
+  if(x)//if not frechet update
     quicksort(centroids, assignment, 0, centroids.size()-1);
 }
