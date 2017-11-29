@@ -17,6 +17,7 @@
 #include "assignment.h"
 #include "update.h"
 #include "silhuette.h"
+#include "sort.h"
 
 using namespace std;
 
@@ -32,7 +33,7 @@ int main(int argc, char **argv){
   clock_t begin, end;
   srand(time(0));
 
-  data_s = "./test_dataset";        //for testing purposes
+  data_s = "./trajectories_dataset";        //for testing purposes
   if(!read_dataset_curves(data_s, curves, dimension)){
     cerr << "Something went wrong while reading the dataset!"<< endl;
     return -1;
@@ -41,7 +42,7 @@ int main(int argc, char **argv){
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
 
-  if(curves.size()<c){
+  if((int)curves.size()<c){
     cerr << "Centroids can't be more than curves!" << endl;
     return -1;
   }
@@ -78,9 +79,9 @@ int main(int argc, char **argv){
   vector<vector<real_curve*>> assigned_objects{};//assignment
   vector<real_curve*> prev_centroids{};//to check when to stop
   prev_centroids.resize(c);
-  for(int i=0; i<2; i++){//for inits
+  for(int i=0; i<1; i++){//for inits
     for(int j=0; j<1; j++){//for assigns
-      for(int z=0; z<2; z++){//for updates
+      for(int z=0; z<1; z++){//for updates
         if(!z && dist=="DTW") continue;//for DTW only PAM
         cout << "rep " << (4*i+2*j+z+1) << ":" << endl;
         begin = clock();
@@ -133,9 +134,15 @@ int main(int argc, char **argv){
             cout << centroids[jj]->get_points().size() << " - ";
           cout << endl;
         }
-        compute_silhuette(centroids, assignment, dist, Si, Stotal);
-        if(complete)
-          //sort_clusters(centroids, assignment);
+        compute_silhuette(centroids, assigned_objects, dist, Si, Stotal);
+        if(complete)//update=mean frechet(z=0)->don't sort centroids
+          sort_clusters(centroids, assigned_objects, z);// else sort them
+        cout << "Results:" << endl;
+        for(unsigned int q=0; q<centroids.size(); q++){
+          cout << "for " << q << "cluster:" << endl;
+          for(unsigned int e=0; e<assigned_objects[q].size(); e++)
+            cout << assigned_objects[q][e]->get_id() << endl;
+        }
         //output here :-(
       }
     }

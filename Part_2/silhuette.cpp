@@ -1,6 +1,8 @@
 #include <string>
+#include <vector>
 #include <limits>
 
+#include "minmax.h"
 #include "curve.h"
 #include "update.h"
 #include "distance_ops.h"
@@ -13,7 +15,7 @@ int find_second_best(real_curve * tempC, int y,
   double min_dist{std::numeric_limits<int>::max()},min_dist2;
   int index{};
   for(unsigned int i=0; i<centroids.size(); i++){
-    if(i==y) continue;//don't check it's real centroid
+    if((int)i==y) continue;//don't check it's real centroid
     find_distance(tempC->get_points(), centroids[i]->get_points(),
       dist, min_dist2);
     if(min_dist>min_dist2){
@@ -26,7 +28,7 @@ int find_second_best(real_curve * tempC, int y,
 
 void compute_silhuette(vector<real_curve *> & centroids,
   vector<vector<real_curve *>> & assignment, string dist,
-  vector<double> & Si, double Stotal){
+  vector<double> & Si, double & Stotal){
 
   Si.clear();
   if(centroids.size()==1){
