@@ -1,4 +1,5 @@
 #include <string>
+#include <limits>
 
 #include "curve.h"
 #include "update.h"
@@ -16,7 +17,7 @@ int find_second_best(real_curve * tempC, int y,
     find_distance(tempC->get_points(), centroids[i]->get_points(),
       dist, min_dist2);
     if(min_dist>min_dist2){
-      min_dist = min_dist2
+      min_dist = min_dist2;
       index = i;
     }
   }

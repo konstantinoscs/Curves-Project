@@ -16,6 +16,7 @@
 #include "hashtable_init.h"
 #include "assignment.h"
 #include "update.h"
+#include "silhuette.h"
 
 using namespace std;
 
@@ -24,6 +25,7 @@ int main(int argc, char **argv){
   int dimension{};
   string data_s{}, query_s{}, out_s{"results"};
   string dist{"DFT"};
+  bool complete{false};
   //our curves aka the dataset
   vector<real_curve> curves{};
   vector<real_curve*> pcurves{}, centroids{}, pcurves_all{};
@@ -38,6 +40,12 @@ int main(int argc, char **argv){
 
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
+
+  if(curves.size()<c){
+    cerr << "Centroids can't be more than curves!" << endl;
+    return -1;
+  }
+
   vector<assign_entry> entries;//for range assign
   init_assign_entries(entries, curves);//init entries
   for(unsigned int i=0; i<curves.size(); i++){
@@ -63,6 +71,8 @@ int main(int argc, char **argv){
   double objf{};
   int assign_sizes[c],prev_assign_sizes[c];
   int changes{};
+  vector<double> Si{};
+  double Stotal;
   int flag{1};//used to create keys from 2nd rep(in while) for mean centroid
   vector<vector<int>> keys{};//for range assign
   vector<vector<real_curve*>> assigned_objects{};//assignment
@@ -123,7 +133,10 @@ int main(int argc, char **argv){
             cout << centroids[jj]->get_points().size() << " - ";
           cout << endl;
         }
-        //output here :-)
+        compute_silhuette(centroids, assignment, dist, Si, Stotal);
+        if(complete)
+          //sort_clusters(centroids, assignment);
+        //output here :-(
       }
     }
   }
