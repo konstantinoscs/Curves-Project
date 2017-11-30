@@ -27,14 +27,7 @@ bool read_query_curves(std::string query_s, std::vector<real_curve> & curves,
 bool write_results(std::ofstream & out_f, std::vector<real_curve*> & centroids,
   std::vector<std::vector<real_curve*>> assignment, std::vector<double> Si,
   double Stotal, int i, int j, int z, std::string dist, bool complete,
-  double time);
-
-//prints the results file
-bool write_out_file(std::string out_s, std::string hash, std::string func,
-  std::vector<real_curve> & s_curves, bool stats, int tsize, real_curve ** nn_curve,
-  real_curve ** true_nn, double * nn_dist, double * nn_max_dist,
-  double * nn_avg_dist, double * true_nn_dist, bool * grid_curve_found,
-  std::vector<std::string> * curves_in_R, double * time1, double * time2);
+  double time, int dimension);
 
 //checks if the user wants to test more queries
 bool check_more(std::string & query_s);

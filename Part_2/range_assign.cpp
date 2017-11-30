@@ -99,9 +99,12 @@ double assign_by_range_search(vector<real_curve*> & centroids,
     flag = 0;
     R *= 2;
     obj_function += search_in_entries(entries,Lht,keys,flag,assigned_objects);
-    if(!flag)//flag == 0
+    if(!flag){//flag == 0
       final_flag++;
+      R *= 5;//so in next rep R *= 10
+    }
   }
+  //for rest curves use simple assign
   collect_remaining_objects(entries,rem_curves);
   obj_function += lloyds_assignment(centroids,rem_curves,dist,assigned_objects);
   return obj_function;

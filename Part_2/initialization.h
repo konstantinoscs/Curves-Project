@@ -17,6 +17,7 @@ void kmeans_init(std::vector<real_curve*> & curves,int k,
 
 //A is a sorted array
 //returns the A's index which has the min value bigger than x
+//aka binary search
 int find_t(std::vector<double> A, double x, int start, int end);
 
 #endif

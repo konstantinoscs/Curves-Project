@@ -160,69 +160,63 @@ bool read_query_curves(string query_s, vector<real_curve> & curves,
 
 bool write_results(ofstream & out_f, vector<real_curve*> & centroids,
   vector<vector<real_curve*>> assignment, vector<double> Si, double Stotal,
-  int i, int j, int z, string dist, bool complete, double time){
+  int i, int j, int z, string dist, bool complete, double time, int dimension){
 
   if (!out_f.is_open()){
     cerr << "couldn't create output  file!" << endl;
     return false;
   }
-  out_f << "Algorithm:" << endl;
-
+  out_f << "Algorithm: ";
+  if(i) out_f << "[Kmeans_Init]";
+  else out_f << "[Random_Init]";
+  if(j) out_f << "+[Range_Assign]";
+  else out_f << "+[Simple_Assign]";
+  if(z) out_f << "+[PAM]" << endl;
+  else out_f << "+[Mean_Frechet]" << endl;
+  out_f << "Metric: ";
+  if(dist=="DFT") out_f << "Frechet" << endl;
+  else out_f << "DTW" << endl;
+  if(!complete){
+    for(unsigned int t=0; t<centroids.size(); t++){
+      out_f << "Cluster-" << t+1;
+      out_f << " {size: " << assignment[t].size() << ", centroid: ";
+      if(centroids[t]->get_id().compare("-1"))//id != -1
+        out_f << centroids[t]->get_id();
+      else{
+        out_f << "[";
+        for(unsigned int y=0; y<centroids[t]->get_points().size(); y++){
+          out_f << "(";
+          for(int x=0; x<dimension-1; x++)
+            out_f << centroids[t]->get_points()[y][x] << ",";
+          out_f << centroids[t]->get_points()[y][dimension-1] << ")";
+          if(y != centroids[t]->get_points().size()-1) out_f << ",";
+        }
+        out_f << "]";
+      }
+      out_f << "}" << endl;
+    }
+    out_f << "Clustering Time: " << time << endl;
+    out_f << "Silhouette: [";
+    for(unsigned int t=0; t<centroids.size(); t++)
+      out_f << Si[t] << ",";
+    out_f << Stotal << "]" << endl;
+  }
+  else{
+    for(unsigned int t=0; t<centroids.size(); t++){
+      out_f << "Cluster-" << t+1 << "{";
+      for(unsigned int y=0; y<assignment[t].size()-1; y++)
+        out_f << assignment[t][y]->get_id() << ",";
+      out_f << assignment[t][assignment[t].size()-1]->get_id() << "}" << endl;
+    }
+  }
   out_f << endl;
+  //delete remaining mean curves 
+  for(unsigned int t=0; t<centroids.size(); t++)
+    if(!centroids[t]->get_id().compare("-1"))
+      delete centroids[t];
   return true;
 }
 
-bool write_out_file(string out_s, string hash, string func,
-  vector<real_curve> & s_curves, bool stats, int tsize, real_curve ** nn_curve,
-  real_curve ** true_nn, double * nn_dist ,double * nn_max_dist,
-  double * nn_avg_dist, double * true_nn_dist, bool * grid_curve_found,
-  vector<string> * curves_in_R, double * time1, double * time2){
-
-  //temp dist will be used to calculate the distance differences
-  double temp_dist{};
-  ofstream out_f(out_s);
-  string found;
-  //test if there is a file to get the data from
-  if (!out_f.is_open()){
-    cerr << "couldn't create output  file!" << endl;
-    return false;
-  }
-  //for every curve print the info
-  for(size_t i=0; i<s_curves.size(); i++){
-    out_f << "Query: " << s_curves[i].get_id() << endl;//for stats=false
-		out_f << "DistanceFunction: " << func << endl;
-    out_f << "HashFunction: "<< hash<< endl;
-    if(!stats){
-      found = grid_curve_found[i] ? "True" : "False";
-      out_f << "FoundGridCurve: " << found << endl;
-      out_f << "LSH Nearest Neighbor: " << nn_curve[i]->get_id() << endl;
-      out_f << "True Nearest Neighbor: " << true_nn[i]->get_id() << endl;
-      out_f << "distanceLSH: " << nn_dist[i] << endl;
-      out_f << "distanceTrue: " << true_nn_dist[i] << endl;
-      out_f << "R-near neighbors:" << endl;
-      for(size_t j=0; j<curves_in_R[i].size(); j++)
-        out_f << curves_in_R[i][j] << endl;
-    }
-    else{
-      temp_dist = nn_dist[i]-true_nn_dist[i];
-      temp_dist = temp_dist < 0 ? temp_dist*=-1 : temp_dist;
-		  out_f << "|minDistanceLSH - distanceTrue|: " << temp_dist <<endl;
-      temp_dist = nn_max_dist[i]-true_nn_dist[i];
-      temp_dist = temp_dist < 0 ? temp_dist*=-1 : temp_dist;
-		  out_f << "|maxDistance - distanceTrue|: " << temp_dist <<endl;
-      temp_dist = nn_avg_dist[i]-true_nn_dist[i];
-      temp_dist = temp_dist < 0 ? temp_dist*=-1 : temp_dist;
-		  out_f << "|avgDistance - distanceTrue|: " << temp_dist <<endl;
-		  out_f << "tLSHmin: " << time1[i] << endl;
-      out_f << "tLSHmax: " << time1[i] << endl;
-      out_f << "tLSHavg: " << time1[i] << endl;
-		  out_f << "tTrue: "<< time2[i] << endl;
-    }
-    out_f << endl;
-	}
-  out_f.close();
-  return true;
-}
 
 bool check_more(string & query_s){
   int choice{};

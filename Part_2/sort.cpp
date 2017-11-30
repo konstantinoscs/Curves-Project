@@ -49,6 +49,7 @@ int partfunc(vector<real_curve *> & sortme,
   return leftP;
 }
 
+//sort just sortme
 void quicksort(vector<real_curve *> & sortme, int left, int right){
   if(right<=left) return ;
   int pivot{stoi(sortme[right]->get_id())};
@@ -57,6 +58,7 @@ void quicksort(vector<real_curve *> & sortme, int left, int right){
   quicksort(sortme, partition+1, right);
 }
 
+//sorts vector 'sortme' and 'followswap' follows the 'sortme' sort 
 void quicksort(vector<real_curve *> & sortme,
   vector<vector<real_curve *>> & followswap, int left, int right){
   if(right-left<=0) return ;
@@ -71,7 +73,6 @@ void sort_clusters(vector<real_curve *> & centroids,
 
   for(unsigned int i=0; i<centroids.size(); i++)
     quicksort(assignment[i],0,assignment[i].size()-1);
-
   if(x)//if not frechet update
     quicksort(centroids, assignment, 0, centroids.size()-1);
 }

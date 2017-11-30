@@ -16,7 +16,7 @@
 #include "hashtable_init.h"
 #include "assignment.h"
 #include "update.h"
-#include "silhuette.h"
+#include "silhouette.h"
 #include "sort.h"
 
 using namespace std;
@@ -33,7 +33,7 @@ int main(int argc, char **argv){
   clock_t begin, end;
   srand(time(0));
 
-  data_s = "./test_dataset";        //for testing purposes
+  data_s = "./trajectories_dataset";        //for testing purposes
   if(!read_dataset_curves(data_s, curves, dimension)){
     cerr << "Something went wrong while reading the dataset!"<< endl;
     return -1;
@@ -59,11 +59,9 @@ int main(int argc, char **argv){
   double delta = 0.06;
   int tablesize = curves.size()/4;
   int a;//mult with c and will be the
-  double b;
   if(curves.size() < 500) a = c + (c%2-1);
   else if(curves.size() < 2000)  a = 2*c + 1;
   else a = 3*c + (c%2-1);
-  b = (dist=="DFT") ? 0.1*a : a;
   vector<vector<vector<assign_entry*>>> Lhashtable;
 
   init_hashtable(L, k, entries, dimension, delta, kvec, w, curves,
@@ -83,7 +81,7 @@ int main(int argc, char **argv){
   prev_centroids.resize(c);
   for(int i=0; i<2; i++){//for inits
     for(int j=0; j<1; j++){//for assigns
-      for(int z=0; z<1; z++){//for updates
+      for(int z=1; z<2; z++){//for updates
         if(!z && dist=="DTW") continue;//for DTW only PAM
         cout << "rep " << (4*i+2*j+z+1) << ":" << endl;
         begin = clock();//start clock
@@ -112,13 +110,10 @@ int main(int argc, char **argv){
           else
             objf = lloyds_assignment(centroids, pcurves_all, dist, assigned_objects);//j=0
 
-          cout << "assignment:OK" << endl;
-          cout << "objf:" << objf << endl;
           changes=0;
           for(int t=0; t<c; t++){//save previous centroids and assign sizes
             prev_centroids[t]=centroids[t];
             assign_sizes[t]=assigned_objects[t].size();
-            cout << "prev:" << prev_assign_sizes[t] << ",new:" << assign_sizes[t] << endl;
             changes += abs(assign_sizes[t]-prev_assign_sizes[t]);
           }
           if(changes < a) break;//(1)if just a(c) objects changed cluster-->litle update-->break
@@ -127,11 +122,8 @@ int main(int argc, char **argv){
             pam_update(centroids, assigned_objects, objf, dist);//z=1
           else
             mean_discrete_frechet(centroids, assigned_objects);//z=0
-          
-          cout << "update:OK" << endl;
+
           if(prev_centroids == centroids) break;//(2)no update
-          for(int jj=0; jj<c; jj++)
-            cout << centroids[jj]->get_points().size() << " - ";
           cout << endl;
         }
         compute_silhuette(centroids, assigned_objects, dist, Si, Stotal);
@@ -139,8 +131,9 @@ int main(int argc, char **argv){
           sort_clusters(centroids, assigned_objects, z);// else sort them
         end = clock();//stop clock
         time = double(end - begin) / CLOCKS_PER_SEC;
+        cout << "Write results!" << endl;
         write_results(out_f, centroids, assigned_objects, Si, Stotal,
-          i, j, z, dist, complete, time);
+          i, j, z, dist, complete, time, dimension);
       }
     }
   }
