@@ -41,12 +41,14 @@ void compute_silhuette(vector<real_curve *> & centroids,
   for(unsigned int i=0; i<centroids.size(); i++){
     clusterS = 0.0;
     for(unsigned int j=0; j<assignment[i].size(); j++){
-      objA = compute_objective(assignment[i][j], assignment[i], dist);
+      objA = compute_objective(assignment[i][j], assignment[i], dist)/assignment[i].size();
       sec_best = find_second_best(assignment[i][j], i, centroids, dist);
-      objB = compute_objective(assignment[i][j], assignment[sec_best], dist);
+      objB = compute_objective(assignment[i][j], assignment[sec_best], dist)/assignment[sec_best].size();
       clusterS += (objB - objA)/MYmax(objA,objB);
     }
+    clusterS=clusterS/assignment[i].size();//normalized in [-1,1]
     Si.push_back(clusterS);
     Stotal += clusterS;
   }
+  Stotal = Stotal/centroids.size();//also normalized in [-1,1]
 }

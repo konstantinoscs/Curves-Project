@@ -121,7 +121,7 @@ int main(int argc, char **argv){
             cout << "prev:" << prev_assign_sizes[t] << ",new:" << assign_sizes[t] << endl;
             changes += abs(assign_sizes[t]-prev_assign_sizes[t]);
           }
-          if(changes < a) break;//if just c objects changed cluster-->litle update-->break
+          if(changes < a) break;//(1)if just a(c) objects changed cluster-->litle update-->break
           begin = clock();
           if(z)//update here changes "centroids"
             pam_update(centroids, assigned_objects, objf, dist);//z=1
@@ -129,7 +129,7 @@ int main(int argc, char **argv){
             mean_discrete_frechet(centroids, assigned_objects);//z=0
           end = clock();
           cout << "update:OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
-          if(prev_centroids == centroids) break;
+          if(prev_centroids == centroids) break;//(2)no update
           for(int jj=0; jj<c; jj++)
             cout << centroids[jj]->get_points().size() << " - ";
           cout << endl;
@@ -137,7 +137,6 @@ int main(int argc, char **argv){
         compute_silhuette(centroids, assigned_objects, dist, Si, Stotal);
         if(complete)//update=mean frechet(z=0)->don't sort centroids
           sort_clusters(centroids, assigned_objects, z);// else sort them
-
         //output here :-(
       }
     }
