@@ -158,6 +158,20 @@ bool read_query_curves(string query_s, vector<real_curve> & curves,
   return true;
 }
 
+bool write_results(ofstream & out_f, vector<real_curve*> & centroids,
+  vector<vector<real_curve*>> assignment, vector<double> Si, double Stotal,
+  int i, int j, int z, string dist, bool complete, double time){
+
+  if (!out_f.is_open()){
+    cerr << "couldn't create output  file!" << endl;
+    return false;
+  }
+  out_f << "Algorithm:" << endl;
+
+  out_f << endl;
+  return true;
+}
+
 bool write_out_file(string out_s, string hash, string func,
   vector<real_curve> & s_curves, bool stats, int tsize, real_curve ** nn_curve,
   real_curve ** true_nn, double * nn_dist ,double * nn_max_dist,
@@ -181,13 +195,13 @@ bool write_out_file(string out_s, string hash, string func,
     if(!stats){
       found = grid_curve_found[i] ? "True" : "False";
       out_f << "FoundGridCurve: " << found << endl;
-		  out_f << "LSH Nearest Neighbor: " << nn_curve[i]->get_id() << endl;
-		  out_f << "True Nearest Neighbor: " << true_nn[i]->get_id() << endl;
-		  out_f << "distanceLSH: " << nn_dist[i] << endl;
-		  out_f << "distanceTrue: " << true_nn_dist[i] << endl;
-		  out_f << "R-near neighbors:" << endl;
-		  for(size_t j=0; j<curves_in_R[i].size(); j++)
-			  out_f << curves_in_R[i][j] << endl;
+      out_f << "LSH Nearest Neighbor: " << nn_curve[i]->get_id() << endl;
+      out_f << "True Nearest Neighbor: " << true_nn[i]->get_id() << endl;
+      out_f << "distanceLSH: " << nn_dist[i] << endl;
+      out_f << "distanceTrue: " << true_nn_dist[i] << endl;
+      out_f << "R-near neighbors:" << endl;
+      for(size_t j=0; j<curves_in_R[i].size(); j++)
+        out_f << curves_in_R[i][j] << endl;
     }
     else{
       temp_dist = nn_dist[i]-true_nn_dist[i];

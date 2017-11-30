@@ -23,6 +23,12 @@ bool read_dataset_curves(std::string data_s, std::vector<real_curve> & curves,
 bool read_query_curves(std::string query_s, std::vector<real_curve> & curves,
   int dimension, double & R);
 
+//print cluster results
+bool write_results(std::ofstream & out_f, std::vector<real_curve*> & centroids,
+  std::vector<std::vector<real_curve*>> assignment, std::vector<double> Si,
+  double Stotal, int i, int j, int z, std::string dist, bool complete,
+  double time);
+
 //prints the results file
 bool write_out_file(std::string out_s, std::string hash, std::string func,
   std::vector<real_curve> & s_curves, bool stats, int tsize, real_curve ** nn_curve,

@@ -33,19 +33,21 @@ int main(int argc, char **argv){
   clock_t begin, end;
   srand(time(0));
 
-  data_s = "./trajectories_dataset";        //for testing purposes
+  data_s = "./test_dataset";        //for testing purposes
   if(!read_dataset_curves(data_s, curves, dimension)){
     cerr << "Something went wrong while reading the dataset!"<< endl;
     return -1;
   }
+
+  cout << "Dataset read successfully!" << endl;
+  cout << "Read " << curves.size() << " curves" << endl;
 
   if((int)curves.size()<c){ 
     cerr << "Centroids can't be more than curves!" << endl; 
     return -1; 
   }
 
-  cout << "Dataset read successfully!" << endl;
-  cout << "Read " << curves.size() << " curves" << endl;
+  ofstream out_f(out_s);
 
   vector<assign_entry> entries;//for range assign
   init_assign_entries(entries, curves);//init entries
@@ -69,7 +71,7 @@ int main(int argc, char **argv){
   cout << "Hashtable just initialized!" << endl;
 
 //variables for main loop
-  double objf{};
+  double objf{} ,time{};
   int assign_sizes[c],prev_assign_sizes[c];
   int changes{};
   vector<double> Si{};
@@ -79,23 +81,21 @@ int main(int argc, char **argv){
   vector<vector<real_curve*>> assigned_objects{};//assignment
   vector<real_curve*> prev_centroids{};//to check when to stop
   prev_centroids.resize(c);
-  for(int i=0; i<1; i++){//for inits
+  for(int i=0; i<2; i++){//for inits
     for(int j=0; j<1; j++){//for assigns
       for(int z=0; z<1; z++){//for updates
         if(!z && dist=="DTW") continue;//for DTW only PAM
         cout << "rep " << (4*i+2*j+z+1) << ":" << endl;
-        begin = clock();
+        begin = clock();//start clock
         if(i)//i=1
           kmeans_init(pcurves, c, centroids, dist);
         else//i=0
           random_init(pcurves, c, centroids);
-        end = clock();
-        cout << "init:OK (" << double(end - begin) / CLOCKS_PER_SEC << ")" << endl;
+        cout << "init:OK" << endl;
         for(int u=0; u<c; u++)
           assign_sizes[u]=0;
         flag = 1;
         while(1){//if small-(no) update break
-          begin = clock();
           assigned_objects.clear();
           assigned_objects.resize(c);
           for(int t=0; t<c; t++)//saves last assign sizes
@@ -111,8 +111,8 @@ int main(int argc, char **argv){
           }
           else
             objf = lloyds_assignment(centroids, pcurves_all, dist, assigned_objects);//j=0
-          end = clock();
-          cout << "assignment:OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
+
+          cout << "assignment:OK" << endl;
           cout << "objf:" << objf << endl;
           changes=0;
           for(int t=0; t<c; t++){//save previous centroids and assign sizes
@@ -122,13 +122,13 @@ int main(int argc, char **argv){
             changes += abs(assign_sizes[t]-prev_assign_sizes[t]);
           }
           if(changes < a) break;//(1)if just a(c) objects changed cluster-->litle update-->break
-          begin = clock();
+          
           if(z)//update here changes "centroids"
             pam_update(centroids, assigned_objects, objf, dist);//z=1
           else
             mean_discrete_frechet(centroids, assigned_objects);//z=0
-          end = clock();
-          cout << "update:OK (" << (double(end - begin) / CLOCKS_PER_SEC) << ")" << endl;
+          
+          cout << "update:OK" << endl;
           if(prev_centroids == centroids) break;//(2)no update
           for(int jj=0; jj<c; jj++)
             cout << centroids[jj]->get_points().size() << " - ";
@@ -137,7 +137,10 @@ int main(int argc, char **argv){
         compute_silhuette(centroids, assigned_objects, dist, Si, Stotal);
         if(complete)//update=mean frechet(z=0)->don't sort centroids
           sort_clusters(centroids, assigned_objects, z);// else sort them
-        //output here :-(
+        end = clock();//stop clock
+        time = double(end - begin) / CLOCKS_PER_SEC;
+        write_results(out_f, centroids, assigned_objects, Si, Stotal,
+          i, j, z, dist, complete, time);
       }
     }
   }
