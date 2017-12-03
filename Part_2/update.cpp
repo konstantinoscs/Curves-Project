@@ -13,9 +13,6 @@ using namespace std;
 double compute_objective(real_curve* centroid,
   vector<real_curve *> & assignment, string func);
 
-//double compute_objective(vector<real_curve *> & centroids,
-//  vector<vector<real_curve *>> & assignment, string func);
-
 real_curve * cluster_centroid(vector<real_curve *> & cluster){
   vector<real_curve *> means;
   //compute centroids from the dataset curves (bottom leaf level)
@@ -42,11 +39,9 @@ real_curve * cluster_centroid(vector<real_curve *> & cluster){
       }
       else
         temp_means.push_back(means[i]);
-
     }
     means = std::move(temp_means);
   }
-
   return means.back();
 }
 
@@ -107,18 +102,3 @@ double compute_objective(real_curve* centroid,
   }
   return objective;
 }
-/*double compute_objective(vector<real_curve *> & centroids,
-  vector<vector<real_curve *>> & assignment, string func){
-
-  double objective{}, dist{};
-
-  for(size_t i=0; i<centroids.size(); i++){
-    //get centroid points
-    const vector<vector<double>> & c_points = centroids[i]->get_points();
-    //for every curve in cluster add distance to centroid
-    for(size_t j=0; j<assignment[i].size(); j++)
-    find_distance(c_points, assignment[i][j]->get_points(), func, dist);
-    objective += dist;
-  }
-  return objective;
-}*/

@@ -34,11 +34,7 @@ int main(int argc, char **argv){
   srand(time(0));
 
   parse_arguments(argc, argv, input_s, config_s, out_s, dist);
-
   parse_config(config_s, c, L, k);
-
-  //cout << dist << " " << c << " " << L << " " << k << endl;
-  //dist = "DFT";
 
   input_s = "./trajectories_dataset";        //for testing purposes
   if(!read_dataset_curves(input_s, curves, dimension)){
