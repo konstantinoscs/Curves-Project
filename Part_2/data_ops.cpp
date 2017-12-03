@@ -49,13 +49,17 @@ bool parse_config(string config_s, int & k, int & L, int &g){
     return 1;
   if(temp[10]=='c'){
     k = temp[19] - '0';
+    cout << "k " << k << endl;
   }
-  else if(temp[10]=='c'){
+  else if(temp[10]=='g'){
     g = temp[22] - '0';
+    cout << "g " << g << endl;
   }
   else{
     L = temp[22] - '0';
+    cout << "l " << L << endl;
   }
+  return true;
 }
 
 //read_curve reads a curve from data file with "dimension" and puts it on
