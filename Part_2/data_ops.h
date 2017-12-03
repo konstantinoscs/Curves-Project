@@ -7,13 +7,13 @@
 #include "curve.h"
 
 //takes all the variables and assigns them from the command line arguments
-bool parse_arguments(int argc, char ** argv, std::string &data_s,
-std::string &query_s, int &k, int &L, std::string &out_s, bool &stats,
-std::string &func, std::string &hash);
+bool parse_arguments(int argc, char ** argv, std::string &input_s,
+std::string &config_s, std::string &out_s, std::string &func);
 
-//gets input from user and assigns the variables
-void input_parameters(std::string &data_s, std::string &func, std::string &hash,
-  std::string & query_s);
+//parse configuration file
+//config_s is the configuration file, k the number of clusters
+//L the number of hash tables and g the number of grid curves
+bool parse_config(std::string config_s, int & k, int & L, int &g);
 
 //takes a dataset file name and reads the curves from it
 bool read_dataset_curves(std::string data_s, std::vector<real_curve> & curves,

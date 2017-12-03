@@ -13,29 +13,20 @@ using namespace std;
 //e.g. parsing command line arguments, getting input from the user,
 //getting input from the files etc.
 
-bool parse_arguments(int argc, char ** argv, std::string &data_s,
-std::string &query_s, int &k, int &L, std::string &out_s, bool &stats,
-std::string &func, std::string &hash){
+bool parse_arguments(int argc, char ** argv, std::string &input_s,
+std::string &config_s, std::string &out_s, std::string &func){
 
   //we start from 1 to skip the name of the program
   int i{1};
   while(i<argc){
-    if(!strcmp(argv[i],"-d"))
-      data_s = argv[++i];
-    else if(!strcmp(argv[i],"-q"))
-      query_s = argv[++i];
-    else if(!strcmp(argv[i],"-k"))
-      k = atoi(argv[++i]);
-    else if(!strcmp(argv[i],"-L"))
-      L = atoi(argv[++i]);
+    if(!strcmp(argv[i],"-i"))
+    input_s = argv[++i];
+    else if(!strcmp(argv[i],"-c"))
+      config_s = argv[++i];
     else if(!strcmp(argv[i],"-o"))
       out_s = argv[++i];
-    else if(!strcmp(argv[i],"-stats"))
-      stats = true;
-    else if(!strcmp(argv[i],"-function"))
+    else if(!strcmp(argv[i],"-d"))
       func = argv[++i];
-    else if(!strcmp(argv[i],"-hash"))
-      hash = argv[++i];
     else
       cerr << "Wrong paramater given, it will be ignored" << endl;
     //advance to the next parameter
@@ -43,6 +34,28 @@ std::string &func, std::string &hash){
       i++;
     }
   return true;
+}
+
+bool parse_config(string config_s, int & k, int & L, int &g){
+  ifstream data(config_s);
+  string temp{};
+  /*number_of_clusters: <int> // k
+  number_of_grid_curves: <int> //default:2
+  number_of_hash_tables: <int>*/
+//default:L=3
+  for(int i=0; i<3; i++)
+  getline(data, temp);
+  if(data.eof())
+    return 1;
+  if(temp[10]=='c'){
+    k = temp[19] - '0';
+  }
+  else if(temp[10]=='c'){
+    g = temp[22] - '0';
+  }
+  else{
+    L = temp[22] - '0';
+  }
 }
 
 //read_curve reads a curve from data file with "dimension" and puts it on
@@ -210,25 +223,9 @@ bool write_results(ofstream & out_f, vector<real_curve*> & centroids,
     }
   }
   out_f << endl;
-  //delete remaining mean curves 
+  //delete remaining mean curves
   for(unsigned int t=0; t<centroids.size(); t++)
     if(!centroids[t]->get_id().compare("-1"))
       delete centroids[t];
   return true;
-}
-
-
-bool check_more(string & query_s){
-  int choice{};
-  bool more{};
-  cout << "Would you like to give another query file?" << endl;
-  cout << "1. Yes" << endl;
-  cout << "2. No" << endl;
-  cin >> choice;
-  more = choice -1 ? false : true;
-  if(more){
-    cout << "Give path to the query file: " << endl;
-    cin >> query_s;
-  }
-  return more;
 }

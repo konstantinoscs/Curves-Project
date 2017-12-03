@@ -24,8 +24,8 @@ using namespace std;
 int main(int argc, char **argv){
   int c{4}, L{3}, k{2}, kvec{4}, w{4};
   int dimension{};
-  string data_s{}, query_s{}, out_s{"results"};
-  string dist{"DFT"};
+  string input_s{}, config_s{}, out_s{"results"};
+  string dist{};
   bool complete{false};
   //our curves aka the dataset
   vector<real_curve> curves{};
@@ -33,8 +33,12 @@ int main(int argc, char **argv){
   clock_t begin, end;
   srand(time(0));
 
-  data_s = "./trajectories_dataset";        //for testing purposes
-  if(!read_dataset_curves(data_s, curves, dimension)){
+  parse_arguments(argc, argv, input_s, config_s, out_s, dist);
+
+  parse_config(config_s, c, L, k);
+
+  input_s = "./trajectories_dataset";        //for testing purposes
+  if(!read_dataset_curves(input_s, curves, dimension)){
     cerr << "Something went wrong while reading the dataset!"<< endl;
     return -1;
   }
@@ -42,9 +46,9 @@ int main(int argc, char **argv){
   cout << "Dataset read successfully!" << endl;
   cout << "Read " << curves.size() << " curves" << endl;
 
-  if((int)curves.size()<c){ 
-    cerr << "Centroids can't be more than curves!" << endl; 
-    return -1; 
+  if((int)curves.size()<c){
+    cerr << "Centroids can't be more than curves!" << endl;
+    return -1;
   }
 
   ofstream out_f(out_s);
@@ -117,7 +121,7 @@ int main(int argc, char **argv){
             changes += abs(assign_sizes[t]-prev_assign_sizes[t]);
           }
           if(changes < a) break;//(1)if just a(c) objects changed cluster-->litle update-->break
-          
+
           if(z)//update here changes "centroids"
             pam_update(centroids, assigned_objects, objf, dist);//z=1
           else
