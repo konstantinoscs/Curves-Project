@@ -37,6 +37,9 @@ int main(int argc, char **argv){
 
   parse_config(config_s, c, L, k);
 
+  //cout << dist << " " << c << " " << L << " " << k << endl;
+  //dist = "DFT";
+
   input_s = "./trajectories_dataset";        //for testing purposes
   if(!read_dataset_curves(input_s, curves, dimension)){
     cerr << "Something went wrong while reading the dataset!"<< endl;

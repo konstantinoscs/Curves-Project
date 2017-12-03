@@ -38,7 +38,7 @@ real_curve * cluster_centroid(vector<real_curve *> & cluster){
           delete means[i];
         if(!means[i+1]->get_id().compare("-1"))
           delete means[i+1];
-        
+
       }
       else
         temp_means.push_back(means[i]);
@@ -78,16 +78,14 @@ double pam_update(vector<real_curve *> & centroids,
 
   //start swapping every centroid
   for(size_t i=0; i<centroids.size(); i++){
-    cout << "for centroid " << i << endl;
     minobj = std::numeric_limits<double>::max();
     //swap centroid with every curve in the current cluster to find medoid
       for(size_t j=0; j<assignment[i].size(); j++){
-        cout << "for j " << j <<endl;
         //"swap" centroid
         centroids[i] = assignment[i][j];
         //compute objective
         obj = compute_objective(centroids[i], assignment[i], func);
-        //here every 
+        //here every
         if(obj < minobj){
           minobj = obj;
           opt_config[i] = centroids[i];
@@ -96,7 +94,6 @@ double pam_update(vector<real_curve *> & centroids,
     }
   //now centroids has the new configuration
   centroids = std::move(opt_config);
-  cout << "out of pam!" << endl;
   return minobj;
 }
 

@@ -43,21 +43,23 @@ bool parse_config(string config_s, int & k, int & L, int &g){
   number_of_grid_curves: <int> //default:2
   number_of_hash_tables: <int>*/
 //default:L=3
-  for(int i=0; i<3; i++)
-  getline(data, temp);
-  if(data.eof())
-    return 1;
-  if(temp[10]=='c'){
-    k = temp[19] - '0';
-    cout << "k " << k << endl;
-  }
-  else if(temp[10]=='g'){
-    g = temp[22] - '0';
-    cout << "g " << g << endl;
-  }
-  else{
-    L = temp[22] - '0';
-    cout << "l " << L << endl;
+  for(int i=0; i<3; i++){
+    getline(data, temp);
+    //cout << "Got "<< temp;
+    if(data.eof())
+      return 1;
+    if(temp[10]=='c'){
+      k = temp[19] - '0';
+      //cout << "k " << k << endl;
+    }
+    else if(temp[10]=='g'){
+      g = temp[22] - '0';
+      //cout << "g " << g << endl;
+    }
+    else{
+      L = temp[22] - '0';
+      //cout << "l " << L << endl;
+    }
   }
   return true;
 }
