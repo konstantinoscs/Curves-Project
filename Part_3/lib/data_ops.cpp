@@ -36,31 +36,6 @@ std::string &config_s, std::string &out_s, std::string &func){
   return true;
 }
 
-bool parse_config(string config_s, int & k, int & L, int &g){
-  ifstream data(config_s);
-  string temp{};
-  //We parse a file with the followin layout:
-  /*number_of_clusters: <int> // k
-  number_of_grid_curves: <int> //default:2
-  number_of_hash_tables: <int>*/ //default:L=3
-  for(int i=0; i<3; i++){
-    getline(data, temp);
-    //cout << "Got "<< temp;
-    if(data.eof())
-      return 1;
-    if(temp[10]=='c'){
-      k = temp[19] - '0';
-    }
-    else if(temp[10]=='g'){
-      g = temp[22] - '0';
-    }
-    else{
-      L = temp[22] - '0';
-    }
-  }
-  return true;
-}
-
 //read_curve reads a curve from data file with "dimension" and puts it on
 //ocurve
 bool read_curve(real_curve & ocurve, ifstream & data, int dimension){

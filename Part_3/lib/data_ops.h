@@ -10,11 +10,6 @@
 bool parse_arguments(int argc, char ** argv, std::string &input_s,
 std::string &config_s, std::string &out_s, std::string &func);
 
-//parse configuration file
-//config_s is the configuration file, k the number of clusters
-//L the number of hash tables and g the number of grid curves
-bool parse_config(std::string config_s, int & k, int & L, int &g);
-
 //takes a dataset file name and reads the curves from it
 bool read_dataset_curves(std::string data_s, std::vector<real_curve> & curves,
   int & dimension);
