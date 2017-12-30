@@ -32,7 +32,7 @@ void node::print(){
   cout << "Node " << id << " lat:" << lat << " lon:" << lon << '\n';
 }
 
-void check_highway(string & type){
+inline void check_highway(string & type){
   if(!type.compare("motorway") || !type.compare("primary")){
     return ;
   }
@@ -46,6 +46,44 @@ void check_highway(string & type){
     return ;
   }
   type.clear();
+}
+
+inline int compare(const string & s1, const string & s2){
+  size_t l1{s1.length()}, l2{s2.length()};
+  if(l1 > l2)
+    return 1;
+  else if (l2 > l1)
+    return -1;
+  else
+    return s1.compare(s2);
+}
+
+size_t binary_search(vector<node> & nodes, string id){
+  size_t l{0}, r{nodes.size()-1}, i{(l+r)/2};
+  node r_node;
+  int comp = compare(nodes[i].id, id);
+  while(comp){
+    //cout << "Searching " << id << " comparing with " << nodes[i].id << " i " << i;
+    //cout << " l,r " << l << " " << r << ' ' << comp << endl;
+    if(comp > 0)
+      r = --i;
+    else
+      l = ++i;
+    i = (l+r)/2;
+    comp = compare(nodes[i].id, id);
+  }
+  //cout << "size " << nodes.size() << " i " << i  << " id " << id << '\n';
+  //nodes[i].print();
+  return i;
+}
+
+void write_nodes(ofstream & out, vector<node> & nodes, vector<string> nds){
+  size_t target{0};
+  for(size_t i=0; i<nds.size(); i++){
+    target = binary_search(nodes, nds[i]);
+    out << ", " << nodes[target].lat << ", " << nodes[target].lon;
+    //nodes.erase(nodes.begin() + i);
+  }
 }
 
 bool parse_xml(string data_s, string out_s){
@@ -114,7 +152,9 @@ bool parse_xml(string data_s, string out_s){
     else if(!temp.compare("</way>")){
       //write road to file if valid
       if(!type.empty()){
-        out << id << ' ' << type << ' ' << '\n';
+        out << id << ", " << type;
+        write_nodes(out, nodes, nds);
+        out << endl;
       }
       id.clear();
       type.clear();
