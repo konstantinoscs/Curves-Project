@@ -54,13 +54,18 @@ size_t binary_search(vector<node> & nodes, string id){
   return i;
 }
 
-inline void write_nodes(ofstream & out, vector<node> & nodes, vector<string> & nds){
+//write nodes writes the athens.csv file with the roads info
+//and returns a vector of the indexes of a way's nodes in the
+//general nodes vector
+inline vector<int> write_nodes(ofstream & out, vector<node> & nodes, vector<string> & nds){
   size_t target{0};
+  vector<int> node_i;
   for(size_t i=0; i<nds.size(); i++){
     target = binary_search(nodes, nds[i]);
     out << ", " << nodes[target].lat << ", " << nodes[target].lon;
-    //nodes.erase(nodes.begin() + i);
+    node_i.push_back(target);
   }
+  return node_i;
 }
 
 bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
@@ -130,11 +135,10 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
       //write road to file if valid
       if(!type.empty()){
         out << id << ", " << type;
-        write_nodes(out, nodes, nds);
+        t_road.nodes = write_nodes(out, nodes, nds);
         out << endl;
         t_road.id = move(id);
         t_road.type = move(type);
-        t_road.nodes = move(nds);
         roads.push_back(move(t_road));
       }
       id.clear();
@@ -142,13 +146,11 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
       nds.clear();
     }
     else if(!temp.compare("<relation")){
-      //cout << "Will break" << '\n';
       //relation tags are in the end of the file so we're done
       break;
     }
     data.ignore(max, '\n');
     data >> temp;
   }
-  //cout << "Nodes read: " << counter << endl;
   return true;
 }
