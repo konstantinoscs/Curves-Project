@@ -24,7 +24,4 @@ bool write_results(std::ofstream & out_f, std::vector<real_curve*> & centroids,
   double Stotal, int i, int j, int z, std::string dist, bool complete,
   double time, int dimension);
 
-//checks if the user wants to test more queries
-bool check_more(std::string & query_s);
-
 #endif

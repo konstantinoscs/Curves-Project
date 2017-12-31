@@ -5,6 +5,7 @@
 #include <utility>
 #include <vector>
 
+#include "../lib/curve.h"
 #include "road.h"
 
 using namespace std;
@@ -63,6 +64,8 @@ inline vector<int> write_nodes(ofstream & out, vector<node> & nodes, vector<stri
   for(size_t i=0; i<nds.size(); i++){
     target = binary_search(nodes, nds[i]);
     out << ", " << nodes[target].lat << ", " << nodes[target].lon;
+    //mark that we've encountered this node before in a road
+    nodes[target].refs++;
     node_i.push_back(target);
   }
   return node_i;
@@ -126,7 +129,6 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
       if(!temp.compare("k=\"highway\"")){
         data >> temp;
         type = temp.substr(3, temp.length()-6);
-        //cout << "Type is " << type <<'\n';
         //check if it's a highway we're interested in
         check_highway(type);
       }
@@ -153,4 +155,12 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
     data >> temp;
   }
   return true;
+}
+
+vector<real_curve> make_segments(vector<road> &roads, vector<node> nodes){
+  for(size_t i=0; i<roads.size(); i++){
+    for(size_t j=0; j<roads[i].nodes.size(); j++){
+      
+    }
+  }
 }

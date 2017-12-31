@@ -8,6 +8,7 @@ struct node {
   double lat;
   double lon;
   int refs;
+  node();
   void print();
 };
 

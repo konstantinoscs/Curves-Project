@@ -104,7 +104,6 @@ norm_curve::norm_curve(norm_curve && m_curve) : curve(std::move(m_curve)),
   points(std::move(m_curve.points)){
   //points of m_curve are moved so now we clear them
   m_curve.points.clear();
-  //cout << "Move constructor of real_curve called!" <<endl;
 }
 
 norm_curve::~norm_curve(){}
