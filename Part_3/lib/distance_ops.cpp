@@ -16,6 +16,15 @@ double euclid_dist(const vector<double> & p1, const vector<double> & p2){
 	return sqrt(ed);
 }
 
+double euclid_dist(double x1, double y1, double x2, double y2){
+	double temp{}, ed{};
+	temp = x1 - x2;
+	ed += temp * temp;
+	temp = y1 - y2;
+	ed += temp * temp;
+	return sqrt(ed);
+}
+
 void computeDFD(const vector<vector<double>> & pointsA,
 	const vector<vector<double>> & pointsB,double & distance){
 	int m=pointsA.size(), n=pointsB.size();

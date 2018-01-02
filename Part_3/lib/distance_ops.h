@@ -8,7 +8,10 @@
 double euclid_dist(const std::vector<double> & p1,
 	const std::vector<double> & p2);
 
-//computes the Discrete Frechet Distance 
+//override for 2d points
+double euclid_dist(double x1, double y1, double x2, double y2);
+
+//computes the Discrete Frechet Distance
 void computeDFD(const std::vector<std::vector<double>> & pointsA,
 	const std::vector<std::vector<double>> & pointsB,
 	double & distance//returns the result here [output]

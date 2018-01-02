@@ -4,8 +4,10 @@
 #include <string>
 #include <utility>
 #include <vector>
+#include <map>
 
 #include "../lib/curve.h"
+#include "../lib/distance_ops.h"
 #include "road.h"
 
 using namespace std;
@@ -157,10 +159,12 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
   return true;
 }
 
-vector<real_curve> make_segments(vector<road> &roads, vector<node> nodes){
+vector<vector<real_curve>> make_segments(vector<road> &roads, vector<node> nodes){
+  map<string, vector<real_curve>> segments;
   for(size_t i=0; i<roads.size(); i++){
     for(size_t j=0; j<roads[i].nodes.size(); j++){
-      
+
     }
   }
+  return vector<vector<real_curve>>{};
 }
