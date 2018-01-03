@@ -1,10 +1,10 @@
+#include <cmath>
 #include <fstream>
 #include <iostream>
 #include <limits>
 #include <string>
 #include <utility>
 #include <vector>
-#include <map>
 
 #include "../lib/curve.h"
 #include "../lib/distance_ops.h"
@@ -159,8 +159,25 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
   return true;
 }
 
-vector<vector<real_curve>> make_segments(vector<road> &roads, vector<node> nodes){
-  map<string, vector<real_curve>> segments;
+//index takes a type of way and returns its index in the vector
+//where segments of this type of way are stored
+inline size_t index(string type){
+  static string types {
+    "motorway", "primary", "residential",
+    "secondary", "service", "tertiary",
+    "trunk", "unclassified"};
+    for(size_t i=0; i<7; i++)
+      if(!types[i].compare(type))
+        return i;
+}
+
+inline double curvature(double l1, double l2, double l3){
+  return l1*l2*l3/sqrt((a+b+c)*(b+c-a)*(c+a-b)*(a+b-c));
+}
+
+void make_segments(vector<road> &roads, vector<node> nodes){
+  vector<vector<double>> points;
+  
   for(size_t i=0; i<roads.size(); i++){
     for(size_t j=0; j<roads[i].nodes.size(); j++){
 

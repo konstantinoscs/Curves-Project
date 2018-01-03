@@ -9,6 +9,6 @@
 bool parse_xml(std::vector<road> & roads, std::vector<node> & nodes,
   const std::string & data_s, const std::string & out_s = "athens.csv");
 
-std::vector<real_curve> make_segments(std::vector<road> &roads,
-  std::vector<node> nodes);
+void make_segments(std::vector<road> &roads, std::vector<node> nodes,
+  std::string &out_s = "segments.csv");
 #endif
