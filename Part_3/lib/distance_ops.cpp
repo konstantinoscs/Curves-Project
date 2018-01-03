@@ -4,6 +4,7 @@
 #include <limits>
 
 #include "minmax.h"
+#include "../Proteins/distance_f.h"
 
 using namespace std;
 
@@ -78,6 +79,10 @@ void find_distance(const vector<vector<double>> & pointsA,
 		computeDFD(pointsA,pointsB,distance);
 	else if(dist=="DTW")
 		computeDTW(pointsA,pointsB,distance);
-//	else if(dist=="..something else..")
+	else if(dist=="cRMSD")
+		distance = pr_cRMSD(pointsA,pointsB,pointsA.size());
+	else if(dist=="frechet")
+		distance = pr_frechet(pointsA,pointsB,pointsA.size());
+//	else if(dist==" ... ") //another distance function
 	return ;
 }

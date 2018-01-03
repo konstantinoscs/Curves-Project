@@ -7,7 +7,7 @@
 using namespace Eigen;
 using namespace std;
 
-double pr_cRMSD(vector<vector<double>> X0,vector<vector<double>> Y0, int N){
+double pr_cRMSD(const vector<vector<double>> X0,const vector<vector<double>> Y0, int N){
   double Xc[3]{},Yc[3]{};
   for(int i=0; i<N; i++){
     for(int j=0; j<3; j++){
@@ -19,20 +19,14 @@ double pr_cRMSD(vector<vector<double>> X0,vector<vector<double>> Y0, int N){
     Xc[j]/=N;
     Yc[j]/=N;
   }
-  for(int i=0; i<N; i++){
-    for(int j=0; j<3; j++){
-      X0[i][j] -= Xc[j];
-      Y0[i][j] -= Yc[j];
-    }
-  }
   MatrixXd X(N,3),Y(N,3);
   for(int i=0; i<N; i++){
-    X(i,0) = X0[i][0];
-    X(i,1) = X0[i][1];
-    X(i,2) = X0[i][2];
-    Y(i,0) = Y0[i][0];
-    Y(i,1) = Y0[i][1];
-    Y(i,2) = Y0[i][2];
+    X(i,0) = X0[i][0] - Xc[0];
+    X(i,1) = X0[i][1] - Xc[1];
+    X(i,2) = X0[i][2] - Xc[2];
+    Y(i,0) = Y0[i][0] - Yc[0];
+    Y(i,1) = Y0[i][1] - Yc[1];
+    Y(i,2) = Y0[i][2] - Yc[2];
   }
   JacobiSVD<MatrixXd> svd(X.transpose()*Y,ComputeThinU | ComputeThinV);
   if(svd.singularValues()[2]<=0) return -1;//negative return value means false
@@ -48,7 +42,7 @@ double pr_cRMSD(vector<vector<double>> X0,vector<vector<double>> Y0, int N){
   return (X*Q-Y).norm()/sqrt(N);
 }
 
-double pr_frechet(vector<vector<double>> X0,vector<vector<double>> Y0, int N){
+double pr_frechet(const vector<vector<double>> X0,const vector<vector<double>> Y0, int N){
   double Xc[3]{},Yc[3]{};
   double dist{};
   for(int i=0; i<N; i++){
@@ -61,20 +55,15 @@ double pr_frechet(vector<vector<double>> X0,vector<vector<double>> Y0, int N){
     Xc[j]/=N;
     Yc[j]/=N;
   }
-  for(int i=0; i<N; i++){
-    for(int j=0; j<3; j++){
-      X0[i][j] -= Xc[j];
-      Y0[i][j] -= Yc[j];
-    }
-  }
+
   MatrixXd X(N,3),Y(N,3);
   for(int i=0; i<N; i++){
-    X(i,0) = X0[i][0];
-    X(i,1) = X0[i][1];
-    X(i,2) = X0[i][2];
-    Y(i,0) = Y0[i][0];
-    Y(i,1) = Y0[i][1];
-    Y(i,2) = Y0[i][2];
+    X(i,0) = X0[i][0] - Xc[0];
+    X(i,1) = X0[i][1] - Xc[1];
+    X(i,2) = X0[i][2] - Xc[2];
+    Y(i,0) = Y0[i][0] - Yc[0];
+    Y(i,1) = Y0[i][1] - Yc[1];
+    Y(i,2) = Y0[i][2] - Yc[2];
   }
   JacobiSVD<MatrixXd> svd(X.transpose()*Y,ComputeThinU | ComputeThinV);
   if(svd.singularValues()[2]<=0) return -1;//negative return value means false
@@ -86,7 +75,6 @@ double pr_frechet(vector<vector<double>> X0,vector<vector<double>> Y0, int N){
     tempU(2,2)*=-1;
     Q = tempU * svd.matrixV().transpose();
   }
-
   MatrixXd X1 = X * Q;
   vector<vector<double>> A{},B{};//save XQ,Y in A,B to call computeDFD
   A.resize(N);
