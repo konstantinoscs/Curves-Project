@@ -9,16 +9,21 @@
 #include "../lib/assignment.h"
 #include "../lib/update.h"
 #include "../lib/silhouette.h"
-#include "../lib/Eigen/Dense"
 
-using namespace Eigen;
 using namespace std;
 
-int main(void){
+int main(int argc, char **argv){
   int numConform{},N{};
-  string input{"bio_small_input.dat"};
+//  string input{"bio_small_input.dat"};
+  string input{};
   vector<real_curve> proteins{};
-  parse_config(input,numConform,N,proteins);
+
+  if(!parse_arguments(argc, argv, input)){
+    cerr << "Input file not found!" << endl;
+    return -1;
+  }
+  parse_input(input,numConform,N,proteins);
+
   cout << "Protein's dataset read successfully!" << endl;
   cout << "numConform=" << numConform <<endl;
   cout << "N=" << N << endl;
@@ -28,17 +33,18 @@ int main(void){
     pproteins_all.push_back(&proteins[i]);
   }
 
-  string dist{"cRMSD"};
+  string dist{"cRMSD"},out_s{"crmsd.dat"};
   int a{};
   for(int t=0; t<2; t++){//for questions A and B(just change the dist...)
-    if(t) dist = "frechet";// for B
+    if(t){ dist = "frechet"; out_s = "frechet.dat"; cout << "Starting B..." << endl;}// for B
+    else cout << "Starting A..." << endl;
     double Stotal{-2};//Stotal in [-1,1],init with something < -1
-    int changes{},clusters{0};
+    int changes{};
     vector<double> Si{};
     double tempStotal{},objf{};
     vector<int> assign_sizes{},prev_assign_sizes{};
     vector<vector<real_curve*>> assigned_objects{};//assignment
-    for(int k=2; k<5; k++){//check some k for clusters
+    for(int k=3; k<10; k++){//check some k for clusters
       centroids.clear();
       centroids.resize(k);
       prev_centroids.clear();
@@ -50,7 +56,7 @@ int main(void){
       if(numConform < 500) a = k + (k%2-1);
       else if(numConform < 2000)  a = 2*k + 1;
       else a = 3*k + (k%2-1);
-      random_init(pproteins,k,centroids);// <------- 1
+      random_init(pproteins,k,centroids);// <----- 1
 cout << "init OK" << endl;
       for(int j=0; j<k; j++)
         assign_sizes[j]=0;
@@ -59,7 +65,7 @@ cout << "init OK" << endl;
         assigned_objects.resize(k);
         for(int j=0; j<k; j++)
           prev_assign_sizes[j]=assign_sizes[j];
-        objf = lloyds_assignment(centroids,pproteins_all,dist,assigned_objects);// <---- 2
+        objf = lloyds_assignment(centroids,pproteins_all,dist,assigned_objects);// <----- 2
 cout << "assignment OK" << endl;
         changes = 0;
         for(int j=0; j<k; j++){
@@ -68,23 +74,18 @@ cout << "assignment OK" << endl;
           changes += abs(assign_sizes[j]-prev_assign_sizes[j]);
         }
         if(changes < a) break;
-        pam_update(centroids,assigned_objects,objf,dist);// <------ 3
+        pam_update(centroids,assigned_objects,objf,dist);// <----- 3
 cout << "update OK" << endl;
         if(prev_centroids == centroids) break;
       }
 cout << "Computing silhuette..." << endl;
-      compute_silhuette(centroids, assigned_objects, dist, Si, tempStotal);
+      compute_silhuette(centroids, assigned_objects, dist, Si, tempStotal);// <----- 4
       if(tempStotal > Stotal){
         Stotal = tempStotal;
-        clusters = k;
 cout << "writing results..." << endl;
-        //write results here
+        write_results(out_s,k,assigned_objects,Stotal);// <----- 5
       }
     }
-    cout << "Stotal = " << Stotal << endl;
-    cout << "best k = " << clusters << endl;
   }
-
-
   return 0;
 }

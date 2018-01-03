@@ -10,6 +10,25 @@
 
 using namespace std;
 
+bool parse_arguments(int argc, char **argv, string & input){
+  //we start from 1 to skip the name of the program
+  int i{1};
+  bool flag{false};
+  while(i<argc){
+    if(!strcmp(argv[i],"-i")){
+      input = argv[++i];
+      flag = true;
+    }
+    else
+      cerr << "Wrong paramater given, it will be ignored" << endl;
+    //advance to the next parameter
+    //if parameter required 2 arguments, one incremention is already done
+    i++;
+  }
+  //if not given input file return false and stop the program
+  return flag;
+}
+
 bool read_protein(real_curve & ocurve, int id, int N, int numC, ifstream & data){
   int points_no{};
 
@@ -43,7 +62,7 @@ bool read_protein(real_curve & ocurve, int id, int N, int numC, ifstream & data)
   return true;
 }
 
-bool parse_config(string config_s, int & numConform, int & N, vector<real_curve> & proteins){
+bool parse_input(string config_s, int & numConform, int & N, vector<real_curve> & proteins){
   ifstream data(config_s);
   real_curve ocurve{};
 
@@ -66,4 +85,19 @@ bool parse_config(string config_s, int & numConform, int & N, vector<real_curve>
   return true;
 }
 
+void write_results(string out_s, int k,
+  vector<vector<real_curve*>> & assigned_objects,double Stotal){
+
+  ofstream out_f;
+  out_f.open(out_s, ofstream::out | ofstream::trunc);
+  out_f << "k: " << k << endl;
+  out_f << "s: " << Stotal << endl;
+  for(int i=0; i<k; i++){
+    out_f << i << "-->";
+    for(int j=0; j<assigned_objects[i].size()-1; j++)
+      out_f << assigned_objects[i][j]->get_id() << "  ";
+    out_f << assigned_objects[i][assigned_objects[i].size()-1]->get_id() << endl;
+  }
+  out_f.close();
+}
 
