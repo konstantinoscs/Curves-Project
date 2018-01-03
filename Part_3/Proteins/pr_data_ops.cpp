@@ -93,7 +93,7 @@ void write_results(string out_s, int k,
   out_f << "k: " << k << endl;
   out_f << "s: " << Stotal << endl;
   for(int i=0; i<k; i++){
-    out_f << i << "-->";
+    out_f << i+1 << "-->";
     for(int j=0; j<assigned_objects[i].size()-1; j++)
       out_f << assigned_objects[i][j]->get_id() << "  ";
     out_f << assigned_objects[i][assigned_objects[i].size()-1]->get_id() << endl;
