@@ -16,6 +16,7 @@ struct road{
   std::string id;
   std::string type;
   std::vector<int> nodes;
+  void print();
 };
 
 

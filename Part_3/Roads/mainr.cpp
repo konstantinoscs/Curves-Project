@@ -15,9 +15,14 @@ int main(int argc, char **argv){
     vector<node> nodes;
     clock_t t = clock();
     parse_xml(roads, nodes, data_s);
-    t = clock() -t;
-    cout << "Time: " <<float(t)/CLOCKS_PER_SEC << endl;
-    cout << roads.size() << endl;
-    cout << nodes.size() << endl;
+    clock_t te = clock();
+    cout << "Parsing time: " <<float(te-t)/CLOCKS_PER_SEC << '\n';
+    //cout << roads.size() << '\n';
+    //cout << nodes.size() << endl;
+    make_segments(roads, nodes);
+    te = clock() -te;
+    cout << "Segmenting time: " <<float(te)/CLOCKS_PER_SEC << '\n';
+    roads.clear();
+    nodes.clear();
   }
 }
