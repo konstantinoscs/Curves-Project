@@ -181,7 +181,13 @@ inline double curvature(double l1, double l2, double l3){
   return l1*l2*l3/sqrt((l1+l2+l3)*(l2+l3-l1)*(l3+l1-l2)*(l1+l2-l3));
 }
 
-void make_segments(vector<road> &roads, vector<node> &nodes, const string &out_s){
+void write_segment(ofstream &out, int id, string way_id, int nsize,
+  vector<double> &coords){
+  out << id << ' ' << way_id << ' ' << nsize << ' ';
+}
+
+void make_segments(const vector<road> &roads, const vector<node> &nodes,
+  const string &out_s){
   ofstream out(out_s);
   double l1{}, l2{}, l3{}, curb{}, thrs{0.03}, curv{};
   int segid{}, nsize{}, nthrs{200}, count{};
@@ -216,6 +222,7 @@ void make_segments(vector<road> &roads, vector<node> &nodes, const string &out_s
         else if(nsize > maxsize)
           maxsize = nsize;
         //make verbose checking of next node here -> did that
+
         nsize = 2;
         segid++;
       }
