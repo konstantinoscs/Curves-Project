@@ -3,7 +3,7 @@
 #include <vector>
 
 #include "pr_data_ops.h"
-#include "distance_f.h"
+#include "../lib/distance_f.h"
 #include "../lib/curve.h"
 #include "../lib/initialization.h"
 #include "../lib/assignment.h"
