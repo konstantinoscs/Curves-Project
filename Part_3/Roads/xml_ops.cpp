@@ -12,7 +12,7 @@
 
 using namespace std;
 
-void check_highway(string & type){
+inline void check_highway(string & type){
   if(!type.compare("motorway") || !type.compare("primary")){
     return ;
   }
@@ -28,7 +28,7 @@ void check_highway(string & type){
   type.clear();
 }
 
-int compare(const string & s1, const string & s2){
+inline int compare(const string & s1, const string & s2){
   size_t l1{s1.length()}, l2{s2.length()};
   if(l1 > l2)
     return 1;
@@ -43,8 +43,6 @@ size_t binary_search(vector<node> & nodes, string id){
   node r_node;
   int comp = compare(nodes[i].id, id);
   while(comp){
-    //cout << "Searching " << id << " comparing with " << nodes[i].id << " i " << i;
-    //cout << " l,r " << l << " " << r << ' ' << comp << endl;
     if(comp > 0)
       r = --i;
     else
@@ -52,8 +50,6 @@ size_t binary_search(vector<node> & nodes, string id){
     i = (l+r)/2;
     comp = compare(nodes[i].id, id);
   }
-  //cout << "size " << nodes.size() << " i " << i  << " id " << id << '\n';
-  //nodes[i].print();
   return i;
 }
 
@@ -172,7 +168,7 @@ inline size_t index(string type){
         return i;
 }
 
-double euclid_dist(double x1, double y1, double x2, double y2){
+inline double euclid_dist(double x1, double y1, double x2, double y2){
 	double temp{}, ed{};
 	temp = x1 - x2;
 	ed += temp * temp;
@@ -187,14 +183,13 @@ inline double curvature(double l1, double l2, double l3){
 
 void make_segments(vector<road> &roads, vector<node> &nodes, const string &out_s){
   ofstream out(out_s);
-  double l1{}, l2{}, l3{}, curb{}, thrs{0.1};
-  int segid{}, nsize{}, nthrs{200};
+  double l1{}, l2{}, l3{}, curb{}, thrs{0.03}, curv{};
+  int segid{}, nsize{}, nthrs{200}, count{};
   int maxsize{}, minsize{std::numeric_limits<int>::max()};
   vector<double> coords;
   cout << "Curvatures:\n";
   for(size_t i=0; i<roads.size(); i++){
     nsize = 2;
-    cout << "new road" << endl;
     coords.push_back(nodes[roads[i].nodes[0]].lat);
     coords.push_back(nodes[roads[i].nodes[0]].lon);
     if(roads[i].nodes.size() ==1){
@@ -209,17 +204,18 @@ void make_segments(vector<road> &roads, vector<node> &nodes, const string &out_s
         nodes[roads[i].nodes[j]].lat, nodes[roads[i].nodes[j]].lon);
 
       curb = curvature(l1,l2,l3);
-      cout << curb << endl;
+      count++;
+      if(isfinite(curb) && curb <=1)
+        curv += curb;
+      //cout << curb << endl;
       if((nodes[roads[i].nodes[j+1]].refs >=2 && nodes[roads[i].nodes[j+2]].refs ==1)
-        || curb>thrs || nsize >= nthrs){ //||curvature < threshold
+        || curb>thrs || nsize >= nthrs){
         //break here
         if(nsize < minsize)
           minsize = nsize;
         else if(nsize > maxsize)
           maxsize = nsize;
-        cout << "break" << ' ' << nsize << endl;
         //make verbose checking of next node here -> did that
-        //out << segid << ' ' << roads[i].id << ' ' << nsize;
         nsize = 2;
         segid++;
       }
@@ -229,8 +225,11 @@ void make_segments(vector<road> &roads, vector<node> &nodes, const string &out_s
         coords.push_back(nodes[roads[i].nodes[j+1]].lon);
       }
     }
-    coords.push_back(nodes[roads[i].nodes.back().lat);
-    coords.push_back(nodes[roads[i].nodes.back().lon);
+    coords.push_back(nodes[roads[i].nodes.back()].lat);
+    coords.push_back(nodes[roads[i].nodes.back()].lon);
   }
-  cout << "Maxsize: " << maxsize << " Minsize: " << minsize << " Segs: " << segid+1 << endl;
+  cout << "Maxsize: " << maxsize << '\n';
+  cout << "Minsize: " << minsize << '\n';
+  cout << "Segs: " << segid+1 << '\n';
+  cout << "Average curvature: " << double(curv/count) << endl;
 }
