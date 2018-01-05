@@ -4,7 +4,7 @@
 #include <limits>
 
 #include "minmax.h"
-#include "../Proteins/distance_f.h"
+#include "distance_f.h"
 
 using namespace std;
 

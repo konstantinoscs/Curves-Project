@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void random_init(vector<real_curve*> & curves, int k,
+void random_init(vector<real_curve*> curves, int k,
   vector<real_curve*> & centroid){
   centroid.clear();//just to be sure that it's empty
   int index{};

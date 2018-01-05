@@ -2,8 +2,8 @@
 #include <cmath>
 #include <limits>
 
-#include "../lib/Eigen/Dense"
-#include "../lib/distance_ops.h"
+#include "Eigen/Dense"
+#include "distance_ops.h"
 
 using namespace Eigen;
 using namespace std;
