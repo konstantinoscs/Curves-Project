@@ -7,7 +7,7 @@
 #include "curve.h"
 
 void random_init(
-  std::vector<real_curve*> & curves,//start:has all curves,end:without the k centroids
+  std::vector<real_curve*> curves,//start:has all curves,end:without the k centroids
   int k,//number of centroids
   std::vector<real_curve*> & centroid);//in the end has the k centroids
 

@@ -34,17 +34,26 @@ int main(int argc, char **argv){
   }
 
   string dist{"cRMSD"},out_s{"crmsd.dat"};
-  int a{};
+  int a{},k{};
   for(int t=0; t<2; t++){//for questions A and B(just change the dist...)
     if(t){ dist = "frechet"; out_s = "frechet.dat"; cout << "Starting B..." << endl;}// for B
     else cout << "Starting A..." << endl;
+
+    double k_sil[3]{};//to find best k with
+    int k_best[3] = {2,numConform/2,-1};//logarithmic way --> [first,last,mean]
+    int index{};//array's index to get current k
+
     double Stotal{-2};//Stotal in [-1,1],init with something < -1
     int changes{};
     vector<double> Si{};
     double tempStotal{},objf{};
     vector<int> assign_sizes{},prev_assign_sizes{};
     vector<vector<real_curve*>> assigned_objects{};//assignment
-    for(int k=3; k<10; k++){//check some k for clusters
+    while((k_best[1]-k_best[0]>1) || k_best[2]<=0){//check some k for clusters
+      if(k_best[2]==-1){k=k_best[0];k_best[2]++;index=0;}//--------------------
+      else if(k_best[2]==0){k=k_best[1];k_best[2]++;index=1;}//-----set k------
+      else {k=(k_best[0]+k_best[1])/2;k_best[2]=k;index=2;}//------------------
+cout << "Checking with k=" << k << endl;
       centroids.clear();
       centroids.resize(k);
       prev_centroids.clear();
@@ -80,10 +89,17 @@ cout << "update OK" << endl;
       }
 cout << "Computing silhuette..." << endl;
       compute_silhuette(centroids, assigned_objects, dist, Si, tempStotal);// <----- 4
+cout <<"(for k=" << k << " silhuette=" << tempStotal << ")" << endl;
       if(tempStotal > Stotal){
         Stotal = tempStotal;
 cout << "writing results..." << endl;
         write_results(out_s,k,assigned_objects,Stotal);// <----- 5
+      }
+
+      k_sil[index] = tempStotal;//set silhuettes
+      if(index==2){//swap first or last with mean k
+        if(k_sil[1]>k_sil[0]){k_best[0]=k_best[2];k_sil[0]=k_sil[2];}
+        else{k_best[1]=k_best[2];k_sil[1]=k_sil[2];}
       }
     }
   }
