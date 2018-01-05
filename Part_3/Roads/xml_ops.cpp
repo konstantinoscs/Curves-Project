@@ -7,12 +7,12 @@
 #include <vector>
 
 #include "../lib/curve.h"
-#include "../lib/distance_ops.h"
+//#include "../lib/distance_ops.h"
 #include "road.h"
 
 using namespace std;
 
-void check_highway(string & type){
+inline void check_highway(string & type){
   if(!type.compare("motorway") || !type.compare("primary")){
     return ;
   }
@@ -28,7 +28,7 @@ void check_highway(string & type){
   type.clear();
 }
 
-int compare(const string & s1, const string & s2){
+inline int compare(const string & s1, const string & s2){
   size_t l1{s1.length()}, l2{s2.length()};
   if(l1 > l2)
     return 1;
@@ -43,8 +43,6 @@ size_t binary_search(vector<node> & nodes, string id){
   node r_node;
   int comp = compare(nodes[i].id, id);
   while(comp){
-    //cout << "Searching " << id << " comparing with " << nodes[i].id << " i " << i;
-    //cout << " l,r " << l << " " << r << ' ' << comp << endl;
     if(comp > 0)
       r = --i;
     else
@@ -52,8 +50,6 @@ size_t binary_search(vector<node> & nodes, string id){
     i = (l+r)/2;
     comp = compare(nodes[i].id, id);
   }
-  //cout << "size " << nodes.size() << " i " << i  << " id " << id << '\n';
-  //nodes[i].print();
   return i;
 }
 
@@ -83,7 +79,8 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
   string temp{}, type{}, id{};
   int counter{0};
   size_t max = std::numeric_limits<streamsize>::max();
-  nodes.reserve(3000000);
+  nodes.reserve(3004103);
+  roads.reserve(89701);
   //ignore the first 3 lines of the xml file
   data.ignore(max, '\n');
   data.ignore(max, '\n');
@@ -91,13 +88,11 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
   //start reading nodes;
   while(true){
     data >> temp;
-    //cout << "Read " << temp << endl;
     //if it's not a node tag break
     if(!temp.compare("<node")){
       data >> temp;
       //copy the id
       t_node.id.assign(temp, 4, temp.length()-5);
-      //t_node.id = std::move(temp.substr(4, temp.length()-5));
       //parse latitude
       data >> temp;
       t_node.lat = stod(temp.substr(5));
@@ -107,6 +102,7 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
       //move node to the vector
       nodes.push_back(move(t_node));
       //cout << "Node read" << endl;
+      t_node.id.clear();
       counter++;
     }
     else if(!temp.compare("<way")){
@@ -116,6 +112,7 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
     data.ignore(max, '\n');
   }
 
+  //start reading roads
   while(true){
     if(!temp.compare("<way")){
       data >> temp;
@@ -162,7 +159,7 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
 //index takes a type of way and returns its index in the vector
 //where segments of this type of way are stored
 inline size_t index(string type){
-  static string types {
+  static string types[] {
     "motorway", "primary", "residential",
     "secondary", "service", "tertiary",
     "trunk", "unclassified"};
@@ -171,17 +168,68 @@ inline size_t index(string type){
         return i;
 }
 
-inline double curvature(double l1, double l2, double l3){
-  return l1*l2*l3/sqrt((a+b+c)*(b+c-a)*(c+a-b)*(a+b-c));
+inline double euclid_dist(double x1, double y1, double x2, double y2){
+	double temp{}, ed{};
+	temp = x1 - x2;
+	ed += temp * temp;
+	temp = y1 - y2;
+	ed += temp * temp;
+	return sqrt(ed);
 }
 
-void make_segments(vector<road> &roads, vector<node> nodes){
-  vector<vector<double>> points;
-  
-  for(size_t i=0; i<roads.size(); i++){
-    for(size_t j=0; j<roads[i].nodes.size(); j++){
+inline double curvature(double l1, double l2, double l3){
+  return l1*l2*l3/sqrt((l1+l2+l3)*(l2+l3-l1)*(l3+l1-l2)*(l1+l2-l3));
+}
 
+void make_segments(vector<road> &roads, vector<node> &nodes, const string &out_s){
+  ofstream out(out_s);
+  double l1{}, l2{}, l3{}, curb{}, thrs{0.03}, curv{};
+  int segid{}, nsize{}, nthrs{200}, count{};
+  int maxsize{}, minsize{std::numeric_limits<int>::max()};
+  vector<double> coords;
+  cout << "Curvatures:\n";
+  for(size_t i=0; i<roads.size(); i++){
+    nsize = 2;
+    coords.push_back(nodes[roads[i].nodes[0]].lat);
+    coords.push_back(nodes[roads[i].nodes[0]].lon);
+    if(roads[i].nodes.size() ==1){
+      continue;
     }
+    for(size_t j=0; j<roads[i].nodes.size()-2; j++){
+      l1 = euclid_dist(nodes[roads[i].nodes[j]].lat, nodes[roads[i].nodes[j]].lon,
+        nodes[roads[i].nodes[j+1]].lat, nodes[roads[i].nodes[j+1]].lon);
+      l2 = euclid_dist(nodes[roads[i].nodes[j+1]].lat, nodes[roads[i].nodes[j+1]].lon,
+        nodes[roads[i].nodes[j+2]].lat, nodes[roads[i].nodes[j+2]].lon);
+      l3 = euclid_dist(nodes[roads[i].nodes[j+2]].lat, nodes[roads[i].nodes[j+2]].lon,
+        nodes[roads[i].nodes[j]].lat, nodes[roads[i].nodes[j]].lon);
+
+      curb = curvature(l1,l2,l3);
+      count++;
+      if(isfinite(curb) && curb <=1)
+        curv += curb;
+      //cout << curb << endl;
+      if((nodes[roads[i].nodes[j+1]].refs >=2 && nodes[roads[i].nodes[j+2]].refs ==1)
+        || curb>thrs || nsize >= nthrs){
+        //break here
+        if(nsize < minsize)
+          minsize = nsize;
+        else if(nsize > maxsize)
+          maxsize = nsize;
+        //make verbose checking of next node here -> did that
+        nsize = 2;
+        segid++;
+      }
+      else{
+        nsize++;
+        coords.push_back(nodes[roads[i].nodes[j+1]].lat);
+        coords.push_back(nodes[roads[i].nodes[j+1]].lon);
+      }
+    }
+    coords.push_back(nodes[roads[i].nodes.back()].lat);
+    coords.push_back(nodes[roads[i].nodes.back()].lon);
   }
-  return vector<vector<real_curve>>{};
+  cout << "Maxsize: " << maxsize << '\n';
+  cout << "Minsize: " << minsize << '\n';
+  cout << "Segs: " << segid+1 << '\n';
+  cout << "Average curvature: " << double(curv/count) << endl;
 }
