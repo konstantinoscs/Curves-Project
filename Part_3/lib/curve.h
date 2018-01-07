@@ -10,9 +10,6 @@ class curve{
   //every point is a dimension-vector of coordinates
 public:
   curve(int dim = 0);
-  curve(const curve & c_curve);
-  curve(curve && m_curve);
-  virtual ~curve();
   void set_id(std::string r_id);
   std::string get_id() const;
   void set_dimension(int dim);
@@ -27,9 +24,6 @@ class real_curve : public curve {
 
 public:
   real_curve(int dim = 0);
-  real_curve(const real_curve & c_curve);
-  real_curve(real_curve && m_curve);
-  ~real_curve();
   void set_point(std::vector<double> & point);
   //we introduce a move push back
   void set_point(std::vector<double> && point);
@@ -43,15 +37,21 @@ class norm_curve : public curve {
 
 public:
   norm_curve(int dim = 0);
-  norm_curve(norm_curve & c_curve);
-  norm_curve(norm_curve && m_curve);
-  ~norm_curve();
   void set_point(std::vector<int> & point);
   //we introduce a move push back
   void set_point(std::vector<int> && point);
   const std::vector<std::vector<int>> & get_points() const;
   const std::vector<int> as_vector() const;
   void print();
+};
+
+class segment : public real_curve{
+  std::string way_id;
+
+public:
+  segment(int dim=0);
+  void set_way(std::string && w_id);
+  std::string get_way();
 };
 
 #endif

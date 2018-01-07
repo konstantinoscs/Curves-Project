@@ -7,21 +7,6 @@ using namespace std;
 curve::curve(int dim): dimension(dim){
 }
 
-curve::curve(const curve & c_curve): id(c_curve.id),
-  dimension(c_curve.dimension){
-
-}
-
-curve::curve(curve && m_curve): id(std::move(m_curve.id)),
-  dimension(m_curve.dimension){
-  //we moved the string so now we have to clear it
-  m_curve.id.clear();
-
-  }
-
-curve::~curve(){
-}
-
 void curve::set_id(string r_id){
     id = r_id;
 }
@@ -38,24 +23,7 @@ int curve::get_dimension() const{
   return dimension;
 }
 
-real_curve::real_curve(int dim)
-  :curve(dim){
-
-}
-
-real_curve::real_curve(const real_curve & c_curve) : curve(c_curve),
-  points(c_curve.points) {
-
-}
-
-real_curve::real_curve(real_curve && m_curve) : curve(std::move(m_curve)),
-  points(std::move(m_curve.points)){
-  //points of m_curve are moved so now we clear them
-  m_curve.points.clear();
-
-}
-
-real_curve::~real_curve(){}
+real_curve::real_curve(int dim) :curve(dim){}
 
 void real_curve::set_point(std::vector<double> & point){
   points.push_back(point);
@@ -91,22 +59,7 @@ void real_curve::print(){
   cout << endl << endl;
 }
 
-norm_curve::norm_curve(int dim)
-  :curve(dim){
-}
-
-norm_curve::norm_curve(norm_curve & c_curve) : curve(c_curve),
-  points(c_curve.points) {
-  //cout << "Copy constructor of curve called!" <<endl;
-}
-
-norm_curve::norm_curve(norm_curve && m_curve) : curve(std::move(m_curve)),
-  points(std::move(m_curve.points)){
-  //points of m_curve are moved so now we clear them
-  m_curve.points.clear();
-}
-
-norm_curve::~norm_curve(){}
+norm_curve::norm_curve(int dim) :curve(dim){}
 
 void norm_curve::set_point(std::vector<int> & point){
   points.push_back(point);
@@ -140,4 +93,14 @@ void norm_curve::print(){
     cout << "), ";
   }
   cout << endl << endl;
+}
+
+segment::segment(int dim): real_curve(dim){};
+
+void segment::set_way(string && w_id){
+  way_id = w_id;
+}
+
+string segment::get_way(){
+  return way_id;
 }

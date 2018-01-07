@@ -181,62 +181,98 @@ inline double curvature(double l1, double l2, double l3){
   return l1*l2*l3/sqrt((l1+l2+l3)*(l2+l3-l1)*(l3+l1-l2)*(l1+l2-l3));
 }
 
-void write_segment(ofstream &out, int id, string way_id, int nsize,
-  vector<double> &coords){
-  out << id << ' ' << way_id << ' ' << nsize << ' ';
+void write_segment(ofstream &out, int &id, string way_id, vector<double> &coords,
+  int &minsize, int &maxsize, int &tot_n){
+  out << id << ", " << way_id << ", " << coords.size()/2 << ", ";
+  for(size_t i=0; i<coords.size()-1; i++){
+    out << coords[i] << ", ";
+  }
+  out << coords.back() << '\n';
+  //check if we have new max/min
+  if(coords.size()/2 < minsize)
+    minsize = coords.size()/2;
+  else if(coords.size()/2 > maxsize)
+    maxsize = coords.size()/2;
+  //ingrement the id
+  id++;
+  tot_n += coords.size()/2;
+  coords.clear();
 }
 
 void make_segments(const vector<road> &roads, const vector<node> &nodes,
   const string &out_s){
   ofstream out(out_s);
+  bool write{false};
   double l1{}, l2{}, l3{}, curb{}, thrs{0.03}, curv{};
-  int segid{}, nsize{}, nthrs{200}, count{};
+  int segid{}, nsize{}, count{}, tot_n;
   int maxsize{}, minsize{std::numeric_limits<int>::max()};
+  size_t nthrs{200}, minthrs{2};
   vector<double> coords;
   cout << "Curvatures:\n";
   for(size_t i=0; i<roads.size(); i++){
-    nsize = 2;
     coords.push_back(nodes[roads[i].nodes[0]].lat);
     coords.push_back(nodes[roads[i].nodes[0]].lon);
     if(roads[i].nodes.size() ==1){
+      //special case
+      out << segid << ", " << roads[i].id << ", " << 1 << ", ";
+      out << coords[0] << ", " << coords[1] << '\n';
+      segid++;
+      coords.clear();
       continue;
     }
-    for(size_t j=0; j<roads[i].nodes.size()-2; j++){
-      l1 = euclid_dist(nodes[roads[i].nodes[j]].lat, nodes[roads[i].nodes[j]].lon,
-        nodes[roads[i].nodes[j+1]].lat, nodes[roads[i].nodes[j+1]].lon);
-      l2 = euclid_dist(nodes[roads[i].nodes[j+1]].lat, nodes[roads[i].nodes[j+1]].lon,
-        nodes[roads[i].nodes[j+2]].lat, nodes[roads[i].nodes[j+2]].lon);
-      l3 = euclid_dist(nodes[roads[i].nodes[j+2]].lat, nodes[roads[i].nodes[j+2]].lon,
+    if(roads[i].nodes.size()<minthrs){
+      for(size_t j=0; j<roads[i].nodes.size(); j++){
+        coords.push_back(nodes[roads[i].nodes[j]].lat);
+        coords.push_back(nodes[roads[i].nodes[j]].lon);
+      }
+      write_segment(out, segid, roads[i].id, coords, minsize, maxsize, tot_n);
+      continue;
+    }
+    for(size_t j=1; j<roads[i].nodes.size()-minthrs; j++){
+      l1 = euclid_dist(nodes[roads[i].nodes[j-1]].lat, nodes[roads[i].nodes[j-1]].lon,
         nodes[roads[i].nodes[j]].lat, nodes[roads[i].nodes[j]].lon);
+      l2 = euclid_dist(nodes[roads[i].nodes[j]].lat, nodes[roads[i].nodes[j]].lon,
+        nodes[roads[i].nodes[j+1]].lat, nodes[roads[i].nodes[j+1]].lon);
+      l3 = euclid_dist(nodes[roads[i].nodes[j+1]].lat, nodes[roads[i].nodes[j+1]].lon,
+        nodes[roads[i].nodes[j-1]].lat, nodes[roads[i].nodes[j-1]].lon);
 
       curb = curvature(l1,l2,l3);
       count++;
       if(isfinite(curb) && curb <=1)
         curv += curb;
       //cout << curb << endl;
-      if((nodes[roads[i].nodes[j+1]].refs >=2 && nodes[roads[i].nodes[j+2]].refs ==1)
-        || curb>thrs || nsize >= nthrs){
-        //break here
-        if(nsize < minsize)
-          minsize = nsize;
-        else if(nsize > maxsize)
-          maxsize = nsize;
-        //make verbose checking of next node here -> did that
-
-        nsize = 2;
-        segid++;
+      if(coords.size()/2+1 <= minthrs){
+        coords.push_back(nodes[roads[i].nodes[j]].lat);
+        coords.push_back(nodes[roads[i].nodes[j]].lon);
+      }
+      else if(nodes[roads[i].nodes[j]].refs >=2 && nodes[roads[i].nodes[j+1]].refs ==1){
+        coords.push_back(nodes[roads[i].nodes[j]].lat);
+        coords.push_back(nodes[roads[i].nodes[j]].lon);
+        //indicate that we have to flush next
+        write = true;
+      }
+      else if (curb>thrs || coords.size()/2+1 >= nthrs || write){
+        //check for curvature or maxsize
+        coords.push_back(nodes[roads[i].nodes[j]].lat);
+        coords.push_back(nodes[roads[i].nodes[j]].lon);
+        write_segment(out, segid, roads[i].id, coords, minsize, maxsize, tot_n);
+        write = false;
       }
       else{
-        nsize++;
-        coords.push_back(nodes[roads[i].nodes[j+1]].lat);
-        coords.push_back(nodes[roads[i].nodes[j+1]].lon);
+        coords.push_back(nodes[roads[i].nodes[j]].lat);
+        coords.push_back(nodes[roads[i].nodes[j]].lon);
       }
     }
-    coords.push_back(nodes[roads[i].nodes.back()].lat);
-    coords.push_back(nodes[roads[i].nodes.back()].lon);
+
+    for(size_t j=roads[i].nodes.size()-minthrs; j<roads[i].nodes.size(); j++){
+      coords.push_back(nodes[roads[i].nodes[j]].lat);
+      coords.push_back(nodes[roads[i].nodes[j]].lon);
+    }
+    write_segment(out, segid, roads[i].id, coords, minsize, maxsize, tot_n);
   }
   cout << "Maxsize: " << maxsize << '\n';
   cout << "Minsize: " << minsize << '\n';
-  cout << "Segs: " << segid+1 << '\n';
+  cout << "Segs: " << segid << '\n';
+  cout << "Nodes written: " << tot_n << '\n';
   cout << "Average curvature: " << double(curv/count) << endl;
 }
