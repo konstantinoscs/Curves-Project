@@ -13,22 +13,25 @@ int main(int argc, char **argv){
   bool parse{true};
   vector<segment> segments;
   string data_s{"segments.csv"};
+  clock_t t = clock();
   if(parse){
     string xml_s{"athens_greece.osm"};
     vector<road> roads;
     vector<node> nodes;
-    clock_t t = clock();
     parse_xml(roads, nodes, xml_s);
-    clock_t te = clock();
-    cout << "Parsing time: " <<float(te-t)/CLOCKS_PER_SEC << '\n';
+    t = clock() -t;
+    cout << "Parsing time: " << float(t)/CLOCKS_PER_SEC << '\n';
     //cout << roads.size() << '\n';
     //cout << nodes.size() << endl;
+    t = clock();
     make_segments(roads, nodes);
-    te = clock() -te;
-    cout << "Segmenting time: " <<float(te)/CLOCKS_PER_SEC << '\n';
+    t = clock() -t;
+    cout << "Segmenting time: " << float(t)/CLOCKS_PER_SEC << '\n';
     roads.clear();
     nodes.clear();
   }
+  t=clock();
   read_data_segs(data_s, segments);
-  segments[0].print();
+  t=clock() -t;
+  cout << "Parsing segments time: " << float(t)/CLOCKS_PER_SEC << '\n';
 }

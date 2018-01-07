@@ -9,7 +9,11 @@ curve::curve(int dim): dimension(dim){
 
 curve::curve(const curve &) = default;
 
+curve& curve::operator=(const curve &) = default;
+
 curve::curve(curve &&) = default;
+
+curve& curve::operator=(curve &&) = default;
 
 curve::~curve() = default;
 
@@ -33,7 +37,11 @@ real_curve::real_curve(int dim) :curve(dim){}
 
 real_curve::real_curve(const real_curve &) = default;
 
+real_curve& real_curve::operator=(const real_curve &) = default;
+
 real_curve::real_curve(real_curve &&) = default;
+
+real_curve& real_curve::operator=(real_curve &&) = default;
 
 real_curve::~real_curve() = default;
 
