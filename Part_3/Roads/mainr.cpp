@@ -11,7 +11,7 @@ using namespace std;
 
 int main(int argc, char **argv){
   bool parse{true};
-  vector<segment> segments;
+  vector<vector<segment>> segments;
   string data_s{"segments.csv"};
   clock_t t = clock();
   if(parse){
@@ -31,7 +31,7 @@ int main(int argc, char **argv){
     nodes.clear();
   }
   t=clock();
-  read_data_segs(data_s, segments);
+  segments = read_data_segs(data_s);
   t=clock() -t;
   cout << "Parsing segments time: " << float(t)/CLOCKS_PER_SEC << '\n';
 }

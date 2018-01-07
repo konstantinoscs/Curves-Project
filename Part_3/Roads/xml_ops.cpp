@@ -156,18 +156,6 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
   return true;
 }
 
-//index takes a type of way and returns its index in the vector
-//where segments of this type of way are stored
-inline size_t index(string type){
-  static string types[] {
-    "motorway", "primary", "residential",
-    "secondary", "service", "tertiary",
-    "trunk", "unclassified"};
-    for(size_t i=0; i<7; i++)
-      if(!types[i].compare(type))
-        return i;
-}
-
 inline double euclid_dist(double x1, double y1, double x2, double y2){
 	double temp{}, ed{};
 	temp = x1 - x2;
@@ -206,7 +194,7 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
   double l1{}, l2{}, l3{}, curb{}, thrs{0.03}, curv{};
   int segid{}, count{}, tot_n{};
   int maxsize{}, minsize{std::numeric_limits<int>::max()};
-  size_t nthrs{200}, minthrs{5};
+  size_t nthrs{200}, minthrs{2};
   vector<double> coords;
   cout << "Curvatures:\n";
   for(size_t i=0; i<roads.size(); i++){
@@ -221,7 +209,7 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
       continue;
     }
     if(roads[i].nodes.size()<minthrs){
-      for(size_t j=0; j<roads[i].nodes.size(); j++){
+      for(size_t j=1; j<roads[i].nodes.size(); j++){
         coords.push_back(nodes[roads[i].nodes[j]].lat);
         coords.push_back(nodes[roads[i].nodes[j]].lon);
       }

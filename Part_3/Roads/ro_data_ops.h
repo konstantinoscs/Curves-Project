@@ -11,7 +11,7 @@ bool parse_arguments(int argc, char ** argv, std::string &input_s,
 std::string &config_s, std::string &out_s, std::string &func);
 
 //takes a dataset file name and reads the curves from it
-bool read_data_segs(std::string &data_s, std::vector<segment> &segments);
+std::vector<std::vector<segment>> read_data_segs(std::string &data_s);
 
 //print cluster results
 bool write_results(std::ofstream & out_f, std::vector<real_curve*> & centroids,

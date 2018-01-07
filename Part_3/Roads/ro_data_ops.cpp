@@ -36,6 +36,18 @@ std::string &config_s, std::string &out_s, std::string &func){
   return true;
 }
 
+//index takes a type of way and returns its index in the vector
+//where segments of this type of way are stored
+inline size_t index(string type){
+  static string types[] {
+    "motorway", "primary", "residential",
+    "secondary", "service", "tertiary",
+    "trunk", "unclassified"};
+    for(size_t i=0; i<7; i++)
+      if(!types[i].compare(type))
+        return i;
+}
+
 //read_segment reads a segment from data file with "dimension" and puts it on
 //oseg
 bool read_segment(segment &oseg, ifstream &data, int dimension){
@@ -44,16 +56,13 @@ bool read_segment(segment &oseg, ifstream &data, int dimension){
   int points_no{};
   //in coords we store all the coordinates of a single point
   vector<double> coords;
-
   //temp coordinate
   double t_coord;
-
   data >> temp;
   //check if we are in the end of the file
-  if (data.eof()){
-    cout << "Eof found!" << endl;
+  if (data.eof())
     return false;
-  }
+
   oseg.set_dimension(dimension);
   temp.pop_back();
   oseg.set_id(temp);
@@ -71,7 +80,7 @@ bool read_segment(segment &oseg, ifstream &data, int dimension){
       t_coord = stod(temp);
       coords.push_back(t_coord);
     }
-
+    //call index HERE
     oseg.set_point(std::move(coords));
     //we moved the vector so now we have to clear it
     coords.clear();
@@ -79,26 +88,26 @@ bool read_segment(segment &oseg, ifstream &data, int dimension){
   return true;
 }
 
-bool read_data_segs(string &data_s, vector<segment> & segments){
+vector<vector<segment>> read_data_segs(string &data_s){
   string s;
   segment oseg{};
   ifstream data(data_s);
+  vector<vector<segment>> segments(1);
 
   //test if there is a file to get the data from
   if (!data.is_open()){
     cerr << "couldn't find data file!" << endl;
-    return false;
+    exit(0);
   }
 
   while(true){
     if(!read_segment(oseg, data, 2))
       break;
     //the speed up with move is amazing
-    segments.push_back(std::move(oseg));
+    segments[0].push_back(std::move(oseg));
   }
 
-  data.close();
-  return true;
+  return segments;
 }
 
 bool write_results(ofstream & out_f, vector<real_curve*> & centroids,
