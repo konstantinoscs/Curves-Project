@@ -5,7 +5,7 @@
 #include <cstdlib>
 #include <utility>
 
-#include "curve.h"
+#include "../lib/curve.h"
 
 using namespace std;
 
@@ -36,58 +36,52 @@ std::string &config_s, std::string &out_s, std::string &func){
   return true;
 }
 
-//read_curve reads a curve from data file with "dimension" and puts it on
-//ocurve
-bool read_curve(real_curve & ocurve, ifstream & data, int dimension){
-  string id;
+//read_segment reads a segment from data file with "dimension" and puts it on
+//oseg
+bool read_segment(segment &oseg, ifstream &data, int dimension){
+  //temp will be used to take all data
+  string temp;
   int points_no{};
-  //c is to get all the useless chars in the input e.g (),
-  char c{};
   //in coords we store all the coordinates of a single point
   vector<double> coords;
 
   //temp coordinate
   double t_coord;
 
-  data >> id;
+  data >> temp;
   //check if we are in the end of the file
   if (data.eof()){
     cout << "Eof found!" << endl;
     return false;
   }
-  ocurve.set_dimension(dimension);
-  ocurve.set_id(id);
-  data >> points_no;
+  oseg.set_dimension(dimension);
+  temp.pop_back();
+  oseg.set_id(temp);
+  data >> temp;
+  temp.pop_back();
+  oseg.set_way(move(temp));
+  data >> temp;
+  points_no = stoi(temp);
   //main loop to read all the points
   for (int i = 0; i<points_no; i++){
-    data >> c;              //get the first '('
 
     //loop to read the coordinates of all points
-    for (int j = 0; j<dimension; j++){
-      data >> t_coord;
+    for (int j=0; j<dimension; j++){
+      data >> temp;
+      t_coord = stod(temp);
       coords.push_back(t_coord);
-      data >> c;      //get the comma after coordinate
     }
 
-    ocurve.set_point(std::move(coords));
+    oseg.set_point(std::move(coords));
     //we moved the vector so now we have to clear it
     coords.clear();
-
-    //get the comma between points - not applicable to last point
-    if(i==points_no-1)
-      break;
-    data >> c;
-
   }
   return true;
 }
 
-bool read_dataset_curves(string data_s, vector<real_curve> & curves,
-  int & dimension){
-
+bool read_data_segs(string &data_s, vector<segment> & segments){
   string s;
-  char c;
-  real_curve ocurve{};
+  segment oseg{};
   ifstream data(data_s);
 
   //test if there is a file to get the data from
@@ -96,56 +90,14 @@ bool read_dataset_curves(string data_s, vector<real_curve> & curves,
     return false;
   }
 
-  //the first time id gets the "@dimension"
-  data >> c;
-  if (c=='@'){
-    data >> s;
-    cout << s <<endl;
-    data >> dimension;
-  }
-  else{
-    //if c!=@ then put it back because it's a curve_id
-    data.putback(c);
-    dimension = 2;
-  }
-  cout << "Dimension = " << dimension << endl;
-
   while(true){
-    if(!read_curve(ocurve, data, dimension))
+    if(!read_segment(oseg, data, 2))
       break;
     //the speed up with move is amazing
-    curves.push_back(std::move(ocurve));
+    segments.push_back(std::move(oseg));
   }
 
   data.close();
-  return true;
-}
-
-bool read_query_curves(string query_s, vector<real_curve> & curves,
-  int dimension, double & R){
-
-  //s is used only to eat useless data
-  string s;
-  real_curve ocurve{};
-  ifstream query(query_s);
-
-  if (!query.is_open()){
-    cerr << "couldn't find query file!" << endl;
-    return false;
-  }
-
-  //get the "R:"
-  query >> s ;
-  query >> R;
-
-  while(true){
-    if(!read_curve(ocurve, query, dimension))
-      break;
-    //the speed up with move is amazing
-    curves.push_back(std::move(ocurve));
-  }
-
-  query.close();
   return true;
 }
 

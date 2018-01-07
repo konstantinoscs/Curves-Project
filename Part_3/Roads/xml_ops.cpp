@@ -204,9 +204,9 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
   ofstream out(out_s);
   bool write{false};
   double l1{}, l2{}, l3{}, curb{}, thrs{0.03}, curv{};
-  int segid{}, nsize{}, count{}, tot_n;
+  int segid{}, count{}, tot_n{};
   int maxsize{}, minsize{std::numeric_limits<int>::max()};
-  size_t nthrs{200}, minthrs{2};
+  size_t nthrs{200}, minthrs{5};
   vector<double> coords;
   cout << "Curvatures:\n";
   for(size_t i=0; i<roads.size(); i++){

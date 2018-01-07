@@ -7,6 +7,12 @@ using namespace std;
 curve::curve(int dim): dimension(dim){
 }
 
+curve::curve(const curve &) = default;
+
+curve::curve(curve &&) = default;
+
+curve::~curve() = default;
+
 void curve::set_id(string r_id){
     id = r_id;
 }
@@ -24,6 +30,12 @@ int curve::get_dimension() const{
 }
 
 real_curve::real_curve(int dim) :curve(dim){}
+
+real_curve::real_curve(const real_curve &) = default;
+
+real_curve::real_curve(real_curve &&) = default;
+
+real_curve::~real_curve() = default;
 
 void real_curve::set_point(std::vector<double> & point){
   points.push_back(point);

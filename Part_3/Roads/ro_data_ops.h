@@ -4,19 +4,14 @@
 #include <vector>
 #include <string>
 
-#include "curve.h"
+#include "../lib/curve.h"
 
 //takes all the variables and assigns them from the command line arguments
 bool parse_arguments(int argc, char ** argv, std::string &input_s,
 std::string &config_s, std::string &out_s, std::string &func);
 
 //takes a dataset file name and reads the curves from it
-bool read_dataset_curves(std::string data_s, std::vector<real_curve> & curves,
-  int & dimension);
-
-//takes query file name and reads the curves from it
-bool read_query_curves(std::string query_s, std::vector<real_curve> & curves,
-  int dimension, double & R);
+bool read_data_segs(std::string &data_s, std::vector<segment> &segments);
 
 //print cluster results
 bool write_results(std::ofstream & out_f, std::vector<real_curve*> & centroids,
