@@ -22,7 +22,10 @@ int main(int argc, char **argv){
     cerr << "Input file not found!" << endl;
     return -1;
   }
-  parse_input(input,numConform,N,proteins);
+  if(!parse_input(input,numConform,N,proteins)){
+    cerr << "Something went wrong while reading the dataset!" << endl;
+    return -1;
+  }
 
   cout << "Protein's dataset read successfully!" << endl;
   cout << "numConform=" << numConform <<endl;
