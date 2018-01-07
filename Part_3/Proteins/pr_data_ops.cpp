@@ -30,7 +30,6 @@ bool parse_arguments(int argc, char **argv, string & input){
 }
 
 bool read_protein(real_curve & ocurve, int id, int N, int numC, ifstream & data){
-  int points_no{};
 
   //in coords we store all the coordinates of a single point
   vector<double> coords;
@@ -73,6 +72,7 @@ bool parse_input(string config_s, int & numConform, int & N, vector<real_curve> 
     .......        */
 
   data >> numConform;
+  if(!numConform) return false;//empty input
   data >> N;
 
   for(int i=0;i<numConform;i++){
@@ -94,7 +94,7 @@ void write_results(string out_s, int k,
   out_f << "s: " << Stotal << endl;
   for(int i=0; i<k; i++){
 //    out_f << i+1 << "-->";
-    for(int j=0; j<assigned_objects[i].size()-1; j++)
+    for(unsigned int j=0; j<assigned_objects[i].size()-1; j++)
       out_f << assigned_objects[i][j]->get_id() << "  ";
     out_f << assigned_objects[i][assigned_objects[i].size()-1]->get_id() << endl;
   }
