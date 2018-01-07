@@ -18,5 +18,10 @@ struct road{
   std::vector<int> nodes;
 };
 
+struct way{
+  std::string id;
+  std::string type;
+};
+
 
 #endif

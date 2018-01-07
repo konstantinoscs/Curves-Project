@@ -11,8 +11,10 @@ using namespace std;
 
 int main(int argc, char **argv){
   bool parse{true};
+  vector<way> ways;
   vector<vector<segment>> segments;
   string data_s{"segments.csv"};
+  parse_arguments(argc, argv, parse);
   clock_t t = clock();
   if(parse){
     string xml_s{"athens_greece.osm"};

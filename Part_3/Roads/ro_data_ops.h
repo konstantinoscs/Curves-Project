@@ -5,10 +5,12 @@
 #include <string>
 
 #include "../lib/curve.h"
+#include "road.h"
 
 //takes all the variables and assigns them from the command line arguments
-bool parse_arguments(int argc, char ** argv, std::string &input_s,
-std::string &config_s, std::string &out_s, std::string &func);
+bool parse_arguments(int argc, char ** argv, bool &parse);
+
+std::vector<way> read_ways(std::string way_s);
 
 //takes a dataset file name and reads the curves from it
 std::vector<std::vector<segment>> read_data_segs(std::string &data_s);

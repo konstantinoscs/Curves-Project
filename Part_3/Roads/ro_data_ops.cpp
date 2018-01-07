@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "../lib/curve.h"
+#include "road.h"
 
 using namespace std;
 
@@ -13,27 +14,24 @@ using namespace std;
 //e.g. parsing command line arguments, getting input from the user,
 //getting input from the files etc.
 
-bool parse_arguments(int argc, char ** argv, std::string &input_s,
-std::string &config_s, std::string &out_s, std::string &func){
+bool parse_arguments(int argc, char ** argv, bool& parse){
 
   //we start from 1 to skip the name of the program
   int i{1};
   while(i<argc){
-    if(!strcmp(argv[i],"-i"))
-    input_s = argv[++i];
-    else if(!strcmp(argv[i],"-c"))
-      config_s = argv[++i];
-    else if(!strcmp(argv[i],"-o"))
-      out_s = argv[++i];
-    else if(!strcmp(argv[i],"-d"))
-      func = argv[++i];
+    if(!strcmp(argv[i],"-parse"))
+      parse = true;
     else
       cerr << "Wrong paramater given, it will be ignored" << endl;
-    //advance to the next parameter
-    //if parameter required 2 arguments, one incremention is already done
       i++;
     }
   return true;
+}
+
+vector<way> read_ways(string way_s){
+  vector<way> ways;
+
+  return ways;
 }
 
 //index takes a type of way and returns its index in the vector
@@ -43,14 +41,14 @@ inline size_t index(string type){
     "motorway", "primary", "residential",
     "secondary", "service", "tertiary",
     "trunk", "unclassified"};
-    for(size_t i=0; i<7; i++)
+    for(size_t i=0; i<8; i++)
       if(!types[i].compare(type))
         return i;
 }
 
 //read_segment reads a segment from data file with "dimension" and puts it on
 //oseg
-bool read_segment(segment &oseg, ifstream &data, int dimension){
+bool read_segment(segment &oseg, ifstream &data, int dimension, size_t &index){
   //temp will be used to take all data
   string temp;
   int points_no{};
@@ -93,6 +91,7 @@ vector<vector<segment>> read_data_segs(string &data_s){
   segment oseg{};
   ifstream data(data_s);
   vector<vector<segment>> segments(1);
+  size_t i;
 
   //test if there is a file to get the data from
   if (!data.is_open()){
@@ -101,7 +100,7 @@ vector<vector<segment>> read_data_segs(string &data_s){
   }
 
   while(true){
-    if(!read_segment(oseg, data, 2))
+    if(!read_segment(oseg, data, 2, i))
       break;
     //the speed up with move is amazing
     segments[0].push_back(std::move(oseg));
