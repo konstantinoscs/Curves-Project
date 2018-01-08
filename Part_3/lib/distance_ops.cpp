@@ -5,6 +5,7 @@
 
 #include "minmax.h"
 #include "distance_f.h"
+#include "rand_utils.h" 
 
 using namespace std;
 
@@ -73,6 +74,16 @@ void computeDTW(const vector<vector<double>> & pointsA,
 	return ;
 }
 
+void makeEvenPoints(const vector<vector<double>> & pointsX, 
+  vector<vector<double>> & tempP, int N){ 
+  int factor=pointsX.size()/N; 
+  int counter=0; 
+  for(int i=0;i<N;i++){ 
+    tempP.push_back(pointsX[int_uniform_rand(counter,counter+factor-1)]); 
+    counter+=factor; 
+  } 
+}
+
 void find_distance(const vector<vector<double>> & pointsA,
 	const vector<vector<double>> & pointsB, string dist, double & distance){
 	if(dist=="DFT")
@@ -81,8 +92,21 @@ void find_distance(const vector<vector<double>> & pointsA,
 		computeDTW(pointsA,pointsB,distance);
 	else if(dist=="cRMSD")
 		distance = pr_cRMSD(pointsA,pointsB,pointsA.size());
-	else if(dist=="frechet")
-		distance = pr_frechet(pointsA,pointsB,pointsA.size());
+	else if(dist=="frechet"){ 
+		if(pointsA.size()==pointsB.size()) 
+			distance = pr_frechet(pointsA,pointsB,pointsA.size()); 
+		else{ 
+			vector<vector<double>> tempP{}; 
+			if(pointsA.size()>pointsB.size()){ 
+				makeEvenPoints(pointsA,tempP,pointsB.size()); 
+				distance = pr_frechet(tempP,pointsB,pointsB.size()); 
+			} 
+			else{ 
+				makeEvenPoints(pointsB,tempP,pointsA.size()); 
+				distance = pr_frechet(pointsA,tempP,pointsA.size()); 
+			} 
+		} 
+	} 
 //	else if(dist==" ... ") //another distance function
 	return ;
 }

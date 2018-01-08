@@ -1,7 +1,7 @@
 CC = g++
 FLAGS = -Wall -std=c++11
 LIBS = -I lib/Eigen
-OBJECTS = lib/assignment.o lib/curve.o lib/data_ops.o lib/distance_ops.o lib/distance_f.o lib/general_hash.o lib/hash_f.o lib/hashtable_init.o lib/initialization.o lib/lsh.o lib/mean_curves.o lib/minmax.o lib/rand_utils.o lib/range_assign.o lib/silhouette.o lib/update.o Proteins/mainp.o Proteins/pr_data_ops.o
+OBJECTS = lib/assignment.o lib/curve.o lib/curve_ops.o lib/data_ops.o lib/distance_ops.o lib/distance_f.o lib/general_hash.o lib/hash_f.o lib/hashtable_init.o lib/initialization.o lib/lsh.o lib/mean_curves.o lib/minmax.o lib/rand_utils.o lib/range_assign.o lib/silhouette.o lib/update.o Proteins/mainp.o Proteins/pr_data_ops.o
 PROTOBJECTS = Proteins/mainp.o Proteins/pr_data_ops.o lib/assignment.o lib/curve.o lib/distance_ops.o lib/distance_f.o lib/initialization.o lib/mean_curves.o lib/minmax.o lib/rand_utils.o lib/silhouette.o lib/update.o
 
 pr : mainp
@@ -14,6 +14,9 @@ lib/assignment.o : lib/assignment.cpp
 
 lib/curve.o : lib/curve.cpp
 	$(CC) $(FLAGS) -c lib/curve.cpp -o lib/curve.o
+
+lib/curve_ops.o : lib/curve_ops.cpp
+	$(CC) $(FLAGS) -c lib/curve_ops.cpp -o lib/curve_ops.o
 
 lib/data_ops.o : lib/data_ops.cpp
 	$(CC) $(FLAGS) -c lib/data_ops.cpp -o lib/data_ops.o
