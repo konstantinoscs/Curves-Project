@@ -30,7 +30,8 @@ double pr_cRMSD(const vector<vector<double>> X0,const vector<vector<double>> Y0,
     Y(i,2) = Y0[i][2] - Yc[2];
   }
   JacobiSVD<MatrixXd> svd(X.transpose()*Y,ComputeThinU | ComputeThinV);
-  if(svd.singularValues()[2]<=0) return std::numeric_limits<int>::max();//don't choose this distance
+  JacobiSVD<MatrixXd>::SingularValuesType singular = svd.singularValues();
+  if(singular(2)<=0) return std::numeric_limits<int>::max();//don't choose this distance
   MatrixXd Q = svd.matrixU() * svd.matrixV().transpose();
   if(Q.determinant()<0){
     MatrixXd tempU = svd.matrixU();
