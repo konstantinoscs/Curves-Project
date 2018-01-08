@@ -188,6 +188,7 @@ void write_segment(ofstream &out, int &id, string way_id, vector<double> &coords
   //ingrement the id
   id++;
   tot_n += coords.size()/2;
+  //keep last node because it's also a part of the next segment
   coords.erase(coords.begin(), coords.end()-2);
 }
 
@@ -195,18 +196,24 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
   const string &out_s){
   ofstream out(out_s);
   bool write{false};
-  double l1{}, l2{}, l3{}, curb{}, thrs{0.03}, curv{};
-  int segid{}, count{}, tot_n{}, totalnodes{};
+  //lengths for every 3 points, total and temporary curvatures
+  double l1{}, l2{}, l3{}, curb{}, curv{};
+  double thrs{0.03};  //curvature threshold over which a segment breaks
+  int segid{};  //serial segment id for every new segment
+  //count for average curvature, tot_n -> nodes written
+  int count{}, tot_n{}, totalnodes{};
+  //min and max segment sizes for the statistics
   int maxsize{}, minsize{std::numeric_limits<int>::max()};
-  size_t nthrs{200}, minthrs{4};
-  vector<double> coords;
-  cout << "Curvatures:\n";
+  size_t nthrs{200}, minthrs{4}; //min and max threshold for segment size
+  vector<double> coords; //keep all the coordinates until written to file
+
+  cout << "Segmenting:\n";
   for(size_t i=0; i<roads.size(); i++){
     totalnodes += roads[i].nodes.size();
     coords.push_back(nodes[roads[i].nodes[0]].lat);
     coords.push_back(nodes[roads[i].nodes[0]].lon);
+    //special case for roads with one node
     if(roads[i].nodes.size() ==1){
-      //special case
       out << segid << ", " << roads[i].id << ", " << 1 << ", ";
       out << coords[0] << ", " << coords[1] << '\n';
       segid++;
@@ -214,6 +221,7 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
       coords.clear();
       continue;
     }
+    //make one segment for small roads (according to minthrs)
     if(roads[i].nodes.size() <= minthrs){
       for(size_t j=1; j<roads[i].nodes.size(); j++){
         coords.push_back(nodes[roads[i].nodes[j]].lat);
@@ -222,21 +230,26 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
       write_segment(out, segid, roads[i].id, coords, minsize, maxsize, tot_n);
       continue;
     }
+    //for every other road segment it according to heuristics
     for(size_t j=1; j<roads[i].nodes.size()-minthrs; j++){
+      //find the 3 sides of the triangle for every 3 points
       l1 = euclid_dist(nodes[roads[i].nodes[j-1]].lat, nodes[roads[i].nodes[j-1]].lon,
         nodes[roads[i].nodes[j]].lat, nodes[roads[i].nodes[j]].lon);
       l2 = euclid_dist(nodes[roads[i].nodes[j]].lat, nodes[roads[i].nodes[j]].lon,
         nodes[roads[i].nodes[j+1]].lat, nodes[roads[i].nodes[j+1]].lon);
       l3 = euclid_dist(nodes[roads[i].nodes[j+1]].lat, nodes[roads[i].nodes[j+1]].lon,
         nodes[roads[i].nodes[j-1]].lat, nodes[roads[i].nodes[j-1]].lon);
-
+      //compute circumcircle radius (curvature)
       curb = curvature(l1,l2,l3);
       count++;
+      //exclude the roads with curvature >1 from average curvature
       if(isfinite(curb) && curb <=1)
         curv += curb;
-      //cout << curb << endl;
+
       coords.push_back(nodes[roads[i].nodes[j]].lat);
       coords.push_back(nodes[roads[i].nodes[j]].lon);
+      //start checking if we need to "cut" the segment
+      //if the segment is too small don't cut it no matter what
       if(coords.size()/2+1 <= minthrs){
         continue;
       }
@@ -256,6 +269,7 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
       coords.push_back(nodes[roads[i].nodes[j]].lon);
     }
     write_segment(out, segid, roads[i].id, coords, minsize, maxsize, tot_n);
+    coords.clear();
   }
   cout << "Maxsize: " << maxsize << '\n';
   cout << "Minsize: " << minsize << '\n';
