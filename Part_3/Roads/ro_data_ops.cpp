@@ -1,12 +1,14 @@
-#include <iostream>
-#include <string>
+#include <cstdlib>
 #include <cstring>
 #include <fstream>
-#include <cstdlib>
+#include <iostream>
+#include <limits>
+#include <string>
 #include <utility>
 
 #include "../lib/curve.h"
 #include "road.h"
+#include "xml_ops.h"
 
 using namespace std;
 
@@ -30,13 +32,22 @@ bool parse_arguments(int argc, char ** argv, bool& parse){
 
 vector<way> read_ways(string way_s){
   vector<way> ways;
-
+  way tway;
+  ifstream data(way_s);
+  size_t max = std::numeric_limits<streamsize>::max();
+  while(data >> tway.id){
+    tway.id.pop_back();
+    data >> tway.type;
+    tway.type.pop_back();
+    ways.push_back(move(tway));
+    data.ignore(max, '\n');
+  }
   return ways;
 }
 
-//index takes a type of way and returns its index in the vector
+//ind takes a type of way and returns its index in the vector
 //where segments of this type of way are stored
-inline size_t index(string type){
+inline size_t ind(string type){
   static string types[] {
     "motorway", "primary", "residential",
     "secondary", "service", "tertiary",
@@ -46,9 +57,24 @@ inline size_t index(string type){
         return i;
 }
 
+size_t bin_search(const vector<way> &ways, string id){
+  size_t l{0}, r{ways.size()-1}, i{(l+r)/2};
+  node r_node;
+  int comp = compare(ways[i].id, id);
+  while(comp){
+    if(comp > 0)
+      r = --i;
+    else
+      l = ++i;
+    i = (l+r)/2;
+    comp = compare(ways[i].id, id);
+  }
+  return i;
+}
+
 //read_segment reads a segment from data file with "dimension" and puts it on
 //oseg
-bool read_segment(segment &oseg, ifstream &data, int dimension, size_t &index){
+bool read_segment(segment &oseg, ifstream &data, int dimension){
   //temp will be used to take all data
   string temp;
   int points_no{};
@@ -78,7 +104,6 @@ bool read_segment(segment &oseg, ifstream &data, int dimension, size_t &index){
       t_coord = stod(temp);
       coords.push_back(t_coord);
     }
-    //call index HERE
     oseg.set_point(std::move(coords));
     //we moved the vector so now we have to clear it
     coords.clear();
@@ -86,11 +111,11 @@ bool read_segment(segment &oseg, ifstream &data, int dimension, size_t &index){
   return true;
 }
 
-vector<vector<segment>> read_data_segs(string &data_s){
-  string s;
+vector<vector<segment>> read_data_segs(string &data_s, const vector<way> &ways){
+  string type;
   segment oseg{};
   ifstream data(data_s);
-  vector<vector<segment>> segments(1);
+  vector<vector<segment>> segments(8);
   size_t i;
 
   //test if there is a file to get the data from
@@ -100,12 +125,14 @@ vector<vector<segment>> read_data_segs(string &data_s){
   }
 
   while(true){
-    if(!read_segment(oseg, data, 2, i))
+    if(!read_segment(oseg, data, 2))
       break;
-    //the speed up with move is amazing
-    segments[0].push_back(std::move(oseg));
+    //cout << "a" << endl;
+    i = bin_search(ways, oseg.get_way());
+    type = ways[i].type;
+    i = ind(type);
+    segments[i].push_back(std::move(oseg));
   }
-
   return segments;
 }
 

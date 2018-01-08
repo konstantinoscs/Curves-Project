@@ -38,7 +38,7 @@ inline int compare(const string & s1, const string & s2){
     return s1.compare(s2);
 }
 
-size_t binary_search(vector<node> & nodes, string id){
+size_t binary_search(vector<node> &nodes, string id){
   size_t l{0}, r{nodes.size()-1}, i{(l+r)/2};
   node r_node;
   int comp = compare(nodes[i].id, id);

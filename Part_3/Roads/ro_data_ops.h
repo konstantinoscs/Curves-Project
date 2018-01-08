@@ -13,7 +13,8 @@ bool parse_arguments(int argc, char ** argv, bool &parse);
 std::vector<way> read_ways(std::string way_s);
 
 //takes a dataset file name and reads the curves from it
-std::vector<std::vector<segment>> read_data_segs(std::string &data_s);
+std::vector<std::vector<segment>> read_data_segs(std::string &data_s,
+  const std::vector<way> &ways);
 
 //print cluster results
 bool write_results(std::ofstream & out_f, std::vector<real_curve*> & centroids,
