@@ -29,8 +29,6 @@ int main(int argc, char **argv){
     make_segments(roads, nodes);
     t = clock() -t;
     cout << "Segmenting time: " << float(t)/CLOCKS_PER_SEC << '\n';
-    roads.clear();
-    nodes.clear();
   }
   t=clock();
   ways = read_ways(way_s);
