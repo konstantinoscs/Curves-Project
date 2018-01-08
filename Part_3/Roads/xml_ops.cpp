@@ -79,6 +79,10 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
   string temp{}, type{}, id{};
   int counter{0};
   size_t max = std::numeric_limits<streamsize>::max();
+  if(!data.is_open()){
+    cerr << "File for parsing not found!\n";
+    return false;
+  }
   nodes.reserve(3004103);
   roads.reserve(89701);
   //ignore the first 3 lines of the xml file
@@ -184,7 +188,7 @@ void write_segment(ofstream &out, int &id, string way_id, vector<double> &coords
   //ingrement the id
   id++;
   tot_n += coords.size()/2;
-  coords.clear();
+  coords.erase(coords.begin(), coords.end()-2);
 }
 
 void make_segments(const vector<road> &roads, const vector<node> &nodes,
@@ -192,12 +196,13 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
   ofstream out(out_s);
   bool write{false};
   double l1{}, l2{}, l3{}, curb{}, thrs{0.03}, curv{};
-  int segid{}, count{}, tot_n{};
+  int segid{}, count{}, tot_n{}, totalnodes{};
   int maxsize{}, minsize{std::numeric_limits<int>::max()};
-  size_t nthrs{200}, minthrs{2};
+  size_t nthrs{200}, minthrs{4};
   vector<double> coords;
   cout << "Curvatures:\n";
   for(size_t i=0; i<roads.size(); i++){
+    totalnodes += roads[i].nodes.size();
     coords.push_back(nodes[roads[i].nodes[0]].lat);
     coords.push_back(nodes[roads[i].nodes[0]].lon);
     if(roads[i].nodes.size() ==1){
@@ -205,10 +210,11 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
       out << segid << ", " << roads[i].id << ", " << 1 << ", ";
       out << coords[0] << ", " << coords[1] << '\n';
       segid++;
+      tot_n++;
       coords.clear();
       continue;
     }
-    if(roads[i].nodes.size()<minthrs){
+    if(roads[i].nodes.size() <= minthrs){
       for(size_t j=1; j<roads[i].nodes.size(); j++){
         coords.push_back(nodes[roads[i].nodes[j]].lat);
         coords.push_back(nodes[roads[i].nodes[j]].lon);
@@ -229,26 +235,19 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
       if(isfinite(curb) && curb <=1)
         curv += curb;
       //cout << curb << endl;
+      coords.push_back(nodes[roads[i].nodes[j]].lat);
+      coords.push_back(nodes[roads[i].nodes[j]].lon);
       if(coords.size()/2+1 <= minthrs){
-        coords.push_back(nodes[roads[i].nodes[j]].lat);
-        coords.push_back(nodes[roads[i].nodes[j]].lon);
+        continue;
       }
       else if(nodes[roads[i].nodes[j]].refs >=2 && nodes[roads[i].nodes[j+1]].refs ==1){
-        coords.push_back(nodes[roads[i].nodes[j]].lat);
-        coords.push_back(nodes[roads[i].nodes[j]].lon);
         //indicate that we have to flush next
         write = true;
       }
-      else if (curb>thrs || coords.size()/2+1 >= nthrs || write){
+      else if(curb>thrs || coords.size()/2+1 >= nthrs || write){
         //check for curvature or maxsize
-        coords.push_back(nodes[roads[i].nodes[j]].lat);
-        coords.push_back(nodes[roads[i].nodes[j]].lon);
         write_segment(out, segid, roads[i].id, coords, minsize, maxsize, tot_n);
         write = false;
-      }
-      else{
-        coords.push_back(nodes[roads[i].nodes[j]].lat);
-        coords.push_back(nodes[roads[i].nodes[j]].lon);
       }
     }
 
@@ -262,5 +261,6 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
   cout << "Minsize: " << minsize << '\n';
   cout << "Segs: " << segid << '\n';
   cout << "Nodes written: " << tot_n << '\n';
+  cout << "Total nodes were: " << totalnodes << '\n';
   cout << "Average curvature: " << double(curv/count) << endl;
 }

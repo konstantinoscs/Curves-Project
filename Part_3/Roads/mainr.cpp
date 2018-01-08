@@ -37,7 +37,6 @@ int main(int argc, char **argv){
   segments = read_data_segs(data_s, ways);
   t=clock() -t;
   cout << "Parsing segments time: " << float(t)/CLOCKS_PER_SEC << '\n';
-  cout << ways[ways.size()-1].id << ' ' << ways[ways.size()-1].type << endl;
   for(size_t i=0; i<segments.size(); i++)
     cout << segments[i].size() << endl;
 }
