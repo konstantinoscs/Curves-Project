@@ -131,7 +131,7 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
       data >> temp;
       if(!temp.compare("k=\"highway\"")){
         data >> temp;
-        type = temp.substr(3, temp.length()-6);
+        type = std::move(temp.substr(3, temp.length()-6));
         //check if it's a highway we're interested in
         check_highway(type);
       }
