@@ -16,17 +16,20 @@ using namespace std;
 //e.g. parsing command line arguments, getting input from the user,
 //getting input from the files etc.
 
-bool parse_arguments(int argc, char ** argv, bool& parse){
+bool parse_arguments(int argc, char ** argv, bool& parse, string& dist){
 
   //we start from 1 to skip the name of the program
   int i{1};
   while(i<argc){
     if(!strcmp(argv[i],"-parse"))
       parse = true;
+    else if(!strcmp(argv[i],"-dtw")){
+      dist = "DTW2";
+    }
     else
       cerr << "Wrong paramater given, it will be ignored" << endl;
-      i++;
-    }
+    i++;
+  }
   return true;
 }
 

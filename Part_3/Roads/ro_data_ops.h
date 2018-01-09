@@ -8,7 +8,7 @@
 #include "road.h"
 
 //takes all the variables and assigns them from the command line arguments
-bool parse_arguments(int argc, char ** argv, bool &parse);
+bool parse_arguments(int argc, char ** argv, bool &parse, std::string &dist);
 
 std::vector<way> read_ways(std::string way_s);
 

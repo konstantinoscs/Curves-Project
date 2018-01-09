@@ -16,11 +16,13 @@ using namespace std;
 
 int main(int argc, char **argv){
   bool parse{false};
+  string dist{"DFT2"},out_s{"kmedoid_ways_frechet.dat"};
   vector<way> ways;
   vector<vector<segment>> segments;
   string data_s{"Roads/segments.csv"}, way_s{"Roads/athens.csv"};
-  parse_arguments(argc, argv, parse);
+  parse_arguments(argc, argv, parse, dist);
   clock_t t = clock();
+  if(dist=="DTW2") out_s = "kmedoid_ways_dtw.dat";
   if(parse){
     string xml_s{"athens_greece.osm"};
     vector<road> roads;
@@ -38,11 +40,11 @@ int main(int argc, char **argv){
   t=clock();
   ways = read_ways(way_s);
   segments = read_data_segs(data_s, ways);
+  dist.erase(3);
   t=clock() -t;
   cout << "Parsing segments time: " << float(t)/CLOCKS_PER_SEC << '\n';
 //---------------
   int k{},a{};
-  string dist{"DFT"};
   for(size_t i=0; i<segments.size(); i++){
     int segsize = (int)segments[i].size();
     if(segsize > 200) segsize = 200;
