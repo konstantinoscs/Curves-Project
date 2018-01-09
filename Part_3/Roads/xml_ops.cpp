@@ -104,8 +104,8 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
       data >> temp;
       t_node.lon = stod(temp.substr(5));
       //move node to the vector
-      nodes.push_back(move(t_node));
-      //cout << "Node read" << endl;
+      nodes.push_back(std::move(t_node));
+      //std::cout << "Node read" << endl;
       t_node.id.clear();
       counter++;
     }
@@ -125,13 +125,13 @@ bool parse_xml(vector<road> & roads, vector<node> & nodes, const string &data_s,
     }
     else if(!temp.compare("<nd")){
       data >> temp;
-      nds.push_back(move(temp.substr(5, temp.length()-8)));
+      nds.push_back(std::move(temp.substr(5, temp.length()-8)));
     }
     else if(!temp.compare("<tag")){
       data >> temp;
       if(!temp.compare("k=\"highway\"")){
         data >> temp;
-        type = temp.substr(3, temp.length()-6);
+        type = std::move(temp.substr(3, temp.length()-6));
         //check if it's a highway we're interested in
         check_highway(type);
       }
@@ -207,7 +207,7 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
   size_t nthrs{200}, minthrs{4}; //min and max threshold for segment size
   vector<double> coords; //keep all the coordinates until written to file
 
-  cout << "Segmenting:\n";
+  std::cout << "Segmenting:\n";
   for(size_t i=0; i<roads.size(); i++){
     totalnodes += roads[i].nodes.size();
     coords.push_back(nodes[roads[i].nodes[0]].lat);
@@ -271,10 +271,10 @@ void make_segments(const vector<road> &roads, const vector<node> &nodes,
     write_segment(out, segid, roads[i].id, coords, minsize, maxsize, tot_n);
     coords.clear();
   }
-  cout << "Maxsize: " << maxsize << '\n';
-  cout << "Minsize: " << minsize << '\n';
-  cout << "Segs: " << segid << '\n';
-  cout << "Nodes written: " << tot_n << '\n';
-  cout << "Total nodes were: " << totalnodes << '\n';
-  cout << "Average curvature: " << double(curv/count) << endl;
+  std::cout << "Maxsize: " << maxsize << '\n';
+  std::cout << "Minsize: " << minsize << '\n';
+  std::cout << "Segs: " << segid << '\n';
+  std::cout << "Nodes written: " << tot_n << '\n';
+  std::cout << "Total nodes were: " << totalnodes << '\n';
+  std::cout << "Average curvature: " << double(curv/count) << endl;
 }
