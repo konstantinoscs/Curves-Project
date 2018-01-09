@@ -92,7 +92,7 @@ void find_distance(const vector<vector<double>> & pointsA,
 		computeDTW(pointsA,pointsB,distance);
 	else if(dist=="cRMSD")
 		distance = pr_cRMSD(pointsA,pointsB,pointsA.size());
-	else if(dist=="frechet"){
+	else if(dist=="DFT2"){
 		if(pointsA.size()==pointsB.size()) 
 			distance = pr_frechet(pointsA,pointsB,pointsA.size()); 
 		else{
@@ -104,6 +104,21 @@ void find_distance(const vector<vector<double>> & pointsA,
 			else{
 				makeEvenPoints(pointsB,tempP,pointsA.size());
 				distance = pr_frechet(pointsA,tempP,pointsA.size());
+			}
+		}
+	}
+	else if(dist=="DTW2"){
+		if(pointsA.size()==pointsB.size()) 
+			distance = pr_dtw(pointsA,pointsB,pointsA.size()); 
+		else{
+			vector<vector<double>> tempP{};
+			if(pointsA.size()>pointsB.size()){
+				makeEvenPoints(pointsA,tempP,pointsB.size());
+				distance = pr_dtw(tempP,pointsB,pointsB.size());
+			}
+			else{
+				makeEvenPoints(pointsB,tempP,pointsA.size());
+				distance = pr_dtw(pointsA,tempP,pointsA.size());
 			}
 		}
 	}

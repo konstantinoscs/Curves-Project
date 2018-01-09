@@ -7,4 +7,6 @@ double pr_cRMSD(std::vector<std::vector<double>> X0,std::vector<std::vector<doub
 
 double pr_frechet(std::vector<std::vector<double>> X0,std::vector<std::vector<double>> Y0, int N);
 
+double pr_dtw(std::vector<std::vector<double>> X0,std::vector<std::vector<double>> Y0, int N);
+
 #endif

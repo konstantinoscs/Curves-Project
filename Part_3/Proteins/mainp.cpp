@@ -38,12 +38,16 @@ int main(int argc, char **argv){
 
   string dist{"cRMSD"},out_s{"crmsd.dat"};
   int a{},k{};
+  if(numConform < 500) a = 30;
+  else if(numConform < 2000)  a = 50;
+  else a = 80;
+
   for(int t=0; t<2; t++){//for questions A and B(just change the dist...)
     if(t){ dist = "frechet"; out_s = "frechet.dat"; cout << "Starting B..." << endl;}// for B
     else cout << "Starting A..." << endl;
 
     double k_sil[3]{};//to find best k with
-    int k_best[3] = {2,numConform/2,-1};//logarithmic way --> [first,last,mean]
+    int k_best[3] = {3,numConform/2,-1};//logarithmic way --> [first,last,mean]
     int index{};//array's index to get current k
 
     double Stotal{-2};//Stotal in [-1,1],init with something < -1
@@ -65,9 +69,6 @@ cout << "Checking with k=" << k << endl;
       assign_sizes.resize(k);
       prev_assign_sizes.clear();
       prev_assign_sizes.resize(k);
-      if(numConform < 500) a = k + (k%2-1);
-      else if(numConform < 2000)  a = 2*k + 1;
-      else a = 3*k + (k%2-1);
       random_init(pproteins,k,centroids);// <----- 1
 cout << "init OK" << endl;
       for(int j=0; j<k; j++)
