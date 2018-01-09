@@ -18,7 +18,7 @@ int main(int argc, char **argv){
   bool parse{false};
   vector<way> ways;
   vector<vector<segment>> segments;
-  string data_s{"segments.csv"}, way_s{"athens.csv"};
+  string data_s{"Roads/segments.csv"}, way_s{"Roads/athens.csv"};
   parse_arguments(argc, argv, parse);
   clock_t t = clock();
   if(parse){
@@ -45,14 +45,13 @@ int main(int argc, char **argv){
   string dist{"DFT"};
   for(size_t i=0; i<segments.size(); i++){
     int segsize = (int)segments[i].size();
-    if(segsize > 2000){cout <<"skip.."<<i<<endl;continue;}
     if(segsize > 200) segsize = 200;
     //starting clustering for every segment type :)
     if(segsize < 500) a = 30;
     else if(segsize < 2000)  a = 50;
     else a = 80;
     vector<real_curve*> segs{},segs_all{},centroids{},prev_centroids{};
-    for(int q=0; q<segments[i].size(); q++){
+    for(size_t q=0; q<segments[i].size(); q++){
       segs.push_back(&segments[i][q]);
       segs_all.push_back(&segments[i][q]);
     }
@@ -102,8 +101,6 @@ cout << "assignment OK" << endl;
         pam_update(centroids,assigned_objects,objf,dist);// <----- 3
 cout << "update OK" << endl;
         if(prev_centroids == centroids) break;
-        for(int f=0;f<k;f++)
-cout <<"centr:"<<f<<"="<<centroids[f]->get_id()<<" with "<< centroids[f]->get_points().size() << " points!"<<endl;
       }
 cout << "Computing silhuette..." << endl;
     compute_silhuette(centroids, assigned_objects, dist, Si, tempStotal);// <----- 4
@@ -121,5 +118,5 @@ cout << "writing results..." << endl;
       }
     }
   }
-  
+  return 0;
 }
