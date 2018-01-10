@@ -91,7 +91,7 @@ double pr_frechet( vector<vector<double>> X0, vector<vector<double>> Y0, int N){
 }
 
 double pr_dtw( vector<vector<double>> X0, vector<vector<double>> Y0, int N){
-  if(X0.size()!=Y0.size()) return 999;
+  if(X0.size()!=Y0.size()) return std::numeric_limits<double>::max();
   double Xc[3],Yc[3];
   double dist{};
   for(int i=0; i<N; i++){
@@ -124,7 +124,6 @@ double pr_dtw( vector<vector<double>> X0, vector<vector<double>> Y0, int N){
     tempU(2,2)*=-1;
     Q = tempU * svd.matrixV().transpose();
   }
-  if(Q.determinant()<0) return std::numeric_limits<double>::max();;
   MatrixXd X1 = X * Q;
   vector<vector<double>> A{},B{};//save XQ in A, Y in B to call computeDTW
   A.resize(N);
