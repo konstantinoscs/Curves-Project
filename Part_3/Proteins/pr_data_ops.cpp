@@ -85,18 +85,18 @@ bool parse_input(string config_s, int & numConform, int & N, vector<real_curve> 
   return true;
 }
 
-void write_results(string out_s, int k,
-  vector<vector<real_curve*>> & assigned_objects,double Stotal){
+void write_results(string out_s,
+  vector<vector<string>> & best_assignment,double Stotal){
 
   ofstream out_f;
   out_f.open(out_s, ofstream::out | ofstream::trunc);
-  out_f << "k: " << k << endl;
+  out_f << "k: " << best_assignment.size() << endl;
   out_f << "s: " << Stotal << endl;
-  for(int i=0; i<k; i++){
-//    out_f << i+1 << "-->";
-    for(unsigned int j=0; j<assigned_objects[i].size()-1; j++)
-      out_f << assigned_objects[i][j]->get_id() << "  ";
-    out_f << assigned_objects[i][assigned_objects[i].size()-1]->get_id() << endl;
+  for(unsigned int i=0; i<best_assignment.size(); i++){
+    out_f << "(Cluster " << i+1 << ":)";
+    for(unsigned int j=0; j<best_assignment[i].size()-1; j++)
+      out_f << best_assignment[i][j] << "  ";
+    out_f << best_assignment[i][best_assignment[i].size()-1] << endl;
   }
   out_f.close();
 }
