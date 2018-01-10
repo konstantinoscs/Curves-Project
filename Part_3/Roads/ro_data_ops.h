@@ -17,9 +17,8 @@ std::vector<std::vector<segment>> read_data_segs(std::string &data_s,
   const std::vector<way> &ways);
 
 //print cluster results
-bool write_results(std::ofstream & out_f, std::vector<real_curve*> & centroids,
-  std::vector<std::vector<real_curve*>> assignment, std::vector<double> Si,
-  double Stotal, int i, int j, int z, std::string dist, bool complete,
-  double time, int dimension);
+void write_results(std::ofstream & out_f, double clustering_time,
+  std::vector<std::vector<std::string>> & best_assignment,
+  double Stotal, int i);
 
 #endif

@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <ctime>
+#include <fstream>
+#include <utility>
 
 #include "../lib/curve.h"
 #include "../lib/initialization.h"
@@ -20,9 +22,13 @@ int main(int argc, char **argv){
   vector<way> ways;
   vector<vector<segment>> segments;
   string data_s{"Roads/segments.csv"}, way_s{"Roads/athens.csv"};
+  ofstream out_f;
   parse_arguments(argc, argv, parse, dist);
   clock_t t = clock();
+  double clustering_time{};
   if(dist=="DTW2") out_s = "kmedoid_ways_dtw.dat";
+  out_f.open(out_s, ofstream::out | ofstream::trunc);
+
   if(parse){
     string xml_s{"athens_greece.osm"};
     vector<road> roads;
@@ -46,6 +52,7 @@ int main(int argc, char **argv){
 //---------------
   int k{},a{};
   for(size_t i=0; i<segments.size(); i++){
+cout << "Check road type:" << i+1 <<  <<endl;
     int segsize = (int)segments[i].size();
     if(segsize > 200) segsize = 200;
     //starting clustering for every segment type :)
@@ -68,7 +75,8 @@ int main(int argc, char **argv){
     double tempStotal{},objf{};
     vector<int> assign_sizes{},prev_assign_sizes{};
     vector<vector<real_curve*>> assigned_objects{};//assignment
-
+    vector<vector<string>> best_assignment{};//road's id for best k to write
+    t = clock();
     while((k_best[1]-k_best[0]>1) || k_best[2]<=0){//check some k for clusters
       if(k_best[2]==-1){k=k_best[0];k_best[2]++;index=0;}//--------------------
       else if(k_best[2]==0){k=k_best[1];k_best[2]++;index=1;}//-----set k------
@@ -109,8 +117,11 @@ cout << "Computing silhuette..." << endl;
 cout <<"(for k=" << k << " silhuette=" << tempStotal << ")" << endl;
       if(tempStotal > Stotal){
         Stotal = tempStotal;
-cout << "writing results..." << endl;
-        //write_results(out_s,k,assigned_objects,Stotal);// <----- 5
+        best_assignment.clear();
+        best_assignment.resize(k);
+        for(int i2=0; i2<k; i2++)//save new best ids
+          for(unsigned int j2=0; j2<assigned_objects[i2].size(); j2++)
+            best_assignment[i2].push_back(assigned_objects[i2][j2]->get_id());
       }
 
       k_sil[index] = tempStotal;//set silhuettes
@@ -119,6 +130,10 @@ cout << "writing results..." << endl;
         else{k_best[1]=k_best[2];k_sil[1]=k_sil[2];}
       }
     }
+cout << "writing results..." << endl;
+    t = clock() - t;
+    clustering_time = double(t)/CLOCKS_PER_SEC;
+    write_results(out_f,clustering_time,best_assignment,Stotal,i+1);// <----- 5
   }
   return 0;
 }
