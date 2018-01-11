@@ -24,7 +24,7 @@ int main(int argc, char **argv){
   clock_t t = clock();
   if(dist=="DTW2") out_s = "kmedoid_ways_dtw.dat";
   if(parse){
-    string xml_s{"athens_greece.osm"};
+    string xml_s{"Roads/athens_greece.osm"};
     vector<road> roads;
     vector<node> nodes;
     parse_xml(roads, nodes, xml_s);
