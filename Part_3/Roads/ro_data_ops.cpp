@@ -139,61 +139,20 @@ vector<vector<segment>> read_data_segs(string &data_s, const vector<way> &ways){
   return segments;
 }
 
-bool write_results(ofstream & out_f, vector<real_curve*> & centroids,
-  vector<vector<real_curve*>> assignment, vector<double> Si, double Stotal,
-  int i, int j, int z, string dist, bool complete, double time, int dimension){
+void write_results(ofstream & out_f, double clustering_time,
+  vector<vector<string>> & best_assignment, double Stotal, int i){
 
-  if (!out_f.is_open()){
-    cerr << "couldn't create output  file!" << endl;
-    return false;
+  out_f << "    For road type " << i << ":" << endl;
+  out_f << "k: " << best_assignment.size() << endl;
+  out_f << "clustering_time: " << clustering_time << endl;
+  out_f << "s: " << Stotal << endl;
+  for(unsigned int i=0; i<best_assignment.size(); i++){
+    out_f << "(Cluster " << i+1 << ":)";
+    if(!best_assignment[i].size()) continue;
+    for(unsigned int j=0; j<best_assignment[i].size()-1; j++)
+      out_f << best_assignment[i][j] << "  ";
+    out_f << best_assignment[i][best_assignment[i].size()-1] << endl;
   }
-  out_f << "Algorithm: ";
-  if(i) out_f << "[Kmeans_Init]";
-  else out_f << "[Random_Init]";
-  if(j) out_f << "+[Range_Assign]";
-  else out_f << "+[Simple_Assign]";
-  if(z) out_f << "+[PAM]" << endl;
-  else out_f << "+[Mean_Frechet]" << endl;
-  out_f << "Metric: ";
-  if(dist=="DFT") out_f << "Frechet" << endl;
-  else out_f << "DTW" << endl;
-  if(!complete){
-    for(unsigned int t=0; t<centroids.size(); t++){
-      out_f << "Cluster-" << t+1;
-      out_f << " {size: " << assignment[t].size() << ", centroid: ";
-      if(centroids[t]->get_id().compare("-1"))//id != -1
-        out_f << centroids[t]->get_id();
-      else{
-        out_f << "[";
-        for(unsigned int y=0; y<centroids[t]->get_points().size(); y++){
-          out_f << "(";
-          for(int x=0; x<dimension-1; x++)
-            out_f << centroids[t]->get_points()[y][x] << ",";
-          out_f << centroids[t]->get_points()[y][dimension-1] << ")";
-          if(y != centroids[t]->get_points().size()-1) out_f << ",";
-        }
-        out_f << "]";
-      }
-      out_f << "}" << endl;
-    }
-    out_f << "Clustering Time: " << time << endl;
-    out_f << "Silhouette: [";
-    for(unsigned int t=0; t<centroids.size(); t++)
-      out_f << Si[t] << ",";
-    out_f << Stotal << "]" << endl;
-  }
-  else{
-    for(unsigned int t=0; t<centroids.size(); t++){
-      out_f << "Cluster-" << t+1 << "{";
-      for(unsigned int y=0; y<assignment[t].size()-1; y++)
-        out_f << assignment[t][y]->get_id() << ",";
-      out_f << assignment[t][assignment[t].size()-1]->get_id() << "}" << endl;
-    }
-  }
-  out_f << endl;
-  //delete remaining mean curves
-  for(unsigned int t=0; t<centroids.size(); t++)
-    if(!centroids[t]->get_id().compare("-1"))
-      delete centroids[t];
-  return true;
 }
+
+

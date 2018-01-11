@@ -75,18 +75,19 @@ double pam_update(vector<real_curve *> & centroids,
   for(size_t i=0; i<centroids.size(); i++){
     minobj = std::numeric_limits<double>::max();
     //swap centroid with every curve in the current cluster to find medoid
-      for(size_t j=0; j<assignment[i].size(); j++){
-        //"swap" centroid
-        centroids[i] = assignment[i][j];
-        //compute objective
-        obj = compute_objective(centroids[i], assignment[i], func);
-        //here every
-        if(obj < minobj){
-          minobj = obj;
-          opt_config[i] = centroids[i];
-        }
+    if(!assignment[i].size()) {centroids[i] = opt_config[i] = nullptr;}
+    for(size_t j=0; j<assignment[i].size(); j++){
+      //"swap" centroid
+      centroids[i] = assignment[i][j];
+      //compute objective
+      obj = compute_objective(centroids[i], assignment[i], func);
+      //here every
+      if(obj < minobj){
+        minobj = obj;
+        opt_config[i] = centroids[i];
       }
     }
+  }
   //now centroids has the new configuration
   centroids = std::move(opt_config);
   return minobj;

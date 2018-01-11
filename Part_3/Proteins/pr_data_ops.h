@@ -10,6 +10,6 @@ bool parse_arguments(int argc, char **argv, std::string & input);
 
 bool parse_input(std::string config_s, int & numConform, int & N, std::vector<real_curve> & proteins);
 
-void write_results(std::string out_s, int k,std::vector<std::vector<real_curve*>> & assigned_objects,double Stotal);
+void write_results(std::string out_s, std::vector<std::vector<std::string>> & best_assignment,double Stotal);
 
 #endif

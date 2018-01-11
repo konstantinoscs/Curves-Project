@@ -10,6 +10,9 @@
 #include "../lib/update.h"
 #include "../lib/silhouette.h"
 
+#define MAX_K 120
+#define MIN_K 3
+
 using namespace std;
 
 int main(int argc, char **argv){
@@ -43,11 +46,13 @@ int main(int argc, char **argv){
   else a = 80;
 
   for(int t=0; t<2; t++){//for questions A and B(just change the dist...)
-    if(t){ dist = "frechet"; out_s = "frechet.dat"; cout << "Starting B..." << endl;}// for B
+    if(t){ dist = "DFT2"; out_s = "frechet.dat"; cout << "Starting B..." << endl;}// for B
     else cout << "Starting A..." << endl;
 
     double k_sil[3]{};//to find best k with
-    int k_best[3] = {3,numConform/2,-1};//logarithmic way --> [first,last,mean]
+    int maxk{numConform/2};
+    if(maxk > MAX_K) maxk=MAX_K;
+    int k_best[3] = {MIN_K,maxk,-1};//logarithmic way --> [first,last,mean]
     int index{};//array's index to get current k
 
     double Stotal{-2};//Stotal in [-1,1],init with something < -1
@@ -56,6 +61,7 @@ int main(int argc, char **argv){
     double tempStotal{},objf{};
     vector<int> assign_sizes{},prev_assign_sizes{};
     vector<vector<real_curve*>> assigned_objects{};//assignment
+    vector<vector<string>> best_assignment{};//protein's id for best k to write
     while((k_best[1]-k_best[0]>1) || k_best[2]<=0){//check some k for clusters
       if(k_best[2]==-1){k=k_best[0];k_best[2]++;index=0;}//--------------------
       else if(k_best[2]==0){k=k_best[1];k_best[2]++;index=1;}//-----set k------
@@ -93,11 +99,16 @@ cout << "update OK" << endl;
       }
 cout << "Computing silhuette..." << endl;
       compute_silhuette(centroids, assigned_objects, dist, Si, tempStotal);// <----- 4
-cout <<"(for k=" << k << " silhuette=" << tempStotal << ")" << endl;
+cout <<"(-->silhuette=" << tempStotal << ")" << endl;
       if(tempStotal > Stotal){
         Stotal = tempStotal;
-cout << "writing results..." << endl;
-        write_results(out_s,k,assigned_objects,Stotal);// <----- 5
+        best_assignment.clear();
+        best_assignment.resize(k);
+        for(int i2=0; i2<k; i2++)//save new best ids
+          for(unsigned int j2=0; j2<assigned_objects[i2].size(); j2++)
+            best_assignment[i2].push_back(assigned_objects[i2][j2]->get_id());
+//cout << "writing results..." << endl;
+//        write_results(out_s,k,assigned_objects,Stotal);// <----- 5
       }
 
       k_sil[index] = tempStotal;//set silhuettes
@@ -106,6 +117,8 @@ cout << "writing results..." << endl;
         else{k_best[1]=k_best[2];k_sil[1]=k_sil[2];}
       }
     }
+cout << "writing results..." << endl;
+    write_results(out_s,best_assignment,Stotal);// <----- 5
   }
   return 0;
 }
