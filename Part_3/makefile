@@ -5,7 +5,7 @@ OBJECTS = lib/assignment.o lib/curve.o lib/curve_ops.o lib/data_ops.o lib/distan
 
 PROTOBJECTS = Proteins/mainp.o Proteins/pr_data_ops.o lib/assignment.o lib/curve.o lib/distance_ops.o lib/distance_f.o lib/initialization.o lib/mean_curves.o lib/minmax.o lib/rand_utils.o lib/silhouette.o lib/update.o
 
-ROADOBJECTS = lib/curve.cpp lib/assignment.cpp lib/initialization.cpp lib/update.cpp lib/silhouette.cpp lib/distance_f.cpp lib/rand_utils.cpp lib/minmax.cpp lib/distance_ops.cpp lib/mean_curves.cpp Roads/ro_data_ops.o Roads/road.o Roads/xml_ops.o Roads/mainr.o
+ROADOBJECTS = lib/curve.cpp lib/curve_ops.o lib/range_assign.o lib/assignment.cpp lib/hashtable_init.o lib/initialization.cpp lib/general_hash.o lib/hash_f.o lib/lsh.o lib/update.cpp lib/silhouette.cpp lib/distance_f.cpp lib/rand_utils.cpp lib/minmax.cpp lib/distance_ops.cpp lib/mean_curves.cpp Roads/ro_data_ops.o Roads/road.o Roads/xml_ops.o Roads/mainr.o
 
 pr : mainp
 

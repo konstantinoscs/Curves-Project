@@ -148,6 +148,7 @@ void write_results(ofstream & out_f, double clustering_time,
   out_f << "s: " << Stotal << endl;
   for(unsigned int i=0; i<best_assignment.size(); i++){
     out_f << "(Cluster " << i+1 << ":)";
+    if(!best_assignment[i].size()) continue;
     for(unsigned int j=0; j<best_assignment[i].size()-1; j++)
       out_f << best_assignment[i][j] << "  ";
     out_f << best_assignment[i][best_assignment[i].size()-1] << endl;

@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 #include <limits>
-
+#include <iostream>
 #include "minmax.h"
 #include "curve.h"
 #include "update.h"
@@ -13,9 +13,9 @@ int find_second_best(real_curve * tempC, int y,
   vector<real_curve*> & centroids, string dist){
 
   double min_dist{std::numeric_limits<int>::max()},min_dist2;
-  int index{};
+  int index{-1};
   for(unsigned int i=0; i<centroids.size(); i++){
-    if((int)i==y) continue;//don't check it's real centroid
+    if((int)i==y || centroids[i]==nullptr) continue;//don't check it's real centroid
     find_distance(tempC->get_points(), centroids[i]->get_points(),
       dist, min_dist2);
     if(min_dist>min_dist2){
@@ -40,11 +40,16 @@ void compute_silhuette(vector<real_curve *> & centroids,
   int sec_best;
   for(unsigned int i=0; i<centroids.size(); i++){
     clusterS = 0.0;
+    if(centroids[i]==nullptr){Si.push_back(clusterS); continue;cout << "B"<<endl;}
     for(unsigned int j=0; j<assignment[i].size(); j++){
       objA = compute_objective(assignment[i][j], assignment[i], dist)/assignment[i].size();//a(i)
       sec_best = find_second_best(assignment[i][j], i, centroids, dist);
-      objB = compute_objective(assignment[i][j], assignment[sec_best], dist)/assignment[sec_best].size();//b(i)
-      clusterS += (objB - objA)/MYmax(objA,objB);//s(i)
+      if(sec_best != -1){
+        objB = compute_objective(assignment[i][j], assignment[sec_best], dist)/assignment[sec_best].size();//b(i)
+        clusterS += (objB - objA)/MYmax(objA,objB);//s(i)
+      }
+      else 
+        clusterS += 1;      
     }
     clusterS=clusterS/assignment[i].size();//normalized in [-1,1]
     Si.push_back(clusterS);
