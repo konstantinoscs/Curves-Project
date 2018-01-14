@@ -1,7 +1,7 @@
 CC = g++
-FLAGS = -Wall -std=c++11
+FLAGS = -std=c++11
 LIBS = -I lib/Eigen
-OBJECTS = lib/assignment.o lib/curve.o lib/curve_ops.o lib/data_ops.o lib/distance_ops.o lib/distance_f.o lib/general_hash.o lib/hash_f.o lib/hashtable_init.o lib/initialization.o lib/lsh.o lib/mean_curves.o lib/minmax.o lib/rand_utils.o lib/range_assign.o lib/silhouette.o lib/update.o Proteins/mainp.o Proteins/pr_data_ops.o Roads/ro_data_ops.o Roads/road.o Roads/xml_ops.o Roads/mainr.o
+OBJECTS = lib/assignment.o lib/curve.o lib/curve_ops.o lib/distance_ops.o lib/distance_f.o lib/general_hash.o lib/hash_f.o lib/hashtable_init.o lib/initialization.o lib/lsh.o lib/mean_curves.o lib/minmax.o lib/rand_utils.o lib/range_assign.o lib/silhouette.o lib/update.o Proteins/mainp.o Proteins/pr_data_ops.o Roads/ro_data_ops.o Roads/road.o Roads/xml_ops.o Roads/mainr.o
 
 PROTOBJECTS = Proteins/mainp.o Proteins/pr_data_ops.o lib/assignment.o lib/curve.o lib/distance_ops.o lib/distance_f.o lib/initialization.o lib/mean_curves.o lib/minmax.o lib/rand_utils.o lib/silhouette.o lib/update.o
 
@@ -12,7 +12,7 @@ pr : mainp
 rd : mainr
 
 mainp : $(PROTOBJECTS)
-	$(CC) $(FLAGS) $(LIBS) -o proteins $(PROTOBJECTS)
+	$(CC) $(FLAGS) $(LIBS) -o prot $(PROTOBJECTS)
 
 mainr : $(ROADOBJECTS)
 	$(CC) $(FLAGS) $(LIBS) -o ways $(ROADOBJECTS)
@@ -89,4 +89,4 @@ Roads/mainr.o : Roads/mainr.cpp
 
 .PHONY : clean
 clean :
-	rm $(OBJECTS) proteins
+	rm $(OBJECTS) prot ways

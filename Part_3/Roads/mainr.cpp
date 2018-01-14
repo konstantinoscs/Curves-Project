@@ -60,7 +60,7 @@ int main(int argc, char **argv){
 //---------------
   int k{},a{};
   for(size_t i=0; i<segments.size(); i++){
-//    if(segments[i].size()>500) continue;
+    //if(segments[i].size()>500) continue;
 cout << "Check road type:" << i+1 <<endl;
     int segsize = (int)segments[i].size();
     if(segsize > MAX_K) segsize = MAX_K;
@@ -121,9 +121,9 @@ cout << "assignment OK" << endl;
 cout << "update OK" << endl;
         if(prev_centroids == centroids) break;
       }
-cout << "Computing silhuette..." << endl;
+cout << "Computing silhouette..." << endl;
     compute_silhuette(centroids, assigned_objects, dist, Si, tempStotal);// <----- 4
-cout <<"(-->silhuette=" << tempStotal << ")" << endl;
+cout <<"(-->silhouette=" << tempStotal << ")" << endl;
       if(tempStotal > Stotal){
         Stotal = tempStotal;
         best_assignment.clear();
@@ -195,9 +195,9 @@ cout << "Hashtable just initialized!" << endl;
       objf = 1;
       pam_update(centroids,assigned_objects,objf,dist);
 
-cout << "Computing silhuette..." << endl;
+cout << "Computing silhouette..." << endl;
       compute_silhuette(centroids, assigned_objects, dist, Si, tempStotal);// <----- 4
-cout <<"(for k=" << k << " silhuette=" << tempStotal << ")" << endl;
+cout <<"(for k=" << k << " silhouette=" << tempStotal << ")" << endl;
       if(tempStotal > Stotal){
         Stotal = tempStotal;
         best_assignment.clear();
@@ -213,6 +213,7 @@ cout <<"(for k=" << k << " silhuette=" << tempStotal << ")" << endl;
         else{k_best[1]=k_best[2];k_sil[1]=k_sil[2];}
       }
     }
+
 cout << "writing results..." << endl;
     t = clock() - t;
     clustering_time = double(t)/CLOCKS_PER_SEC;

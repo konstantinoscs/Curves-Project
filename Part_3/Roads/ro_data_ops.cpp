@@ -58,6 +58,7 @@ inline size_t ind(string type){
     for(size_t i=0; i<8; i++)
       if(!types[i].compare(type))
         return i;
+  return 0;
 }
 
 size_t bin_search(const vector<way> &ways, string id){
@@ -142,7 +143,7 @@ vector<vector<segment>> read_data_segs(string &data_s, const vector<way> &ways){
 void write_results(ofstream & out_f, double clustering_time,
   vector<vector<string>> & best_assignment, double Stotal, int i){
 
-  out_f << "    For road type " << i << ":" << endl;
+  out_f << "For road type " << i << ":" << endl;
   out_f << "k: " << best_assignment.size() << endl;
   out_f << "clustering_time: " << clustering_time << endl;
   out_f << "s: " << Stotal << endl;
@@ -154,5 +155,3 @@ void write_results(ofstream & out_f, double clustering_time,
     out_f << best_assignment[i][best_assignment[i].size()-1] << endl;
   }
 }
-
-
